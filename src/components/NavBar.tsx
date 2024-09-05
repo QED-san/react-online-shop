@@ -231,7 +231,7 @@ const NavBar = () => {
                             top="33px"
                             left={
                               cartProducts?.length === 0 || !cartProducts
-                                ? "5px"
+                                ? "-15px"
                                 : "-155px"
                             }
                             p={
@@ -241,7 +241,7 @@ const NavBar = () => {
                             }
                           >
                             {cartProducts?.length === 0 || !cartProducts ? (
-                              <Box>Empty</Box>
+                              <Box px="20px">Empty</Box>
                             ) : (
                               <Box
                                 borderRadius="10px"
