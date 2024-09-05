@@ -1,0 +1,17 @@
+@tailwind base;
+
+body {
+  &::-webkit-scrollbar-thumb {
+    background-color: #703bf7;
+  }
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: #999999;
+  }
+}
+
+@media (max-width: 600px) {
+  body::-webkit-scrollbar {
+    width: 0;
+  }
+}
