@@ -12,13 +12,13 @@ const routes = createBrowserRouter([
       { path: "products/:id", element: <Pages.ProductDetail /> },
       { path: "login", element: <Pages.Login /> },
       { path: "signup", element: <Pages.Signup /> },
-    ],
-  },
-  {
-    element: <AuthenticatedRoutes />,
-    children: [
-      { path: "dashboard", element: <Pages.Dashboard /> },
-      { path: "dashboard/cart", element: <Pages.Cart /> },
+      {
+        element: <AuthenticatedRoutes />,
+        children: [
+          { path: "dashboard", element: <Pages.Dashboard /> },
+          { path: "dashboard/cart", element: <Pages.Cart /> },
+        ],
+      },
     ],
   },
 ]);
