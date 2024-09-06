@@ -12,3 +12,4 @@ export type getTokenReqT = {
 };
 export type fileUploadReqT = Blob;
 export type userReqT = Omit<UserT, "id">;
+export type updateUserReqT = Omit<userReqT, "role">;

@@ -14,7 +14,7 @@ import {
 } from "../hooks/useAuth";
 import { checkEmailResT, fileUploadResT } from "../utils/types/Auth";
 import React from "react";
-import CustomTextInput from "../components/Products/ui/CustomTextInput";
+import CustomTextInput from "../components/Products/ui/CustomInput";
 import ProductsButton from "../theme/Products/ProductsButton";
 import Loader from "../components/Loaders/MainLoader";
 import { Link } from "react-router-dom";
@@ -327,7 +327,17 @@ export const Signup = () => {
                             }}
                           />
                         </Box>
-                        <Box flex=".1" p="8px">
+                        <Box
+                          flex=".1"
+                          p="8px"
+                          display={
+                            checkEmail.isPending ||
+                            checkEmail.isError ||
+                            checkEmail.isSuccess
+                              ? "block"
+                              : "none"
+                          }
+                        >
                           <Box
                             minWidth="100%"
                             minHeight="100%"

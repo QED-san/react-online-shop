@@ -23,7 +23,7 @@ import useCategories from "../hooks/useCategories";
 import ProductCard from "../components/Products/ProductCard";
 import productsButton from ".././theme/Products/ProductsButton";
 import productsSearchBar from ".././theme/Products/ProductsSearchBar";
-import CustomTextInput from "../components/Products/ui/CustomTextInput";
+import CustomTextInput from "../components/Products/ui/CustomInput";
 import { productsT } from "../utils/types/Product";
 import Loader from "../components/Loaders/MainLoader";
 

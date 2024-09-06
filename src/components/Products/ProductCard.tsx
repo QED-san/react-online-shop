@@ -112,7 +112,7 @@ export function ProductDescription({
       >
         <Typography
           sx={{
-            width: { xs: "130px", sm: "120px", md: "160px", xl: "200px" },
+            width: { xs: "120px", sm: "110px", md: "150px", xl: "190px" },
             height: "20px",
             overflow: "hidden",
             fontSize: "12px",

@@ -22,6 +22,8 @@ export const useCheckEmail = (setTheRes: (res: checkEmailResT) => void) => {
         )
         .then((res) => res.data),
     onSuccess: (res) => setTheRes(res),
+    onError: (err) =>
+      console.error("while verifying email, this happend:", err),
   });
 };
 
@@ -39,6 +41,7 @@ export const useUploadFile = (setUploadRes: (res: fileUploadResT) => void) => {
         )
         .then((res) => res.data),
     onSuccess: (res) => setUploadRes(res),
+    onError: (err) => console.error("while uploading file, this happend:", err),
   });
 };
 
@@ -61,6 +64,7 @@ export const useGetTokens = (setAccessTokenCookie: (res: tokensT) => void) => {
         .post<tokensT>(`${import.meta.env.VITE_BASE_URL}/auth/login`, user)
         .then((res) => res.data),
     onSuccess: (res) => setAccessTokenCookie(res),
+    onError: (err) => console.error("while loging in, this happend:", err),
   });
 };
 
@@ -80,14 +84,18 @@ export const useRegisterUser = (submitRequest: (res: UserT) => void) => {
   });
 };
 
-export const useUpdateUser = <T>() => {
+export const useUpdateUser = <T>(setUpdatedUser: (res: UserT) => void) => {
   const user = useSelector((state: RootState) => state.User);
   return useMutation<UserT, Error, T>({
-    mutationFn: (updatedEntity: T) =>
-      axios
-        .put<UserT>(`${import.meta.env.VITE_BASE_URL}/users/${user.id}`, {
+    mutationFn: async (updatedEntity: T) =>
+      await axios
+        .put<UserT>(
+          `${import.meta.env.VITE_BASE_URL}/users/${user.id}`,
           updatedEntity,
-        })
+          { headers: { "Content-Type": "application/json" } }
+        )
         .then((res) => res.data),
+    onSuccess: (res) => setUpdatedUser(res),
+    onError: (err) => console.error("while updating user, this happend:", err),
   });
 };
