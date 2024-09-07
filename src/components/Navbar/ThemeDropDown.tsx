@@ -22,7 +22,6 @@ const ThemeDropDown = ({
   top?: string;
 }) => {
   const dispatch = useDispatch();
-
   return (
     <Box
       position="absolute"
