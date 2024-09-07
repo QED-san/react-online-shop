@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Box,
-  useTheme,
-  Container,
-  Grid,
-  Typography,
-  Stack,
-} from "@mui/material";
+import { Box, Container, Grid, Typography, Stack } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { ArrowBackIosNew } from "@mui/icons-material";
 import useProduct from "../hooks/useProduct";
@@ -14,9 +7,10 @@ import ProductCard from "../components/Products/ProductCard";
 import AddToCartButton from "../components/Products/ui/AddToCartButton";
 import Loader from "../components/Loaders/MainLoader";
 import Cookies from "cookies-js";
+import Theme from "../theme/Theme";
 
 export const ProductDetail = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const { id } = useParams();
   const { data: product, error, isLoading } = useProduct(id);
 
@@ -28,9 +22,8 @@ export const ProductDetail = () => {
   return (
     <Box
       sx={{
-        backgroundColor:
-          appTheme.palette.mode === "dark" ? "#141414" : "#ffffff",
-        color: appTheme.palette.mode === "dark" ? "#fff" : "#000",
+        backgroundColor: appTheme === "dark" ? "#141414" : "#ffffff",
+        color: appTheme === "dark" ? "#fff" : "#000",
       }}
     >
       <Box pt="70px">
@@ -39,13 +32,10 @@ export const ProductDetail = () => {
             <Box
               minHeight="420px"
               border={1}
-              borderColor={
-                appTheme.palette.mode === "dark" ? "#262626" : "#262626"
-              }
+              borderColor={appTheme === "dark" ? "#262626" : "#262626"}
               borderRadius="13px"
               sx={{
-                backgroundColor:
-                  appTheme.palette.mode === "dark" ? "#1a1a1a" : "#f4f4f5",
+                backgroundColor: appTheme === "dark" ? "#1a1a1a" : "#f4f4f5",
               }}
               p="10px"
             >
@@ -55,15 +45,9 @@ export const ProductDetail = () => {
                   <Box
                     border={1}
                     borderRadius="99999px"
-                    borderColor={
-                      appTheme.palette.mode === "dark" ? "#262626" : "#999999"
-                    }
-                    color={
-                      appTheme.palette.mode === "dark" ? "#999999" : "#262626"
-                    }
-                    bgcolor={
-                      appTheme.palette.mode === "dark" ? "#141414" : "#e4e4e7"
-                    }
+                    borderColor={appTheme === "dark" ? "#262626" : "#999999"}
+                    color={appTheme === "dark" ? "#999999" : "#262626"}
+                    bgcolor={appTheme === "dark" ? "#141414" : "#e4e4e7"}
                     py="6px"
                     px="15px"
                   >
@@ -72,10 +56,7 @@ export const ProductDetail = () => {
                         <Typography>
                           <ArrowBackIosNew
                             sx={{
-                              color:
-                                appTheme.palette.mode === "dark"
-                                  ? "#fff"
-                                  : "#000",
+                              color: appTheme === "dark" ? "#fff" : "#000",
                               fontSize: "13px",
                               mr: "10px",
                             }}
@@ -210,9 +191,7 @@ export const ProductDetail = () => {
                               <Typography
                                 fontSize="20px"
                                 color={
-                                  appTheme.palette.mode === "dark"
-                                    ? "#999999"
-                                    : "#8e8e90"
+                                  appTheme === "dark" ? "#999999" : "#8e8e90"
                                 }
                               >
                                 {product?.description || "description"}
@@ -228,7 +207,7 @@ export const ProductDetail = () => {
                                 <Box>
                                   <Typography
                                     color={
-                                      appTheme.palette.mode === "dark"
+                                      appTheme === "dark"
                                         ? "#999999"
                                         : "#8e8e90"
                                     }

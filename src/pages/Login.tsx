@@ -5,7 +5,6 @@ import {
   Stack,
   ThemeProvider,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import ProductsButton from "../theme/Products/ProductsButton";
@@ -21,9 +20,10 @@ import Cookies from "cookies-js";
 import { Buffer } from "buffer";
 import { useDispatch } from "react-redux";
 import { GetTokensCunstructor } from "../hooks/Cunstructor";
+import Theme from "../theme/Theme";
 
 export const Login = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const emailInputRef = React.useRef<HTMLInputElement>(null);
   const passwordInputRef = React.useRef<HTMLInputElement>(null);
   const getTokens = useGetTokens(setAccessToken);
@@ -75,7 +75,7 @@ export const Login = () => {
 
   return (
     <Box
-      bgcolor={appTheme.palette.mode === "dark" ? "#141414" : "#fff"}
+      bgcolor={appTheme === "dark" ? "#141414" : "#fff"}
       pt={{ xs: "50px", lg: "80px", xl: "110px" }}
     >
       <Container
@@ -88,9 +88,9 @@ export const Login = () => {
       >
         <Box
           border="5px solid"
-          borderColor={appTheme.palette.mode === "dark" ? "#262626" : "#f3f3f3"}
+          borderColor={appTheme === "dark" ? "#262626" : "#f3f3f3"}
           borderRadius="10px"
-          bgcolor={appTheme.palette.mode === "dark" ? "#1a1a1a" : "#fcfcfc"}
+          bgcolor={appTheme === "dark" ? "#1a1a1a" : "#fcfcfc"}
         >
           <Container maxWidth="sm">
             <Stack spacing={2} p="10px" display="flex" justifyContent="center">
@@ -114,9 +114,7 @@ export const Login = () => {
                     <Box>
                       <Typography
                         fontSize="17px"
-                        color={
-                          appTheme.palette.mode === "dark" ? "#fff" : "#000"
-                        }
+                        color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Email Address
                       </Typography>
@@ -132,22 +130,15 @@ export const Login = () => {
                               pb: "55px",
                               borderRadius: "10px",
                               bgcolor:
-                                appTheme.palette.mode === "dark"
-                                  ? "#141414"
-                                  : "#f3f3f3",
+                                appTheme === "dark" ? "#141414" : "#f3f3f3",
                               "& .MuiInputBase-input": {
-                                color:
-                                  appTheme.palette.mode === "dark"
-                                    ? "white"
-                                    : "#000",
+                                color: appTheme === "dark" ? "white" : "#000",
                               },
                               "& .MuiOutlinedInput-notchedOutline": {
                                 border: "1px solid",
                                 borderRadius: "10px",
                                 borderColor:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#262626"
-                                    : "#d1d5db",
+                                  appTheme === "dark" ? "#262626" : "#d1d5db",
                                 mb: "1px",
                               },
                               "&:hover:not(.Mui-focused)": {
@@ -180,9 +171,7 @@ export const Login = () => {
                     <Box>
                       <Typography
                         fontSize="17px"
-                        color={
-                          appTheme.palette.mode === "dark" ? "#fff" : "#000"
-                        }
+                        color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Password
                       </Typography>
@@ -195,23 +184,15 @@ export const Login = () => {
                         sx={{
                           pb: "55px",
                           borderRadius: "10px",
-                          bgcolor:
-                            appTheme.palette.mode === "dark"
-                              ? "#141414"
-                              : "#f3f3f3",
+                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
                           "& .MuiInputBase-input": {
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "white"
-                                : "#000",
+                            color: appTheme === "dark" ? "white" : "#000",
                           },
                           "& .MuiOutlinedInput-notchedOutline": {
                             border: "1px solid",
                             borderRadius: "10px",
                             borderColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#d1d5db",
+                              appTheme === "dark" ? "#262626" : "#d1d5db",
                             mb: "1px",
                           },
                           "&:hover:not(.Mui-focused)": {

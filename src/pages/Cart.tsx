@@ -7,7 +7,6 @@ import {
   FormControlLabel,
   Stack,
   Typography,
-  useTheme,
 } from "@mui/material";
 import {
   Add,
@@ -39,10 +38,11 @@ import {
   PurchaseMethodT,
 } from "../state management/Orders/OrderSlice";
 import { OrderReucerCunstructor } from "../state management/Orders/Custructors";
+import Theme from "../theme/Theme";
 
 export const Cart = () => {
   const products = useCartProducts();
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const dispatch = useDispatch();
   const [checkOutSectionIsOpen, setCheckOutSectionOpen] =
     React.useState<boolean>(false);
@@ -76,7 +76,7 @@ export const Cart = () => {
   return (
     <Box
       minHeight="550px"
-      bgcolor={appTheme.palette.mode === "dark" ? "#141414" : "#fff"}
+      bgcolor={appTheme === "dark" ? "#141414" : "#fff"}
       pt="30px"
     >
       <Container
@@ -96,14 +96,12 @@ export const Cart = () => {
             >
               <Box
                 flex={{ xs: "1", md: "1" }}
-                color={appTheme.palette.mode === "dark" ? "#ffef" : "#000"}
+                color={appTheme === "dark" ? "#ffef" : "#000"}
               >
                 <Box
                   p="20px"
                   border="2px solid"
-                  borderColor={
-                    appTheme.palette.mode === "dark" ? "#262626" : "#eeeef3"
-                  }
+                  borderColor={appTheme === "dark" ? "#262626" : "#eeeef3"}
                   borderRadius="15px"
                 >
                   {/* cart header */}
@@ -159,9 +157,7 @@ export const Cart = () => {
                             p="10px"
                             border="3px solid"
                             borderColor={
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#eeeef3"
+                              appTheme === "dark" ? "#262626" : "#eeeef3"
                             }
                             borderRadius="20px"
                           >
@@ -281,7 +277,7 @@ export const Cart = () => {
                                         <Remove
                                           sx={{
                                             color:
-                                              appTheme.palette.mode === "dark"
+                                              appTheme === "dark"
                                                 ? "#fff"
                                                 : "#000",
                                             fontSize: "16px",
@@ -320,7 +316,7 @@ export const Cart = () => {
                                         <Add
                                           sx={{
                                             color:
-                                              appTheme.palette.mode === "dark"
+                                              appTheme === "dark"
                                                 ? "#fff"
                                                 : "#000",
                                             fontSize: "16px",
@@ -404,9 +400,7 @@ export const Cart = () => {
               {/* checkout section */}
               <Box
                 flex={{ xs: "1", md: ".4" }}
-                bgcolor={
-                  appTheme.palette.mode === "dark" ? "#373A40" : "#f3f3f9"
-                }
+                bgcolor={appTheme === "dark" ? "#373A40" : "#f3f3f9"}
                 borderRadius="20px"
                 p="20px"
                 pb={checkOutSectionIsOpen ? "20px" : "200px"}
@@ -416,18 +410,14 @@ export const Cart = () => {
                 <Box>
                   <Divider
                     variant="middle"
-                    color={
-                      appTheme.palette.mode === "dark" ? "white" : "silver"
-                    }
+                    color={appTheme === "dark" ? "white" : "silver"}
                   ></Divider>
                   <Stack spacing={1}>
                     <Box pt="20px" display="flex" justifyContent="end">
                       <Box mr="auto">
                         <Typography
                           variant="subtitle2"
-                          color={
-                            appTheme.palette.mode === "dark" ? "white" : "gray"
-                          }
+                          color={appTheme === "dark" ? "white" : "gray"}
                           fontSize="13px"
                         >
                           Subtotal
@@ -446,9 +436,7 @@ export const Cart = () => {
                       <Box mr="auto">
                         <Typography
                           variant="subtitle2"
-                          color={
-                            appTheme.palette.mode === "dark" ? "white" : "gray"
-                          }
+                          color={appTheme === "dark" ? "white" : "gray"}
                           fontSize="13px"
                         >
                           Discount
@@ -460,9 +448,7 @@ export const Cart = () => {
                       <Box mr="auto">
                         <Typography
                           variant="subtitle1"
-                          color={
-                            appTheme.palette.mode === "dark" ? "silver" : "#000"
-                          }
+                          color={appTheme === "dark" ? "silver" : "#000"}
                         >
                           Total
                         </Typography>
@@ -488,12 +474,9 @@ export const Cart = () => {
                           width: "100%",
                           p: "10px",
                           borderRadius: "10px",
-                          color:
-                            appTheme.palette.mode === "dark" ? "#000" : "#fff",
+                          color: appTheme === "dark" ? "#000" : "#fff",
                           backgroundColor:
-                            appTheme.palette.mode === "dark"
-                              ? "#dedede"
-                              : "#080816",
+                            appTheme === "dark" ? "#dedede" : "#080816",
                         },
                       }}
                     >
@@ -511,11 +494,7 @@ export const Cart = () => {
                       <Box mb="8px">
                         <Typography
                           fontSize="15px"
-                          color={
-                            appTheme.palette.mode === "dark"
-                              ? "#F6F5F2"
-                              : "black"
-                          }
+                          color={appTheme === "dark" ? "#F6F5F2" : "black"}
                         >
                           Payment type
                         </Typography>
@@ -542,10 +521,7 @@ export const Cart = () => {
                         }
                         sx={{
                           "& .MuiFormControlLabel-label": {
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "#F0EBE3"
-                                : "black",
+                            color: appTheme === "dark" ? "#F0EBE3" : "black",
                           },
                         }}
                         label={
@@ -559,11 +535,7 @@ export const Cart = () => {
                       <Box mb="8px">
                         <Typography
                           fontSize="15px"
-                          color={
-                            appTheme.palette.mode === "dark"
-                              ? "#F6F5F2"
-                              : "black"
-                          }
+                          color={appTheme === "dark" ? "#F6F5F2" : "black"}
                         >
                           Purchase method
                         </Typography>
@@ -590,10 +562,7 @@ export const Cart = () => {
                         }
                         sx={{
                           "& .MuiFormControlLabel-label": {
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "#F0EBE3"
-                                : "black",
+                            color: appTheme === "dark" ? "#F0EBE3" : "black",
                           },
                         }}
                         label={
@@ -607,11 +576,7 @@ export const Cart = () => {
                       <Box mb="8px">
                         <Typography
                           fontSize="15px"
-                          color={
-                            appTheme.palette.mode === "dark"
-                              ? "#F6F5F2"
-                              : "black"
-                          }
+                          color={appTheme === "dark" ? "#F6F5F2" : "black"}
                         >
                           Delivery date
                         </Typography>
@@ -641,14 +606,9 @@ export const Cart = () => {
                             width: "100%",
                             p: "10px",
                             borderRadius: "10px",
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "#000"
-                                : "#fff",
+                            color: appTheme === "dark" ? "#000" : "#fff",
                             backgroundColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#dedede"
-                                : "#080816",
+                              appTheme === "dark" ? "#dedede" : "#080816",
                           },
                         }}
                         onClick={() => createOrder()}
@@ -663,9 +623,7 @@ export const Cart = () => {
           </>
         ) : (
           <Box pt="40px">
-            <Typography
-              color={appTheme.palette.mode === "dark" ? "#fff" : "#000"}
-            >
+            <Typography color={appTheme === "dark" ? "#fff" : "#000"}>
               Empty
             </Typography>
           </Box>

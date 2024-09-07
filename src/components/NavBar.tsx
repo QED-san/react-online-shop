@@ -9,7 +9,6 @@ import {
   Button,
   Drawer,
   ThemeProvider,
-  useTheme,
   CssBaseline,
   Stack,
   Avatar,
@@ -39,9 +38,10 @@ import ThemeDropDown from "./Navbar/ThemeDropDown";
 import DropDown from "./Navbar/DropDown";
 import useCartProducts from "../hooks/useCartProducts";
 import Cookies from "cookies-js";
+import Theme from "../theme/Theme";
 
 const NavBar = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const themeMode = useSelector((state: RootState) => state.Theme.mode);
   const [isDrawerOpen, setDrawer] = React.useState(false);
   const [isCartDropDownOpen, setCartDropDownOpen] = React.useState(false);
@@ -58,11 +58,10 @@ const NavBar = () => {
         backgroundImage: "url('/img/navBackgroundImage.png')",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
-        backgroundColor:
-          appTheme.palette.mode === "dark" ? "#141414" : "#fcfcfc",
+        backgroundColor: appTheme === "dark" ? "#141414" : "#fcfcfc",
         boxShadow: "none",
         borderBottom: "2px solid",
-        borderColor: appTheme.palette.mode === "dark" ? "#1f1f1f" : "#999999",
+        borderColor: appTheme === "dark" ? "#1f1f1f" : "#999999",
       }}
     >
       <Container maxWidth="xl">
@@ -90,9 +89,7 @@ const NavBar = () => {
                 >
                   <Typography
                     variant="h5"
-                    color={
-                      appTheme.palette.mode === "dark" ? "#fcfcfc" : "#2F3645"
-                    }
+                    color={appTheme === "dark" ? "#fcfcfc" : "#2F3645"}
                   >
                     M
                   </Typography>
@@ -106,9 +103,7 @@ const NavBar = () => {
                     <Typography
                       variant="h4"
                       fontWeight="bold"
-                      color={
-                        appTheme.palette.mode === "dark" ? "#fcfcfc" : "#2F3645"
-                      }
+                      color={appTheme === "dark" ? "#fcfcfc" : "#2F3645"}
                     >
                       <Link to="/">Online Shop</Link>
                     </Typography>
@@ -120,12 +115,9 @@ const NavBar = () => {
                 sx={{
                   minHeight: "45px",
                   backdropFilter:
-                    appTheme.palette.mode === "dark"
-                      ? "blur(1.6px)"
-                      : "blur(2px)",
+                    appTheme === "dark" ? "blur(1.6px)" : "blur(2px)",
                   border: 2,
-                  borderColor:
-                    appTheme.palette.mode === "dark" ? "#262626" : "#999999",
+                  borderColor: appTheme === "dark" ? "#262626" : "#999999",
                   borderRadius: 6,
                   display: { xs: "none", lg: "block" },
                   flex: 1,
@@ -136,8 +128,7 @@ const NavBar = () => {
                   justifyContent="center"
                   alignItems="center"
                   sx={{
-                    color:
-                      appTheme.palette.mode === "dark" ? "#fcfcfc" : "#2F3645",
+                    color: appTheme === "dark" ? "#fcfcfc" : "#2F3645",
                   }}
                 >
                   <ThemeProvider theme={navPagesLinksTheme}>
@@ -178,8 +169,7 @@ const NavBar = () => {
                   alignItems="center"
                   sx={{
                     height: "100%",
-                    color:
-                      appTheme.palette.mode === "dark" ? "#fcfcfc" : "#2f3645",
+                    color: appTheme === "dark" ? "#fcfcfc" : "#2f3645",
                   }}
                 >
                   {/* cart and profile pic OR auth buttons */}
@@ -206,13 +196,9 @@ const NavBar = () => {
                             width: "30%",
                             py: "5px",
                             borderColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#999999",
+                              appTheme === "dark" ? "#262626" : "#999999",
                             backgroundColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#1a1a1a"
-                                : "white",
+                              appTheme === "dark" ? "#1a1a1a" : "white",
                           }}
                         >
                           <Link to="dashboard/cart">
@@ -226,7 +212,7 @@ const NavBar = () => {
                             </Grid>
                           </Link>
                           <DropDown
-                            mode={appTheme.palette.mode}
+                            mode={appTheme!}
                             display={isCartDropDownOpen ? "block" : "none"}
                             top="33px"
                             left={
@@ -245,11 +231,7 @@ const NavBar = () => {
                             ) : (
                               <Box
                                 borderRadius="10px"
-                                bgcolor={
-                                  appTheme.palette.mode === "dark"
-                                    ? ""
-                                    : "#EEEEEE"
-                                }
+                                bgcolor={appTheme === "dark" ? "" : "#EEEEEE"}
                                 p="6px"
                               >
                                 {cartProducts?.map(
@@ -373,15 +355,7 @@ const NavBar = () => {
                           <Link to="dashboard">
                             <Avatar
                               sx={{
-                                bgcolor:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#1a1a1a"
-                                    : "",
-                                border: "1px solid",
-                                borderColor:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#262626"
-                                    : "#999999",
+                                bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
                               }}
                               alt="profile"
                               src={user.avatar}
@@ -410,13 +384,9 @@ const NavBar = () => {
                             width: "30%",
                             py: "5px",
                             borderColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#999999",
+                              appTheme === "dark" ? "#262626" : "#999999",
                             backgroundColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#1a1a1a"
-                                : "white",
+                              appTheme === "dark" ? "#1a1a1a" : "white",
                           }}
                         >
                           <Link to="/login">
@@ -439,13 +409,9 @@ const NavBar = () => {
                             px: "1px",
                             py: "5px",
                             borderColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#999999",
+                              appTheme === "dark" ? "#262626" : "#999999",
                             backgroundColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#1a1a1a"
-                                : "white",
+                              appTheme === "dark" ? "#1a1a1a" : "white",
                           }}
                         >
                           <Link to="signup">
@@ -498,17 +464,11 @@ const NavBar = () => {
                                 border: 1,
                                 borderRadius: 1.3,
                                 borderColor:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#262626"
-                                    : "#999999",
+                                  appTheme === "dark" ? "#262626" : "#999999",
                                 backgroundColor:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#1a1a1a"
-                                    : "#f0f2ff",
+                                  appTheme === "dark" ? "#1a1a1a" : "#f0f2ff",
                                 color:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#fcfcfc"
-                                    : "#2F3645",
+                                  appTheme === "dark" ? "#fcfcfc" : "#2F3645",
                                 p: "5px",
                               }}
                             >
@@ -527,7 +487,7 @@ const NavBar = () => {
                       <ThemeDropDown
                         top="65px"
                         display={selectThemeDropDownState ? "block" : "none"}
-                        mode={appTheme.palette.mode}
+                        mode={appTheme!}
                       />
                     </Grid>
                     {/* nav github link */}
@@ -541,22 +501,15 @@ const NavBar = () => {
                         borderRadius: 1.3,
                         p: "2px",
                         borderColor:
-                          appTheme.palette.mode === "dark"
-                            ? "#262626"
-                            : "#999999",
+                          appTheme === "dark" ? "#262626" : "#999999",
                         backgroundColor:
-                          appTheme.palette.mode === "dark"
-                            ? "#1a1a1a"
-                            : "white",
+                          appTheme === "dark" ? "#1a1a1a" : "white",
                       }}
                     >
                       <Link to="https://github.com/Seraaga022">
                         <GitHub
                           sx={{
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "white"
-                                : "black",
+                            color: appTheme === "dark" ? "white" : "black",
                           }}
                         />
                       </Link>
@@ -568,7 +521,7 @@ const NavBar = () => {
           </AppBar>
         </ThemeProvider>
         {/* left drawer */}
-        <ThemeProvider theme={drawerTheme(appTheme)}>
+        <ThemeProvider theme={drawerTheme(appTheme!)}>
           <Drawer
             anchor="left"
             open={isDrawerOpen}
@@ -606,10 +559,7 @@ const NavBar = () => {
                           <Link to="dashboard" onClick={() => setDrawer(false)}>
                             <Avatar
                               sx={{
-                                bgcolor:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#1a1a1a"
-                                    : "",
+                                bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
                               }}
                               alt="profile"
                               src={user.avatar}
@@ -640,13 +590,9 @@ const NavBar = () => {
                         sx={{
                           py: "1px",
                           borderColor:
-                            appTheme.palette.mode === "dark"
-                              ? "#262626"
-                              : "#999999",
+                            appTheme === "dark" ? "#262626" : "#999999",
                           backgroundColor:
-                            appTheme.palette.mode === "dark"
-                              ? "#1a1a1a"
-                              : "silver",
+                            appTheme === "dark" ? "#1a1a1a" : "silver",
                         }}
                       >
                         <Link to="/login">
@@ -667,13 +613,9 @@ const NavBar = () => {
                         sx={{
                           py: "1px",
                           borderColor:
-                            appTheme.palette.mode === "dark"
-                              ? "#262626"
-                              : "#999999",
+                            appTheme === "dark" ? "#262626" : "#999999",
                           backgroundColor:
-                            appTheme.palette.mode === "dark"
-                              ? "#1a1a1a"
-                              : "silver",
+                            appTheme === "dark" ? "#1a1a1a" : "silver",
                         }}
                       >
                         <Link to="signup">
@@ -714,21 +656,15 @@ const NavBar = () => {
                       border: 1,
                       borderRadius: 1.3,
                       p: "2px",
-                      borderColor:
-                        appTheme.palette.mode === "dark"
-                          ? "#262626"
-                          : "#999999",
+                      borderColor: appTheme === "dark" ? "#262626" : "#999999",
                       backgroundColor:
-                        appTheme.palette.mode === "dark" ? "#1a1a1a" : "silver",
+                        appTheme === "dark" ? "#1a1a1a" : "silver",
                     }}
                   >
                     <Link to="https://github.com/Seraaga022">
                       <GitHub
                         sx={{
-                          color:
-                            appTheme.palette.mode === "dark"
-                              ? "white"
-                              : "black",
+                          color: appTheme === "dark" ? "white" : "black",
                         }}
                       />
                     </Link>
@@ -767,17 +703,10 @@ const NavBar = () => {
                             border: 1,
                             borderRadius: 1.3,
                             borderColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#999999",
+                              appTheme === "dark" ? "#262626" : "#999999",
                             backgroundColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#1a1a1a"
-                                : "#f0f2ff",
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "#fcfcfc"
-                                : "#2F3645",
+                              appTheme === "dark" ? "#1a1a1a" : "#f0f2ff",
+                            color: appTheme === "dark" ? "#fcfcfc" : "#2F3645",
                             p: "2px",
                           }}
                         >
@@ -795,7 +724,7 @@ const NavBar = () => {
                   <ThemeDropDown
                     top="140px"
                     display={selectThemeDropDownState ? "block" : "none"}
-                    mode={appTheme.palette.mode}
+                    mode={appTheme!}
                   />
                 </Grid>
               </Box>

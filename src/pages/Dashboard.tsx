@@ -7,13 +7,12 @@ import {
   ThemeProvider,
   Tooltip,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state management/store";
 import React from "react";
 import ProductsButton from "../theme/Products/ProductsButton";
-import { Edit } from "@mui/icons-material";
+import { Edit, Logout } from "@mui/icons-material";
 import CustomInput from "../components/Products/ui/CustomInput";
 import { useCheckEmail, useUpdateUser, useUploadFile } from "../hooks/useAuth";
 import {
@@ -21,15 +20,24 @@ import {
   fileUploadResT,
   updateUserReqT,
 } from "../utils/types/Auth";
-import { UserT, updateUser } from "../state management/User/UserSlice";
+import {
+  UserT,
+  logOutUser,
+  updateUser,
+} from "../state management/User/UserSlice";
 import { UpdateUserReqT, UserUpdateCunstructor } from "../hooks/Cunstructor";
 import { ListAlt } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import Theme from "../theme/Theme";
 
 const Dashboard = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const user = useSelector((state: RootState) => state.User);
   const [bigImage, setBigImage] = React.useState(user.avatar);
+  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["user_access_token"]);
+  console.log(cookies, setCookie);
 
   const nameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
@@ -128,15 +136,15 @@ const Dashboard = () => {
 
   return (
     <Box
-      bgcolor={appTheme.palette.mode === "dark" ? "#141414" : "#fff"}
-      color={appTheme.palette.mode === "dark" ? "#ffef" : "#000"}
+      bgcolor={appTheme === "dark" ? "#141414" : "#fff"}
+      color={appTheme === "dark" ? "#ffef" : "#000"}
       py="40px"
     >
       <Container maxWidth="lg">
         <Box
           display="flex"
           height={{ xs: "auto", md: "400px" }}
-          maxHeight="400px"
+          minHeight="400px"
           flexDirection={{ xs: "column", md: "row" }}
         >
           <Box
@@ -152,6 +160,36 @@ const Dashboard = () => {
             >
               <Box position="relative" height="80%" width="60%">
                 <Box>
+                  <Box display="flex" justifyContent="end">
+                    <Box position="absolute" top="0" right="0">
+                      <Tooltip title="Log Out">
+                        <Button
+                          onClick={() => {
+                            removeCookie("user_access_token");
+                            dispatch(logOutUser());
+                            navigate("/products");
+                          }}
+                          sx={{
+                            "&.MuiButtonBase-root": {
+                              minWidth: "10px",
+                              width: "40px",
+                              height: "40px",
+                              borderRadius: "10px",
+                            },
+                          }}
+                        >
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            pl="1px"
+                          >
+                            <Logout sx={{ color: "red" }} />
+                          </Box>
+                        </Button>
+                      </Tooltip>
+                    </Box>
+                  </Box>
                   <Avatar
                     src={bigImage}
                     sx={{
@@ -202,9 +240,7 @@ const Dashboard = () => {
                 {/* order history section */}
                 <Box
                   display="inline"
-                  bgcolor={
-                    appTheme.palette.mode === "dark" ? "white" : "#f3f3f3"
-                  }
+                  bgcolor={appTheme === "dark" ? "white" : "#f3f3f3"}
                   pt="8px"
                   pb="10px"
                   px="8px"
@@ -231,7 +267,7 @@ const Dashboard = () => {
                   <Box>
                     <Typography
                       fontSize="17px"
-                      color={appTheme.palette.mode === "dark" ? "#fff" : "#000"}
+                      color={appTheme === "dark" ? "#fff" : "#000"}
                     >
                       Name
                     </Typography>
@@ -248,22 +284,15 @@ const Dashboard = () => {
                             pb: "55px",
                             borderRadius: "10px",
                             bgcolor:
-                              appTheme.palette.mode === "dark"
-                                ? "#141414"
-                                : "#f3f3f3",
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
                             "& .MuiInputBase-input": {
-                              color:
-                                appTheme.palette.mode === "dark"
-                                  ? "white"
-                                  : "#000",
+                              color: appTheme === "dark" ? "white" : "#000",
                             },
                             "& .MuiOutlinedInput-notchedOutline": {
                               border: "1px solid",
                               borderRadius: "10px",
                               borderColor:
-                                appTheme.palette.mode === "dark"
-                                  ? "#262626"
-                                  : "#d1d5db",
+                                appTheme === "dark" ? "#262626" : "#d1d5db",
                               mb: "1px",
                             },
                             "&:hover:not(.Mui-focused)": {
@@ -288,7 +317,7 @@ const Dashboard = () => {
                   <Box>
                     <Typography
                       fontSize="17px"
-                      color={appTheme.palette.mode === "dark" ? "#fff" : "#000"}
+                      color={appTheme === "dark" ? "#fff" : "#000"}
                     >
                       Email Address
                     </Typography>
@@ -305,22 +334,15 @@ const Dashboard = () => {
                             pb: "55px",
                             borderRadius: "10px",
                             bgcolor:
-                              appTheme.palette.mode === "dark"
-                                ? "#141414"
-                                : "#f3f3f3",
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
                             "& .MuiInputBase-input": {
-                              color:
-                                appTheme.palette.mode === "dark"
-                                  ? "white"
-                                  : "#000",
+                              color: appTheme === "dark" ? "white" : "#000",
                             },
                             "& .MuiOutlinedInput-notchedOutline": {
                               border: "1px solid",
                               borderRadius: "10px",
                               borderColor:
-                                appTheme.palette.mode === "dark"
-                                  ? "#262626"
-                                  : "#d1d5db",
+                                appTheme === "dark" ? "#262626" : "#d1d5db",
                               mb: "1px",
                             },
                             "&:hover:not(.Mui-focused)": {
@@ -345,7 +367,7 @@ const Dashboard = () => {
                   <Box>
                     <Typography
                       fontSize="17px"
-                      color={appTheme.palette.mode === "dark" ? "#fff" : "#000"}
+                      color={appTheme === "dark" ? "#fff" : "#000"}
                     >
                       Password
                     </Typography>
@@ -362,22 +384,15 @@ const Dashboard = () => {
                             pb: "55px",
                             borderRadius: "10px",
                             bgcolor:
-                              appTheme.palette.mode === "dark"
-                                ? "#141414"
-                                : "#f3f3f3",
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
                             "& .MuiInputBase-input": {
-                              color:
-                                appTheme.palette.mode === "dark"
-                                  ? "white"
-                                  : "#000",
+                              color: appTheme === "dark" ? "white" : "#000",
                             },
                             "& .MuiOutlinedInput-notchedOutline": {
                               border: "1px solid",
                               borderRadius: "10px",
                               borderColor:
-                                appTheme.palette.mode === "dark"
-                                  ? "#262626"
-                                  : "#d1d5db",
+                                appTheme === "dark" ? "#262626" : "#d1d5db",
                               mb: "1px",
                             },
                             "&:hover:not(.Mui-focused)": {

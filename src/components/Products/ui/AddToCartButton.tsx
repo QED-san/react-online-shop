@@ -1,4 +1,4 @@
-import { ThemeProvider, Button, Box, useTheme } from "@mui/material";
+import { ThemeProvider, Button, Box } from "@mui/material";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { ButtonT } from "../../../utils/types/AddToCartButton";
 import { Add, Remove } from "@mui/icons-material";
@@ -12,6 +12,7 @@ import {
   removeFromCart,
 } from "../../../state management/Cart/CartSlice";
 import { CartReducerCunstructor } from "../../../state management/Cart/Cunstructor";
+import Theme from "../../../theme/Theme";
 
 const AddToCartButton = (props: ButtonT) => {
   const cart = useSelector((state: RootState) => state.Cart);
@@ -23,7 +24,7 @@ const AddToCartButton = (props: ButtonT) => {
   }
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const appTheme = useTheme();
+  const appTheme = Theme();
 
   return (
     <ThemeProvider theme={ProductsButton}>
@@ -31,7 +32,7 @@ const AddToCartButton = (props: ButtonT) => {
         isProductInCart ? (
           <Box display="flex" gap="20px">
             <Box
-              bgcolor={appTheme.palette.mode === "dark" ? "#1a1a1a" : "#eeeeee"}
+              bgcolor={appTheme === "dark" ? "#1a1a1a" : "#eeeeee"}
               borderRadius="10px"
             >
               <Button
@@ -57,7 +58,7 @@ const AddToCartButton = (props: ButtonT) => {
               </Button>
             </Box>
             <Box
-              bgcolor={appTheme.palette.mode === "dark" ? "#1a1a1a" : "#eeeeee"}
+              bgcolor={appTheme === "dark" ? "#1a1a1a" : "#eeeeee"}
               borderRadius="10px"
             >
               <Button

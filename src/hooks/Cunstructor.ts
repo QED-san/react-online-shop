@@ -1,7 +1,5 @@
 import { getTokenReqT, updateUserReqT, userReqT } from "../utils/types/Auth";
 import { UserT } from "../state management/User/UserSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "../state management/store";
 
 export const UserRegisterCunstructor = (
   name: UserT["name"],

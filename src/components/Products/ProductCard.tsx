@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Chip, Stack, Typography } from "@mui/material";
 import {
   productCardImageT,
   productCardT,
@@ -10,9 +10,10 @@ import {
 import { Link } from "react-router-dom";
 import AddToCartButton from "./ui/AddToCartButton";
 import Cookies from "cookies-js";
+import Theme from "../../theme/Theme";
 
 const ProductCard = ({ children, product }: productCardT) => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   return (
     <Box
       key={product.title.concat(Math.random().toString())}
@@ -28,10 +29,9 @@ const ProductCard = ({ children, product }: productCardT) => {
           lg: "30%",
         },
         minHeight: "530px",
-        backgroundColor:
-          appTheme.palette.mode === "dark" ? "#141414" : "#ffffff",
+        backgroundColor: appTheme === "dark" ? "#141414" : "#ffffff",
         border: 1,
-        borderColor: appTheme.palette.mode === "dark" ? "#262626" : "#999999",
+        borderColor: appTheme === "dark" ? "#262626" : "#999999",
         borderRadius: 3,
       }}
     >
@@ -80,7 +80,7 @@ export function ProductImage({ src, id }: productCardImageT) {
 }
 
 export function ProductTitle({ title }: productCardTitleT) {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   return (
     <Box pt="20px">
       <Typography
@@ -88,7 +88,7 @@ export function ProductTitle({ title }: productCardTitleT) {
           height: { xs: "27px", lg: "25px" },
           overflow: "hidden",
           fontSize: "19px",
-          color: appTheme.palette.mode === "dark" ? "#fff" : "#000",
+          color: appTheme === "dark" ? "#fff" : "#000",
         }}
       >
         {title}
@@ -101,7 +101,7 @@ export function ProductDescription({
   description,
   id,
 }: productCardDescriptionT) {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   return (
     <Box pt="10px">
       <Typography
@@ -112,7 +112,7 @@ export function ProductDescription({
       >
         <Typography
           sx={{
-            width: { xs: "120px", sm: "110px", md: "150px", xl: "190px" },
+            width: { xs: "130px", sm: "120px", md: "160px", xl: "200px" },
             height: "20px",
             overflow: "hidden",
             fontSize: "12px",
@@ -126,7 +126,7 @@ export function ProductDescription({
             fontWeight: "semibold",
             pl: "5px",
             fontSize: "11px",
-            color: appTheme.palette.mode === "dark" ? "#fff" : "#4d4d4d",
+            color: appTheme === "dark" ? "#fff" : "#4d4d4d",
           }}
         >
           <Link to={`${id}`}>... Read More</Link>
@@ -137,16 +137,16 @@ export function ProductDescription({
 }
 
 export function ProductCategory({ category }: productCardCategoryT) {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   return (
     <Box pt="20px">
       <Chip
         label={category.name}
         sx={{
           border: "1px solid",
-          borderColor: appTheme.palette.mode === "dark" ? "#262626" : "#999999",
-          backgroundColor:
-            appTheme.palette.mode === "dark" ? "#1a1a1a" : "#e4e4e7",
+          borderColor: appTheme === "dark" ? "#262626" : "#999999",
+          backgroundColor: appTheme === "dark" ? "#1a1a1a" : "#e4e4e7",
+          color: appTheme === "dark" ? "#fff" : "#000",
           fontSize: "12px",
         }}
       ></Chip>
@@ -155,7 +155,7 @@ export function ProductCategory({ category }: productCardCategoryT) {
 }
 
 export function ProductPurchaseInfo({ price, id }: productCardPurchaseInfoT) {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const isAuthenticated = Cookies.get("user_access_token");
 
   return (
@@ -165,7 +165,7 @@ export function ProductPurchaseInfo({ price, id }: productCardPurchaseInfoT) {
           <Typography
             sx={{
               fontSize: "10px",
-              color: appTheme.palette.mode === "dark" ? "#999999" : "#4d4d4d",
+              color: appTheme === "dark" ? "#999999" : "#4d4d4d",
             }}
           >
             Price
@@ -173,7 +173,7 @@ export function ProductPurchaseInfo({ price, id }: productCardPurchaseInfoT) {
           <Typography
             sx={{
               fontSize: "18px",
-              color: appTheme.palette.mode === "dark" ? "#fff" : "#000",
+              color: appTheme === "dark" ? "#fff" : "#000",
             }}
           >
             ${price.toLocaleString()}

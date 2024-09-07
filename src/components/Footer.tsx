@@ -3,23 +3,23 @@ import {
   Container,
   ThemeProvider,
   Typography,
-  useTheme,
   CssBaseline,
   Grid,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import githubNameTheme from "../theme/Footer/GithubName";
+import Theme from "../theme/Theme";
 
 const Footer = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
 
   return (
     <Box
       pt="50px"
       sx={{
-        color: appTheme.palette.mode === "dark" ? "#fff" : "#000",
-        backgroundColor: appTheme.palette.mode === "dark" ? "#141414" : "#fff",
+        color: appTheme === "dark" ? "#fff" : "#000",
+        backgroundColor: appTheme === "dark" ? "#141414" : "#fff",
       }}
     >
       <Container maxWidth="lg">

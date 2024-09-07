@@ -1,9 +1,10 @@
 import { forwardRef } from "react";
-import { styled, TextField, useTheme, TextFieldProps } from "@mui/material";
+import { styled, TextField, TextFieldProps } from "@mui/material";
+import Theme from "../../../theme/Theme";
 
 const CustomTextInput = forwardRef<HTMLInputElement, TextFieldProps>(
   (props, ref) => {
-    const appTheme = useTheme();
+    const appTheme = Theme();
     const StyledTextField = styled(TextField)({
       width: "100%",
       height: "50px",
@@ -28,7 +29,7 @@ const CustomTextInput = forwardRef<HTMLInputElement, TextFieldProps>(
         },
       },
       "& .MuiInputBase-input::placeholder": {
-        color: appTheme.palette.mode === "light" ? "gray" : "silver",
+        color: appTheme === "dark" ? "gray" : "gray",
       },
     });
 

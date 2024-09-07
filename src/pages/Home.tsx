@@ -1,11 +1,13 @@
-import { Box, Container, useTheme } from "@mui/material";
+import { Box, Container } from "@mui/material";
+import Theme from "../theme/Theme";
 
 const Home = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
+
   return (
     <Box
-      bgcolor={appTheme.palette.mode === "dark" ? "#141414" : "#fff"}
-      color={appTheme.palette.mode === "dark" ? "#ffef" : "#000"}
+      bgcolor={appTheme === "dark" ? "#141414" : "#fff"}
+      color={appTheme === "dark" ? "#ffef" : "#000"}
       pt="20px"
     >
       <Container maxWidth="lg">

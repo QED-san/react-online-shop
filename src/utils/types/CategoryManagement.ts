@@ -1,0 +1,11 @@
+import { productCategoryT } from "./Product";
+
+export type CreateCategoryReqT = Omit<productCategoryT, "id">;
+
+export type DeleteCategoryReqT = number;
+export type DeleteCategoryResT = boolean;
+export type UpdateCategoryObjT = Partial<productCategoryT>;
+export type UpdateCategoryReqT = {
+  id: DeleteCategoryReqT;
+  updatedCategory: UpdateCategoryObjT;
+};

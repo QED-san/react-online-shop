@@ -1,21 +1,20 @@
-import { createTheme, Theme } from "@mui/material";
+import { createTheme, useMediaQuery } from "@mui/material";
 
-const Drawer = (theme: Theme) => {
+const Drawer = (theme: string) => {
+  const matches = useMediaQuery("(max-width: 1200px)");
   return createTheme({
     components: {
       MuiDrawer: {
         styleOverrides: {
           modal: {
-            [theme.breakpoints.up("lg")]: {
-              display: "none",
-            },
+            display: matches ? "block" : "none",
             scrollbarWidth: "none",
             scrollBehavior: "unset",
           },
           paperAnchorLeft: {
             backgroundColor: "transparent",
             backdropFilter: "blur(10px)",
-            color: theme.palette.mode === "dark" ? "#fcfcfc" : "#2F3645",
+            color: theme === "dark" ? "#fcfcfc" : "#2F3645",
             minWidth: "150px",
           },
         },

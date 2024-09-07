@@ -33,6 +33,7 @@ const ThemeDropDown = ({
       bgcolor={mode === "dark" ? "#1a1a1a" : "#fff"}
       top={top}
       p="10px"
+      zIndex="999999999"
     >
       <Stack>
         <ThemeProvider theme={menuButtonTheme}>

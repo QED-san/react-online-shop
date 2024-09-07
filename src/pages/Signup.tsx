@@ -5,7 +5,6 @@ import {
   Stack,
   ThemeProvider,
   Typography,
-  useTheme,
 } from "@mui/material";
 import {
   useCheckEmail,
@@ -20,9 +19,10 @@ import Loader from "../components/Loaders/MainLoader";
 import { Link } from "react-router-dom";
 import { UserT } from "../state management/User/UserSlice";
 import { UserRegisterCunstructor } from "../hooks/Cunstructor";
+import Theme from "../theme/Theme";
 
 export const Signup = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const checkEmail = useCheckEmail(setTheEmailVerificationRes);
   const uploadImage = useUploadFile(setImageUploadRes);
   const registerUser = useRegisterUser(RegisterUser);
@@ -76,7 +76,8 @@ export const Signup = () => {
                 nameInputRef.current.value,
                 emailInputRef.current.value,
                 passwordInputRef.current.value,
-                authReqRes.imgUploadRes
+                authReqRes.imgUploadRes,
+                "admin"
               )
             );
         } else console.log("password shoud be more than 4 character");
@@ -95,7 +96,7 @@ export const Signup = () => {
 
   return (
     <Box
-      bgcolor={appTheme.palette.mode === "dark" ? "#141414" : "#fff"}
+      bgcolor={appTheme === "dark" ? "#141414" : "#fff"}
       pt={{ xs: "50px", lg: "80px", xl: "110px" }}
     >
       <Container
@@ -108,9 +109,9 @@ export const Signup = () => {
       >
         <Box
           border="5px solid"
-          borderColor={appTheme.palette.mode === "dark" ? "#262626" : "#f3f3f3"}
+          borderColor={appTheme === "dark" ? "#262626" : "#f3f3f3"}
           borderRadius="10px"
-          bgcolor={appTheme.palette.mode === "dark" ? "#1a1a1a" : "#fcfcfc"}
+          bgcolor={appTheme === "dark" ? "#1a1a1a" : "#fcfcfc"}
         >
           <Container maxWidth="lg">
             <Stack spacing={2} p="10px" display="flex" justifyContent="center">
@@ -142,9 +143,7 @@ export const Signup = () => {
                     <Box>
                       <Typography
                         fontSize="17px"
-                        color={
-                          appTheme.palette.mode === "dark" ? "#fff" : "#000"
-                        }
+                        color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Full Name
                       </Typography>
@@ -157,23 +156,15 @@ export const Signup = () => {
                         sx={{
                           pb: "55px",
                           borderRadius: "10px",
-                          bgcolor:
-                            appTheme.palette.mode === "dark"
-                              ? "#141414"
-                              : "#f3f3f3",
+                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
                           "& .MuiInputBase-input": {
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "white"
-                                : "#000",
+                            color: appTheme === "dark" ? "white" : "#000",
                           },
                           "& .MuiOutlinedInput-notchedOutline": {
                             border: "1px solid",
                             borderRadius: "10px",
                             borderColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#d1d5db",
+                              appTheme === "dark" ? "#262626" : "#d1d5db",
                             mb: "1px",
                           },
                           "&:hover:not(.Mui-focused)": {
@@ -196,9 +187,7 @@ export const Signup = () => {
                     <Box>
                       <Typography
                         fontSize="17px"
-                        color={
-                          appTheme.palette.mode === "dark" ? "#fff" : "#000"
-                        }
+                        color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Password
                       </Typography>
@@ -211,23 +200,15 @@ export const Signup = () => {
                         sx={{
                           pb: "55px",
                           borderRadius: "10px",
-                          bgcolor:
-                            appTheme.palette.mode === "dark"
-                              ? "#141414"
-                              : "#f3f3f3",
+                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
                           "& .MuiInputBase-input": {
-                            color:
-                              appTheme.palette.mode === "dark"
-                                ? "white"
-                                : "#000",
+                            color: appTheme === "dark" ? "white" : "#000",
                           },
                           "& .MuiOutlinedInput-notchedOutline": {
                             border: "1px solid",
                             borderRadius: "10px",
                             borderColor:
-                              appTheme.palette.mode === "dark"
-                                ? "#262626"
-                                : "#d1d5db",
+                              appTheme === "dark" ? "#262626" : "#d1d5db",
                             mb: "1px",
                           },
                           "&:hover:not(.Mui-focused)": {
@@ -266,9 +247,7 @@ export const Signup = () => {
                     <Box>
                       <Typography
                         fontSize="17px"
-                        color={
-                          appTheme.palette.mode === "dark" ? "#fff" : "#000"
-                        }
+                        color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Email Address
                       </Typography>
@@ -280,13 +259,8 @@ export const Signup = () => {
                           border: "1px solid",
                           borderRadius: "10px",
                           borderColor:
-                            appTheme.palette.mode === "dark"
-                              ? "#262626"
-                              : "#d1d5db",
-                          bgcolor:
-                            appTheme.palette.mode === "dark"
-                              ? "#141414"
-                              : "#f3f3f3",
+                            appTheme === "dark" ? "#262626" : "#d1d5db",
+                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
                           "&.MuiBox-root:hover": {
                             borderColor: "#703bf7",
                           },
@@ -301,14 +275,9 @@ export const Signup = () => {
                               pb: "55px",
                               borderRadius: "10px",
                               bgcolor:
-                                appTheme.palette.mode === "dark"
-                                  ? "#141414"
-                                  : "#f3f3f3",
+                                appTheme === "dark" ? "#141414" : "#f3f3f3",
                               "& .MuiInputBase-input": {
-                                color:
-                                  appTheme.palette.mode === "dark"
-                                    ? "white"
-                                    : "#000",
+                                color: appTheme === "dark" ? "white" : "#000",
                               },
                               "& .MuiOutlinedInput-notchedOutline": {
                                 borderRadius: "10px",
@@ -357,9 +326,7 @@ export const Signup = () => {
                     <Box>
                       <Typography
                         fontSize="17px"
-                        color={
-                          appTheme.palette.mode === "dark" ? "#fff" : "#000"
-                        }
+                        color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Avatar
                       </Typography>
@@ -371,13 +338,8 @@ export const Signup = () => {
                           border: "1px solid",
                           borderRadius: "10px",
                           borderColor:
-                            appTheme.palette.mode === "dark"
-                              ? "#262626"
-                              : "#d1d5db",
-                          bgcolor:
-                            appTheme.palette.mode === "dark"
-                              ? "#141414"
-                              : "#f3f3f3",
+                            appTheme === "dark" ? "#262626" : "#d1d5db",
+                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
                           "&.MuiBox-root:hover": {
                             borderColor: "#703bf7",
                           },
@@ -392,14 +354,9 @@ export const Signup = () => {
                               pb: "55px",
                               borderRadius: "10px",
                               bgcolor:
-                                appTheme.palette.mode === "dark"
-                                  ? "#141414"
-                                  : "#f3f3f3",
+                                appTheme === "dark" ? "#141414" : "#f3f3f3",
                               "& .MuiInputBase-input": {
-                                color:
-                                  appTheme.palette.mode === "dark"
-                                    ? "white"
-                                    : "#000",
+                                color: appTheme === "dark" ? "white" : "#000",
                               },
                               "& .MuiOutlinedInput-notchedOutline": {
                                 borderRadius: "10px",

@@ -9,7 +9,7 @@ import {
   FormControlLabel,
   Input,
 } from "@mui/material";
-import { ThemeProvider, useTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import {
   Search,
   GridView,
@@ -26,9 +26,10 @@ import productsSearchBar from ".././theme/Products/ProductsSearchBar";
 import CustomTextInput from "../components/Products/ui/CustomInput";
 import { productsT } from "../utils/types/Product";
 import Loader from "../components/Loaders/MainLoader";
+import Theme from "../theme/Theme";
 
 const Products = () => {
-  const appTheme = useTheme();
+  const appTheme = Theme();
   const {
     data: products,
     error: productsError,
@@ -133,9 +134,8 @@ const Products = () => {
       <Box
         sx={{
           pt: "20px",
-          color: appTheme.palette.mode === "dark" ? "#fff" : "#000000",
-          backgroundColor:
-            appTheme.palette.mode === "dark" ? "#141414" : "#fff",
+          color: appTheme === "dark" ? "#fff" : "#000000",
+          backgroundColor: appTheme === "dark" ? "#141414" : "#fff",
         }}
       >
         <Container
@@ -150,7 +150,7 @@ const Products = () => {
           <Box minHeight="85px" mb={filterPriceByRange ? "0" : "20px"}>
             <Box minHeight="85px">
               {/* title search section */}
-              <Grid minHeight="85px" container alignItems="center">
+              <Box minHeight="85px" display="flex" alignItems="center">
                 <Box
                   sx={{
                     display: "flex",
@@ -158,11 +158,10 @@ const Products = () => {
                     justifyContent: "end",
                     width: { xs: "100%", sm: "50%", md: "43%", lg: "33%" },
                     border: `1px solid ${
-                      appTheme.palette.mode === "dark" ? "#262626" : "#d1d5db"
+                      appTheme === "dark" ? "#262626" : "#d1d5db"
                     }`,
                     borderRadius: "8px",
-                    bgcolor:
-                      appTheme.palette.mode === "dark" ? "#141414" : "#f9fafb",
+                    bgcolor: appTheme === "dark" ? "#141414" : "#f9fafb",
                   }}
                 >
                   {/* seach and clear filter button */}
@@ -170,6 +169,8 @@ const Products = () => {
                     sx={{
                       flex: 0.05,
                       display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                       padding: "10px",
                       mr: "auto",
                     }}
@@ -236,7 +237,7 @@ const Products = () => {
                     </ThemeProvider>
                   </Box>
                 </Box>
-              </Grid>
+              </Box>
               {/* price search section */}
               <Grid>
                 {/* price */}
@@ -246,7 +247,7 @@ const Products = () => {
                       <FormControlLabel
                         control={
                           <Checkbox
-                            icon={<Expand />}
+                            icon={<Expand sx={{ color: "silver" }} />}
                             checkedIcon={<ExpandRounded />}
                             onChange={(e) =>
                               setFilterPriceByRange(e.target.checked)
@@ -265,6 +266,9 @@ const Products = () => {
                           ".MuiInputBase-input": {
                             height: "20px",
                             width: "60px",
+                          },
+                          "& .MuiInputBase-input::placeholder": {
+                            color: appTheme === "light" ? "#000" : "silver",
                           },
                         }}
                       />
@@ -297,6 +301,9 @@ const Products = () => {
                           height: "20px",
                           width: { xs: "50px", sm: "55px" },
                         },
+                        "& .MuiInputBase-input::placeholder": {
+                          color: appTheme === "light" ? "#000" : "silver",
+                        },
                       }}
                       onChange={(e) =>
                         setMinPriceRangeValue(parseInt(e.target.value))
@@ -311,6 +318,9 @@ const Products = () => {
                         ".MuiInputBase-input": {
                           height: "20px",
                           width: { xs: "50px", sm: "55px" },
+                        },
+                        "& .MuiInputBase-input::placeholder": {
+                          color: appTheme === "light" ? "#000" : "silver",
                         },
                       }}
                       onChange={(e) =>
@@ -336,24 +346,22 @@ const Products = () => {
             </Box>
           </Box>
           {/* product and categories section */}
-          <Box minHeight="800px">
+          <Box>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" },
+                maxWidth: "100vw",
               }}
             >
               {/* products section */}
-              <Grid
+              <Box
                 pt="11px"
-                container
-                direction="row"
+                display="flex"
+                flexWrap="wrap"
+                flexDirection="row"
                 gap="30px"
-                alignItems="center"
-                wrap="wrap"
-                gridTemplateColumns={{
-                  lg: "repeat(3, 200px)",
-                }}
+                maxWidth={{ xs: "auto", md: "75%", lg: "83%" }}
                 sx={{ flex: 1, order: { xs: 2, md: 1 } }}
               >
                 {!productsError && !products && productsIsLoading && (
@@ -411,7 +419,7 @@ const Products = () => {
                         />
                       </ProductCard>
                     ))}
-              </Grid>
+              </Box>
               {/* categories section */}
               <Grid
                 pt="10px"
@@ -424,10 +432,9 @@ const Products = () => {
                   pt="20px"
                   sx={{
                     backgroundColor:
-                      appTheme.palette.mode === "dark" ? "#141414" : "#ffffff",
+                      appTheme === "dark" ? "#141414" : "#ffffff",
                     border: 1,
-                    borderColor:
-                      appTheme.palette.mode === "dark" ? "#262626" : "#999999",
+                    borderColor: appTheme === "dark" ? "#262626" : "#999999",
                     borderRadius: 3,
                   }}
                 >
@@ -457,10 +464,7 @@ const Products = () => {
                             textTransform: "none",
                             "&.MuiButtonBase-root": {
                               width: "100%",
-                              color:
-                                appTheme.palette.mode === "dark"
-                                  ? "#fff"
-                                  : "#000",
+                              color: appTheme === "dark" ? "#fff" : "#000",
                               justifyContent: "start",
                               fontSize: "16px",
                             },
@@ -492,10 +496,7 @@ const Products = () => {
                               textTransform: "none",
                               "&.MuiButtonBase-root": {
                                 width: "100%",
-                                color:
-                                  appTheme.palette.mode === "dark"
-                                    ? "#fff"
-                                    : "#000",
+                                color: appTheme === "dark" ? "#fff" : "#000",
                                 justifyContent: "start",
                                 fontSize: "16px",
                               },
