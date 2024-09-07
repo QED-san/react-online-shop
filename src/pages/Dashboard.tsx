@@ -5,6 +5,7 @@ import {
   Container,
   Stack,
   ThemeProvider,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -21,7 +22,9 @@ import {
   updateUserReqT,
 } from "../utils/types/Auth";
 import { UserT, updateUser } from "../state management/User/UserSlice";
-import { UserUpdateCunstructor } from "../hooks/Cunstructor";
+import { UpdateUserReqT, UserUpdateCunstructor } from "../hooks/Cunstructor";
+import { ListAlt } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const appTheme = useTheme();
@@ -34,18 +37,21 @@ const Dashboard = () => {
   const imageRef = React.useRef<HTMLInputElement>(null);
   const checkEmail = useCheckEmail(setTheEmailVerificationRes);
   const updateUserReq = useUpdateUser<Partial<updateUserReqT>>(updateUserState);
-  const uploadFile = useUploadFile(requestToUpdateUser);
-  // const [authReqsRes, setAuthReqsRes] = React.useState({
-  //   // checkPassword: "",
-  //   checkUpdate: "",
-  // });
+  const uploadFile = useUploadFile(setTheAvatarUploadRes);
+  const [tempEmail, setTempEmail] = React.useState<string>("");
+  const [authReqsRes, setAuthReqsRes] = React.useState({
+    emailChecked: false,
+    avatarChecked: false,
+  });
   const [inputsVal, setInputsVal] = React.useState({
     name: "",
     email: "",
     password: "",
+    avatar: "",
   });
   const [inputFile, setInputFile] = React.useState<Blob>(new Blob());
   const dispatch = useDispatch();
+  const [avatarChanged, setAvatarChanged] = React.useState(false);
 
   const handleSubmit = () => {
     if (nameRef.current && emailRef.current && passwordRef.current)
@@ -57,9 +63,9 @@ const Dashboard = () => {
         setInputsVal({
           ...inputsVal,
           name: nameRef.current.value,
-          email: emailRef.current.value,
           password: passwordRef.current.value,
         });
+        setTempEmail(emailRef.current.value);
         checkEmail.mutateAsync(emailRef.current.value);
       } else console.log("name or email or password should not be empty");
   };
@@ -69,26 +75,56 @@ const Dashboard = () => {
 
   function setTheEmailVerificationRes(res: checkEmailResT) {
     // again the is available but of the api
-    if (!res.isAvailable) uploadFile.mutateAsync(inputFile);
+    if (!res.isAvailable) {
+      setInputsVal({ ...inputsVal, email: tempEmail });
+      setTempEmail("");
+      setAuthReqsRes({ ...authReqsRes, emailChecked: true });
+    }
+    if (avatarChanged) {
+      uploadFile.mutateAsync(inputFile);
+      setAvatarChanged(false);
+    }
   }
-  function requestToUpdateUser(res: fileUploadResT) {
+  function setTheAvatarUploadRes(res: fileUploadResT) {
     console.log("image uploaded");
-    setBigImage(res.location);
-    const userObj = UserUpdateCunstructor(
-      inputsVal.name,
-      inputsVal.email,
-      inputsVal.password,
-      res.location,
-      user
-    );
-    if (res && Object.values(userObj).length > 0) {
-      updateUserReq.mutateAsync(userObj);
+    if (res.location) {
+      setBigImage(res.location);
+      setInputsVal({ ...inputsVal, avatar: res.location });
+      setAuthReqsRes({ ...authReqsRes, avatarChecked: true });
     }
   }
   function updateUserState(res: UserT) {
     dispatch(updateUser(res));
     console.log("user updated");
   }
+
+  React.useEffect(() => {
+    function reqToUpdateUser() {
+      const initialUser: UpdateUserReqT = {
+        name: inputsVal.name,
+        password: inputsVal.password,
+        email: "",
+        avatar: "",
+        userState: user,
+      };
+      if (authReqsRes.avatarChecked) initialUser.avatar = inputsVal.avatar;
+      if (authReqsRes.emailChecked) initialUser.email = inputsVal.email;
+      const userObj = UserUpdateCunstructor(initialUser);
+      // console.log(userObj);
+      if (Object.values(userObj).length > 0) {
+        updateUserReq.mutateAsync(userObj);
+      }
+    }
+
+    reqToUpdateUser();
+  }, [
+    inputsVal.name,
+    inputsVal.password,
+    inputsVal.email,
+    inputsVal.avatar,
+    authReqsRes.avatarChecked,
+    authReqsRes.emailChecked,
+  ]);
 
   return (
     <Box
@@ -100,6 +136,7 @@ const Dashboard = () => {
         <Box
           display="flex"
           height={{ xs: "auto", md: "400px" }}
+          maxHeight="400px"
           flexDirection={{ xs: "column", md: "row" }}
         >
           <Box
@@ -120,10 +157,12 @@ const Dashboard = () => {
                     sx={{
                       width: "100%",
                       height: "100%",
+                      maxHeight: "340px",
                     }}
                     alt=""
                   />
                 </Box>
+                {/* edit button */}
                 <Box position="absolute" bottom="0" right="0" color="red">
                   <Box bgcolor="#703bf7" borderRadius="10px">
                     <ThemeProvider theme={ProductsButton}>
@@ -148,14 +187,34 @@ const Dashboard = () => {
                         <CustomInput
                           type="file"
                           ref={imageRef}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setInputFile(e.target.files![0])
-                          }
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setAvatarChanged(true);
+                            setInputFile(e.target.files![0]);
+                          }}
                           sx={{ display: "none" }}
                         ></CustomInput>
                       </Button>
                     </ThemeProvider>
                   </Box>
+                </Box>
+                {/* order history section */}
+                <Box
+                  display="inline"
+                  bgcolor={
+                    appTheme.palette.mode === "dark" ? "white" : "#f3f3f3"
+                  }
+                  pt="8px"
+                  pb="10px"
+                  px="8px"
+                  borderRadius="10px"
+                >
+                  <Tooltip title="Order History">
+                    <Link to="orders">
+                      <ListAlt sx={{ color: "#703bf7" }} />
+                    </Link>
+                  </Tooltip>
                 </Box>
               </Box>
             </Box>

@@ -69,7 +69,7 @@ export const Login = () => {
   function setUserState(res: UserT) {
     if (Cookies.get("user_access_token")) {
       dispatch(authenticateUser(res));
-      setTimeout(() => navigate("/"), 1000);
+      setTimeout(() => navigate("/products"), 1000);
     }
   }
 

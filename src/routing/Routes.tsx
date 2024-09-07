@@ -17,6 +17,7 @@ const routes = createBrowserRouter([
         children: [
           { path: "dashboard", element: <Pages.Dashboard /> },
           { path: "dashboard/cart", element: <Pages.Cart /> },
+          { path: "dashboard/orders", element: <Pages.Orders /> },
         ],
       },
     ],

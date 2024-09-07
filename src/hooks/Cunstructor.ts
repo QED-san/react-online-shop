@@ -29,18 +29,16 @@ export const GetTokensCunstructor = (
   };
 };
 
-export const UserUpdateCunstructor = (
-  name: UserT["name"],
-  email: UserT["email"],
-  password: UserT["password"],
-  avatar: UserT["avatar"],
-  userState: UserT
-) => {
+export type UpdateUserReqT = updateUserReqT & { userState: UserT };
+
+export const UserUpdateCunstructor = (props: UpdateUserReqT) => {
   const output: Partial<updateUserReqT> = {};
-  if (name.length > 0 && userState.name !== name) output.name = name;
-  if (email.length > 0 && userState.email !== email) output.email = email;
-  if (password.length >= 4 && userState.password !== password)
-    output.password = password;
-  if (avatar.length > 0 && userState.avatar !== avatar) output.avatar = avatar;
+  if (props.name.length > 0 && props.userState.name !== props.name)
+    output.name = props.name;
+  if (props.email.length > 0 && props.userState.email !== props.email)
+    output.email = props.email;
+  if (props.password.length >= 4 && props.userState.password !== props.password)
+    output.password = props.password;
+  if (props.avatar.length > 0) output.avatar = props.avatar;
   return output;
 };

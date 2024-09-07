@@ -75,7 +75,7 @@ export const Cart = () => {
 
   return (
     <Box
-      minHeight="500px"
+      minHeight="550px"
       bgcolor={appTheme.palette.mode === "dark" ? "#141414" : "#fff"}
       pt="30px"
     >
