@@ -522,11 +522,12 @@ const NavBar = () => {
           </AppBar>
         </ThemeProvider>
         {/* left drawer */}
-        <ThemeProvider theme={drawerTheme(appTheme!)}>
+        {/* <ThemeProvider theme={drawerTheme}> */}
           <Drawer
             anchor="left"
             open={isDrawerOpen}
             onClose={() => setDrawer(!isDrawerOpen)}
+            color={appTheme === "dark" ? "#fcfcfc" : "#2F3645"}
           >
             <Box sx={{ width: "100%", height: "100px", pt: "20px" }}>
               {/* cart and profile pic OR auth buttons */}
@@ -764,7 +765,7 @@ const NavBar = () => {
               </Box>
             </Box>
           </Drawer>
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </Container>
     </Box>
   );

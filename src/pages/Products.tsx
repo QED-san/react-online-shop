@@ -23,7 +23,7 @@ import useCategories from "../hooks/useCategories";
 import ProductCard from "../components/Products/ProductCard";
 import productsButton from ".././theme/Products/ProductsButton";
 import productsSearchBar from ".././theme/Products/ProductsSearchBar";
-import CustomInput from "../components/Products/ui/CustomInput";
+import SearchInput from "../components/Products/ui/SearchInput";
 import { productsT } from "../utils/types/Product";
 import Loader from "../components/Loaders/MainLoader";
 import Theme from "../theme/Theme";
@@ -225,14 +225,9 @@ const Products = () => {
                   {/* search input */}
                   <Box sx={{ flex: 1 }}>
                     <ThemeProvider theme={productsSearchBar}>
-                      <CustomInput
+                      <SearchInput
                         placeholder="Search ..."
                         ref={searchInputRef}
-                        sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            border: "none",
-                          },
-                        }}
                       />
                     </ThemeProvider>
                   </Box>

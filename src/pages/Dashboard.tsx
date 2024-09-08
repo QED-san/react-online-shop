@@ -280,34 +280,6 @@ const Dashboard = () => {
                           type="text"
                           required
                           defaultValue={user.name}
-                          sx={{
-                            pb: "55px",
-                            borderRadius: "10px",
-                            bgcolor:
-                              appTheme === "dark" ? "#141414" : "#f3f3f3",
-                            "& .MuiInputBase-input": {
-                              color: appTheme === "dark" ? "white" : "#000",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              border: "1px solid",
-                              borderRadius: "10px",
-                              borderColor:
-                                appTheme === "dark" ? "#262626" : "#d1d5db",
-                              mb: "1px",
-                            },
-                            "&:hover:not(.Mui-focused)": {
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "1px solid #703bf7",
-                                borderRadius: "10px",
-                              },
-                            },
-                            "& .Mui-focused": {
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "1px solid #703bf7",
-                                borderRadius: "10px",
-                              },
-                            },
-                          }}
                         />
                       </Box>
                     </Box>
@@ -330,34 +302,6 @@ const Dashboard = () => {
                           type="email"
                           required
                           defaultValue={user.email}
-                          sx={{
-                            pb: "55px",
-                            borderRadius: "10px",
-                            bgcolor:
-                              appTheme === "dark" ? "#141414" : "#f3f3f3",
-                            "& .MuiInputBase-input": {
-                              color: appTheme === "dark" ? "white" : "#000",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              border: "1px solid",
-                              borderRadius: "10px",
-                              borderColor:
-                                appTheme === "dark" ? "#262626" : "#d1d5db",
-                              mb: "1px",
-                            },
-                            "&:hover:not(.Mui-focused)": {
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "1px solid #703bf7",
-                                borderRadius: "10px",
-                              },
-                            },
-                            "& .Mui-focused": {
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "1px solid #703bf7",
-                                borderRadius: "10px",
-                              },
-                            },
-                          }}
                         />
                       </Box>
                     </Box>
@@ -380,34 +324,6 @@ const Dashboard = () => {
                           type="text"
                           required
                           defaultValue={user.password}
-                          sx={{
-                            pb: "55px",
-                            borderRadius: "10px",
-                            bgcolor:
-                              appTheme === "dark" ? "#141414" : "#f3f3f3",
-                            "& .MuiInputBase-input": {
-                              color: appTheme === "dark" ? "white" : "#000",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              border: "1px solid",
-                              borderRadius: "10px",
-                              borderColor:
-                                appTheme === "dark" ? "#262626" : "#d1d5db",
-                              mb: "1px",
-                            },
-                            "&:hover:not(.Mui-focused)": {
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "1px solid #703bf7",
-                                borderRadius: "10px",
-                              },
-                            },
-                            "& .Mui-focused": {
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "1px solid #703bf7",
-                                borderRadius: "10px",
-                              },
-                            },
-                          }}
                         />
                       </Box>
                     </Box>
