@@ -26,9 +26,18 @@ export type UpdateProductReqT = {
   updatedProduct: Partial<CreateProductReqT>;
 };
 
+export interface DeleteProductInputT {
+  id: number;
+}
+
 export interface CreateProductInputsT {
   title: string;
   price: number;
   description: string;
   image: Blob;
+  categoryId: number | null;
 }
+
+export interface UpdateProductInputsT
+  extends CreateProductInputsT,
+    DeleteProductInputT {}

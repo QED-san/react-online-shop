@@ -26,6 +26,7 @@ const CreateProduct = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<CreateProductInputsT>();
   const onSubmit: SubmitHandler<CreateProductInputsT> = (data) =>
     console.log(data);
@@ -274,8 +275,14 @@ const CreateProduct = () => {
                         <Chip
                           key={category.name.concat(Math.random().toString())}
                           label={category.name}
-                          onClick={() => setSelectedCategory(category.id)}
-                          onDelete={() => setSelectedCategory(0)}
+                          onClick={() => {
+                            setSelectedCategory(category.id);
+                            setValue("categoryId", category.id);
+                          }}
+                          onDelete={() => {
+                            setSelectedCategory(0);
+                            setValue("categoryId", null);
+                          }}
                           sx={{
                             border: "1px solid",
                             borderColor:
@@ -307,7 +314,6 @@ const CreateProduct = () => {
                       <Box>
                         <ThemeProvider theme={ProductsButton}>
                           <Button
-                            // onClick={handleSubmit}
                             type="submit"
                             variant="contained"
                             color="primary"
@@ -322,7 +328,7 @@ const CreateProduct = () => {
                               textTransform: "none",
                             }}
                           >
-                            <Box>Submit</Box>
+                            <Box>Create</Box>
                           </Button>
                         </ThemeProvider>
                       </Box>
