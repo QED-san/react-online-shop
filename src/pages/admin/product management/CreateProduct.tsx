@@ -28,8 +28,11 @@ const CreateProduct = () => {
     formState: { errors },
     setValue,
   } = useForm<CreateProductInputsT>();
-  const onSubmit: SubmitHandler<CreateProductInputsT> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<CreateProductInputsT> = (data) => {
+    if (data.categoryId) {
+      console.log(data);
+    }
+  };
 
   return (
     <Box

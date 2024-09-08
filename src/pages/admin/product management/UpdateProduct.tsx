@@ -5,12 +5,12 @@ import {
   Container,
   Input,
   Stack,
+  TextField,
   ThemeProvider,
   Typography,
 } from "@mui/material";
 import Theme from "../../../theme/Theme";
 import React from "react";
-import CustomInput from "../../../components/Products/ui/CustomInput";
 import useCategories from "../../../hooks/useCategories";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -26,8 +26,11 @@ const UpdateProduct = () => {
     formState: { errors },
     setValue,
   } = useForm<UpdateProductInputsT>();
-  const onSubmit: SubmitHandler<UpdateProductInputsT> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<UpdateProductInputsT> = (data) => {
+    if (data.categoryId) {
+      console.log(data);
+    }
+  };
 
   return (
     <Box
@@ -65,9 +68,37 @@ const UpdateProduct = () => {
                     <Box>
                       <Box>
                         <Box>
-                          <CustomInput
+                          <TextField
                             {...register("id", { required: true })}
                             type="number"
+                            sx={{
+                              width: "100%",
+                              borderRadius: "10px",
+                              bgcolor:
+                                appTheme === "dark" ? "#141414" : "#f3f3f3",
+                              "& .MuiInputBase-input": {
+                                color: appTheme === "dark" ? "white" : "#000",
+                              },
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid",
+                                borderRadius: "10px",
+                                borderColor:
+                                  appTheme === "dark" ? "#262626" : "#d1d5db",
+                                mb: "1px",
+                              },
+                              "&:hover:not(.Mui-focused)": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                              "& .Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                            }}
                           />
                         </Box>
                       </Box>
@@ -96,9 +127,37 @@ const UpdateProduct = () => {
                     <Box>
                       <Box>
                         <Box>
-                          <CustomInput
+                          <TextField
                             {...register("title", { required: true })}
                             type="text"
+                            sx={{
+                              width: "100%",
+                              borderRadius: "10px",
+                              bgcolor:
+                                appTheme === "dark" ? "#141414" : "#f3f3f3",
+                              "& .MuiInputBase-input": {
+                                color: appTheme === "dark" ? "white" : "#000",
+                              },
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid",
+                                borderRadius: "10px",
+                                borderColor:
+                                  appTheme === "dark" ? "#262626" : "#d1d5db",
+                                mb: "1px",
+                              },
+                              "&:hover:not(.Mui-focused)": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                              "& .Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                            }}
                           />
                         </Box>
                       </Box>
@@ -127,9 +186,37 @@ const UpdateProduct = () => {
                     <Box>
                       <Box>
                         <Box>
-                          <CustomInput
+                          <TextField
                             {...register("price", { required: true })}
                             type="number"
+                            sx={{
+                              width: "100%",
+                              borderRadius: "10px",
+                              bgcolor:
+                                appTheme === "dark" ? "#141414" : "#f3f3f3",
+                              "& .MuiInputBase-input": {
+                                color: appTheme === "dark" ? "white" : "#000",
+                              },
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid",
+                                borderRadius: "10px",
+                                borderColor:
+                                  appTheme === "dark" ? "#262626" : "#d1d5db",
+                                mb: "1px",
+                              },
+                              "&:hover:not(.Mui-focused)": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                              "& .Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                            }}
                           />
                         </Box>
                       </Box>
@@ -158,9 +245,37 @@ const UpdateProduct = () => {
                     <Box>
                       <Box>
                         <Box>
-                          <CustomInput
+                          <TextField
                             {...register("description", { required: true })}
                             type="text"
+                            sx={{
+                              width: "100%",
+                              borderRadius: "10px",
+                              bgcolor:
+                                appTheme === "dark" ? "#141414" : "#f3f3f3",
+                              "& .MuiInputBase-input": {
+                                color: appTheme === "dark" ? "white" : "#000",
+                              },
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid",
+                                borderRadius: "10px",
+                                borderColor:
+                                  appTheme === "dark" ? "#262626" : "#d1d5db",
+                                mb: "1px",
+                              },
+                              "&:hover:not(.Mui-focused)": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                              "& .Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid #703bf7",
+                                  borderRadius: "10px",
+                                },
+                              },
+                            }}
                           />
                         </Box>
                       </Box>
