@@ -57,7 +57,7 @@ const UpdateProduct = () => {
                             color="orange"
                             sx={{ opacity: "80%" }}
                           >
-                            this field is required
+                            {errors.id.message}
                           </Box>
                         )}
                       </Box>
@@ -88,7 +88,7 @@ const UpdateProduct = () => {
                             color="orange"
                             sx={{ opacity: "80%" }}
                           >
-                            this field is required
+                            {errors.title.message}
                           </Box>
                         )}
                       </Box>
@@ -119,7 +119,7 @@ const UpdateProduct = () => {
                             color="orange"
                             sx={{ opacity: "80%" }}
                           >
-                            this field is required
+                            {errors.price.message}
                           </Box>
                         )}
                       </Box>
@@ -150,7 +150,7 @@ const UpdateProduct = () => {
                             color="orange"
                             sx={{ opacity: "80%" }}
                           >
-                            this field is required
+                            {errors.description.message}
                           </Box>
                         )}
                       </Box>
@@ -181,7 +181,7 @@ const UpdateProduct = () => {
                             color="orange"
                             sx={{ opacity: "80%" }}
                           >
-                            this field is required
+                            {errors.image.message}
                           </Box>
                         )}
                       </Box>

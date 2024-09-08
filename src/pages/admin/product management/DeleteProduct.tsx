@@ -50,7 +50,7 @@ const DeleteProduct = () => {
                             color="orange"
                             sx={{ opacity: "80%" }}
                           >
-                            this field is required
+                            {errors.id.message}
                           </Box>
                         )}
                       </Box>
@@ -59,7 +59,7 @@ const DeleteProduct = () => {
                       <Box>
                         <Box>
                           <TextField
-                            {...register("id", { required: true })}
+                            {...register("id", { required: true, min: 0 })}
                             type="number"
                             sx={{
                               width: "100%",
