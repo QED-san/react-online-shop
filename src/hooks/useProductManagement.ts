@@ -10,11 +10,11 @@ import axios from "axios";
 
 export const useCreateProduct = (setRes: (res: CreateProductResT) => void) => {
   return useMutation<CreateProductResT, Error, CreateProductReqT>({
-    mutationFn: async (user: CreateProductReqT) =>
+    mutationFn: async (req: CreateProductReqT) =>
       await axios
         .post<CreateProductResT>(
           `${import.meta.env.VITE_BASE_URL}/products`,
-          user
+          req
         )
         .then((res) => res.data),
     onSuccess: (res) => setRes(res),

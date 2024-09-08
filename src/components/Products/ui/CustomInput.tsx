@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { styled, TextField, TextFieldProps } from "@mui/material";
 import Theme from "../../../theme/Theme";
 
-const CustomTextInput = forwardRef<HTMLInputElement, TextFieldProps>(
+const CustomInput = forwardRef<HTMLInputElement, TextFieldProps>(
   (props, ref) => {
     const appTheme = Theme();
     const StyledTextField = styled(TextField)({
@@ -37,4 +37,4 @@ const CustomTextInput = forwardRef<HTMLInputElement, TextFieldProps>(
   }
 );
 
-export default CustomTextInput;
+export default CustomInput;

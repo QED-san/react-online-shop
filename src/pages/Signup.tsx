@@ -13,7 +13,7 @@ import {
 } from "../hooks/useAuth";
 import { checkEmailResT, fileUploadResT } from "../utils/types/Auth";
 import React from "react";
-import CustomTextInput from "../components/Products/ui/CustomInput";
+import CustomInput from "../components/Products/ui/CustomInput";
 import ProductsButton from "../theme/Products/ProductsButton";
 import Loader from "../components/Loaders/MainLoader";
 import { Link } from "react-router-dom";
@@ -149,7 +149,7 @@ export const Signup = () => {
                       </Typography>
                     </Box>
                     <Box>
-                      <CustomTextInput
+                      <CustomInput
                         ref={nameInputRef}
                         type="text"
                         required
@@ -193,7 +193,7 @@ export const Signup = () => {
                       </Typography>
                     </Box>
                     <Box>
-                      <CustomTextInput
+                      <CustomInput
                         ref={passwordInputRef}
                         type="password"
                         required
@@ -267,7 +267,7 @@ export const Signup = () => {
                         }}
                       >
                         <Box flex="1">
-                          <CustomTextInput
+                          <CustomInput
                             ref={emailInputRef}
                             type="email"
                             required
@@ -346,7 +346,7 @@ export const Signup = () => {
                         }}
                       >
                         <Box flex="1">
-                          <CustomTextInput
+                          <CustomInput
                             ref={avatarInputRef}
                             type="file"
                             required

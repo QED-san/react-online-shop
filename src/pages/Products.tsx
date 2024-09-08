@@ -23,7 +23,7 @@ import useCategories from "../hooks/useCategories";
 import ProductCard from "../components/Products/ProductCard";
 import productsButton from ".././theme/Products/ProductsButton";
 import productsSearchBar from ".././theme/Products/ProductsSearchBar";
-import CustomTextInput from "../components/Products/ui/CustomInput";
+import CustomInput from "../components/Products/ui/CustomInput";
 import { productsT } from "../utils/types/Product";
 import Loader from "../components/Loaders/MainLoader";
 import Theme from "../theme/Theme";
@@ -225,7 +225,7 @@ const Products = () => {
                   {/* search input */}
                   <Box sx={{ flex: 1 }}>
                     <ThemeProvider theme={productsSearchBar}>
-                      <CustomTextInput
+                      <CustomInput
                         placeholder="Search ..."
                         ref={searchInputRef}
                         sx={{

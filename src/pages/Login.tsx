@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import ProductsButton from "../theme/Products/ProductsButton";
-import CustomTextInput from "../components/Products/ui/CustomInput";
+import CustomInput from "../components/Products/ui/CustomInput";
 import React from "react";
 import { useGetTokens, useLoginUser } from "../hooks/useAuth";
 import {
@@ -122,7 +122,7 @@ export const Login = () => {
                     <Box>
                       <Box>
                         <Box>
-                          <CustomTextInput
+                          <CustomInput
                             ref={emailInputRef}
                             type="email"
                             required
@@ -177,7 +177,7 @@ export const Login = () => {
                       </Typography>
                     </Box>
                     <Box>
-                      <CustomTextInput
+                      <CustomInput
                         ref={passwordInputRef}
                         type="password"
                         required

@@ -461,6 +461,7 @@ const NavBar = () => {
                           >
                             <Box
                               sx={{
+                                zIndex: "999999999",
                                 border: 1,
                                 borderRadius: 1.3,
                                 borderColor:
