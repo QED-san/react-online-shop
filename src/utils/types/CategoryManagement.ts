@@ -9,3 +9,7 @@ export type UpdateCategoryReqT = {
   id: DeleteCategoryReqT;
   updatedCategory: UpdateCategoryObjT;
 };
+
+export type CreateCategoryInputT = CreateCategoryReqT;
+export type DeleteCategoryInputT = Omit<UpdateCategoryReqT, "updatedCategory">;
+export type UpdateCategoryInputT = DeleteCategoryInputT & CreateCategoryInputT;

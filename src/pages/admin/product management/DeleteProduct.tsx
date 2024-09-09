@@ -114,7 +114,7 @@ const DeleteProduct = () => {
                               textTransform: "none",
                             }}
                           >
-                            <Box>Submit</Box>
+                            <Box>Delete</Box>
                           </Button>
                         </ThemeProvider>
                       </Box>
