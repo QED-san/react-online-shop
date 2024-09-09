@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-  Chip,
+  // Chip,
   Container,
   Input,
   Stack,
@@ -11,26 +11,65 @@ import {
 } from "@mui/material";
 import Theme from "../../../theme/Theme";
 import React from "react";
-import useCategories from "../../../hooks/useCategories";
+// import useCategories from "../../../hooks/useCategories";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UpdateProductInputsT } from "../../../utils/types/ProductManagement";
+import {
+  CreateProductResT,
+  UpdateProductFormData,
+  UpdateProductInputsT,
+} from "../../../utils/types/ProductManagement";
+import { useUploadFile } from "../../../hooks/useAuth";
+import { fileUploadResT } from "../../../utils/types/Auth";
+import { useUpdateProduct } from "../../../hooks/useProductManagement";
 
 const UpdateProduct = () => {
   const appTheme = Theme();
-  const { data: categories } = useCategories();
-  const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
+  // const { data: categories } = useCategories();
+  // const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
+  const uploadFile = useUploadFile(handleImageUploaded);
+  const [productImage, setProductImage] = React.useState<Blob>();
+  const [formData, setFormData] = React.useState<UpdateProductFormData>();
+  const updateProduct = useUpdateProduct(handleUpdateProductSuccess);
+  const [isSubmited, setIsSubmited] = React.useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
+    // setValue,
   } = useForm<UpdateProductInputsT>();
+
   const onSubmit: SubmitHandler<UpdateProductInputsT> = (data) => {
-    if (data.categoryId) {
-      console.log(data);
-    }
+    setIsSubmited(true);
+    if (productImage) {
+      uploadFile.mutateAsync(productImage);
+    } else console.log("image is not provided");
+    setFormData({
+      ...data,
+      images: [],
+    });
   };
+
+  React.useEffect(() => {
+    if (isSubmited)
+      if (formData) {
+        const req = {
+          updatedProduct: { ...formData },
+          id: formData.id,
+        };
+        updateProduct.mutateAsync(req);
+        setIsSubmited(false);
+      }
+  }, [isSubmited, isSubmited, formData]);
+
+  function handleImageUploaded(res: fileUploadResT) {
+    if (formData) {
+      setFormData({ ...formData, images: [res.location] });
+    }
+  }
+  function handleUpdateProductSuccess(res: CreateProductResT) {
+    console.log(res);
+  }
 
   return (
     <Box
@@ -128,7 +167,7 @@ const UpdateProduct = () => {
                       <Box>
                         <Box>
                           <TextField
-                            {...register("title", { required: true })}
+                            {...register("title")}
                             type="text"
                             sx={{
                               width: "100%",
@@ -187,7 +226,7 @@ const UpdateProduct = () => {
                       <Box>
                         <Box>
                           <TextField
-                            {...register("price", { required: true })}
+                            {...register("price")}
                             type="number"
                             sx={{
                               width: "100%",
@@ -246,7 +285,7 @@ const UpdateProduct = () => {
                       <Box>
                         <Box>
                           <TextField
-                            {...register("description", { required: true })}
+                            {...register("description")}
                             type="text"
                             sx={{
                               width: "100%",
@@ -282,30 +321,21 @@ const UpdateProduct = () => {
                     </Box>
                   </Box>
                   <Box>
-                    <Box display="flex" gap="10px">
+                    <Box>
                       <Typography
                         fontSize="17px"
                         color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Image
                       </Typography>
-                      <Box>
-                        {errors.image && (
-                          <Box
-                            component="span"
-                            color="orange"
-                            sx={{ opacity: "80%" }}
-                          >
-                            {errors.image.message}
-                          </Box>
-                        )}
-                      </Box>
                     </Box>
                     <Box>
                       <Box>
                         <Box>
                           <Input
-                            {...register("image", { required: true })}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => setProductImage(e.target.files?.[0])}
                             type="file"
                             sx={{
                               width: "100%",
@@ -326,8 +356,8 @@ const UpdateProduct = () => {
                       </Box>
                     </Box>
                   </Box>
-                  {/* category  */}
-                  <Box>
+                  {/* category it seems that update product's api doesnt support for changing category */}
+                  {/* <Box>
                     <Box>
                       {categories?.map((category) => (
                         <Chip
@@ -339,7 +369,7 @@ const UpdateProduct = () => {
                           }}
                           onDelete={() => {
                             setSelectedCategory(0);
-                            setValue("categoryId", null);
+                            setValue("categoryId", 0);
                           }}
                           sx={{
                             border: "1px solid",
@@ -365,7 +395,7 @@ const UpdateProduct = () => {
                         ></Chip>
                       ))}
                     </Box>
-                  </Box>
+                  </Box> */}
                   {/* submit button */}
                   <Box py="40px">
                     <Box display="flex" alignItems="center">
