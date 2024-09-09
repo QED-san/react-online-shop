@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  // Chip,
   Container,
   Input,
   Stack,
@@ -11,7 +10,6 @@ import {
 } from "@mui/material";
 import Theme from "../../../theme/Theme";
 import React from "react";
-// import useCategories from "../../../hooks/useCategories";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -25,8 +23,6 @@ import { useUpdateProduct } from "../../../hooks/useProductManagement";
 
 const UpdateProduct = () => {
   const appTheme = Theme();
-  // const { data: categories } = useCategories();
-  // const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
   const uploadFile = useUploadFile(handleImageUploaded);
   const [productImage, setProductImage] = React.useState<Blob>();
   const [formData, setFormData] = React.useState<UpdateProductFormData>();
@@ -36,7 +32,6 @@ const UpdateProduct = () => {
     register,
     handleSubmit,
     formState: { errors },
-    // setValue,
   } = useForm<UpdateProductInputsT>();
 
   const onSubmit: SubmitHandler<UpdateProductInputsT> = (data) => {
@@ -356,46 +351,6 @@ const UpdateProduct = () => {
                       </Box>
                     </Box>
                   </Box>
-                  {/* category it seems that update product's api doesnt support for changing category */}
-                  {/* <Box>
-                    <Box>
-                      {categories?.map((category) => (
-                        <Chip
-                          key={category.name.concat(Math.random().toString())}
-                          label={category.name}
-                          onClick={() => {
-                            setSelectedCategory(category.id);
-                            setValue("categoryId", category.id);
-                          }}
-                          onDelete={() => {
-                            setSelectedCategory(0);
-                            setValue("categoryId", 0);
-                          }}
-                          sx={{
-                            border: "1px solid",
-                            borderColor:
-                              appTheme === "dark" ? "#262626" : "#999999",
-                            color: appTheme === "dark" ? "#fff" : "#000",
-                            backgroundColor:
-                              appTheme === "dark" ? "#1a1a1a" : "#e4e4e7",
-                            fontSize: { xs: "10px", md: "13px", lg: "14px" },
-                            margin: "5px",
-                            "& .MuiChip-deleteIcon": {
-                              color:
-                                appTheme === "dark" ? "#e4e4e7" : "#1a1a1a",
-                              display:
-                                selectedCategory === category.id
-                                  ? "block"
-                                  : "none",
-                              "&:hover": {
-                                color: "gray",
-                              },
-                            },
-                          }}
-                        ></Chip>
-                      ))}
-                    </Box>
-                  </Box> */}
                   {/* submit button */}
                   <Box py="40px">
                     <Box display="flex" alignItems="center">

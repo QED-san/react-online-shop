@@ -28,7 +28,6 @@ export const useCheckEmail = (setTheRes: (res: checkEmailResT) => void) => {
 };
 
 export const useUploadFile = (setUploadRes: (res: fileUploadResT) => void) => {
-  const CustomHeaders = { "Content-Type": "multipart/form-data" };
   return useMutation<fileUploadResT, Error, fileUploadReqT>({
     mutationFn: async (file: fileUploadReqT) =>
       await axios
@@ -37,7 +36,7 @@ export const useUploadFile = (setUploadRes: (res: fileUploadResT) => void) => {
           {
             file,
           },
-          { headers: CustomHeaders }
+          { headers: { "Content-Type": "multipart/form-data" }}
         )
         .then((res) => res.data),
     onSuccess: (res) => setUploadRes(res),

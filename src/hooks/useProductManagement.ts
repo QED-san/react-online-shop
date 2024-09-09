@@ -7,6 +7,7 @@ import {
   UpdateProductReqT,
 } from "../utils/types/ProductManagement";
 import axios from "axios";
+import { ProductUpdateCunstructor } from "./Cunstructor";
 
 export const useCreateProduct = (setRes: (res: CreateProductResT) => void) => {
   return useMutation<CreateProductResT, Error, CreateProductReqT>({
@@ -43,7 +44,7 @@ export const useUpdateProduct = (setRes: (res: CreateProductResT) => void) => {
       await axios
         .put<CreateProductResT>(
           `${import.meta.env.VITE_BASE_URL}/products/${req.id}`,
-          req.updatedProduct
+          ProductUpdateCunstructor(req.updatedProduct)
         )
         .then((res) => res.data),
     onSuccess: (res) => setRes(res),

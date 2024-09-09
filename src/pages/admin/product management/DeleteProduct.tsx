@@ -10,17 +10,26 @@ import {
 import Theme from "../../../theme/Theme";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { DeleteProductInputT } from "../../../utils/types/ProductManagement";
+import {
+  DeleteProductInputT,
+  DeleteProductResT,
+} from "../../../utils/types/ProductManagement";
+import { useDeleteProduct } from "../../../hooks/useProductManagement";
 
 const DeleteProduct = () => {
   const appTheme = Theme();
+  const deleteProduct = useDeleteProduct(handleDeleteProductRes);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<DeleteProductInputT>();
   const onSubmit: SubmitHandler<DeleteProductInputT> = (data) =>
-    console.log(data);
+    deleteProduct.mutateAsync(data.id);
+
+  function handleDeleteProductRes(res: DeleteProductResT) {
+    console.log(res);
+  }
 
   return (
     <Box

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^5.0.14",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/base": "^5.0.0-beta.40",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
@@ -25,10 +26,8 @@
     "cookies-js": "^1.2.3",
     "dayjs": "^1.11.13",
     "js-cookie": "^3.0.5",
-    "loadash": "^1.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "mui-file-input": "^6.0.0",
     "react": "^18.3.1",
     "react-cookie": "^7.2.0",
     "react-dom": "^18.3.1",
@@ -39,8 +38,8 @@
     "redux-persist": "^6.0.0",
     "redux-persist-cookie-storage": "^1.0.0",
     "redux-thunk": "^3.1.0",
-    "safe-buffer": "^5.2.1",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

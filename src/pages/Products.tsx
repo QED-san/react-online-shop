@@ -432,6 +432,8 @@ const Products = () => {
                     borderColor: appTheme === "dark" ? "#262626" : "#999999",
                     borderRadius: 3,
                   }}
+                  maxHeight="510px"
+                  overflow="hidden"
                 >
                   <Box pl="10px" sx={{ display: "flex", alignItems: "center" }}>
                     <GridView

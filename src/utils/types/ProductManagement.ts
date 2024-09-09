@@ -19,25 +19,28 @@ export interface CreateProductResT
   category: NewTypesIncludedProductCategory;
 }
 
-export type CreateProductReqT = Omit<productsT, "id">;
+export type ProductTWithoutId = Omit<productsT, "id">;
+
+export type CreateProductReqT = Omit<ProductTWithoutId, "category"> & {
+  categoryId: number;
+};
 
 export type UpdateProductReqT = {
   id: DeleteProductReqT;
   updatedProduct: Partial<CreateProductReqT>;
 };
 
-export interface DeleteProductInputT {
-  id: number;
-}
+export type DeleteProductInputT = Pick<UpdateProductReqT, "id">;
 
 export interface CreateProductInputsT {
   title: string;
   price: number;
   description: string;
-  image: Blob;
-  categoryId: number | null;
+  categoryId: number;
 }
 
 export interface UpdateProductInputsT
   extends CreateProductInputsT,
     DeleteProductInputT {}
+
+export type UpdateProductFormData = UpdateProductInputsT & { images: string[] };

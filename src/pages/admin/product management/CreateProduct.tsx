@@ -14,25 +14,58 @@ import React from "react";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import useCategories from "../../../hooks/useCategories";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { CreateProductInputsT } from "../../../utils/types/ProductManagement";
-// import { useUploadFile } from "../../../hooks/useAuth";
+import {
+  CreateProductInputsT,
+  CreateProductResT,
+} from "../../../utils/types/ProductManagement";
+import { useUploadFile } from "../../../hooks/useAuth";
+import { fileUploadResT } from "../../../utils/types/Auth";
+import { useCreateProduct } from "../../../hooks/useProductManagement";
 
 const CreateProduct = () => {
   const appTheme = Theme();
   const { data: categories } = useCategories();
   const [selectedCategory, setSelectedCategory] = React.useState<number>(0);
-  // const uploadFile = useUploadFile()
+  const uploadFile = useUploadFile(handleImageUploaded);
+  const [productImage, setProductImage] = React.useState<Blob>();
+  const [productImageError, setProductImageError] = React.useState<
+    string | null
+  >(null);
+  const [formData, setFormData] = React.useState<
+    CreateProductInputsT & { images: string[] }
+  >();
+  const createProduct = useCreateProduct(handleCreateProductSuccess);
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
   } = useForm<CreateProductInputsT>();
+
   const onSubmit: SubmitHandler<CreateProductInputsT> = (data) => {
-    if (data.categoryId) {
-      console.log(data);
-    }
+    if (data.categoryId !== 0)
+      if (productImage) {
+        setProductImageError(null);
+        uploadFile.mutateAsync(productImage);
+        const newData: CreateProductInputsT & { images: string[] } = {
+          ...data,
+          images: [],
+        };
+        setFormData(newData);
+      } else setProductImageError("this field is required");
+    else console.log("category is not provided");
   };
+
+  function handleImageUploaded(res: fileUploadResT) {
+    if (formData) {
+      const req = formData;
+      req.images = [res.location];
+      createProduct.mutateAsync(req);
+    }
+  }
+  function handleCreateProductSuccess(res: CreateProductResT) {
+    console.log(res);
+  }
 
   return (
     <Box
@@ -233,13 +266,13 @@ const CreateProduct = () => {
                         Image
                       </Typography>
                       <Box>
-                        {errors.image && (
+                        {productImageError && (
                           <Box
                             component="span"
                             color="orange"
                             sx={{ opacity: "80%" }}
                           >
-                            {errors.image.message}
+                            {productImageError}
                           </Box>
                         )}
                       </Box>
@@ -248,10 +281,13 @@ const CreateProduct = () => {
                       <Box>
                         <Box>
                           <Input
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              setProductImageError(null);
+                              setProductImage(e.target.files?.[0]);
+                            }}
                             type="file"
-                            {...register("image", {
-                              required: true,
-                            })}
                             sx={{
                               width: "100%",
                               p: "10px",
@@ -284,7 +320,7 @@ const CreateProduct = () => {
                           }}
                           onDelete={() => {
                             setSelectedCategory(0);
-                            setValue("categoryId", null);
+                            setValue("categoryId", 0);
                           }}
                           sx={{
                             border: "1px solid",
