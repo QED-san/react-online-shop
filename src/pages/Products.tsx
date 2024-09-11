@@ -109,21 +109,12 @@ const Products = () => {
       if (minPriceRangeValue >= 0) {
         setProductsFilteredBy({ type: "rangePrice", value: "" });
         if (products) {
-          if (!filteredProducts) {
-            setFilteredProducts(
-              products.filter(
-                (p) =>
-                  p.price >= minPriceRangeValue && p.price <= maxPriceRangeValue
-              )
-            );
-          } else {
-            setFilteredProducts(
-              filteredProducts.filter(
-                (p) =>
-                  p.price >= minPriceRangeValue && p.price <= maxPriceRangeValue
-              )
-            );
-          }
+          setFilteredProducts(
+            products.filter(
+              (p) =>
+                p.price >= minPriceRangeValue && p.price <= maxPriceRangeValue
+            )
+          );
         }
       }
     }
@@ -261,9 +252,10 @@ const Products = () => {
                           ".MuiInputBase-input": {
                             height: "20px",
                             width: "60px",
+                            color: appTheme === "light" ? "#000" : "#fff",
                           },
                           "& .MuiInputBase-input::placeholder": {
-                            color: appTheme === "light" ? "#000" : "silver",
+                            color: appTheme === "light" ? "#000" : "#fefe",
                           },
                         }}
                       />
@@ -295,9 +287,10 @@ const Products = () => {
                         ".MuiInputBase-input": {
                           height: "20px",
                           width: { xs: "50px", sm: "55px" },
+                          color: appTheme === "light" ? "#000" : "#fff",
                         },
                         "& .MuiInputBase-input::placeholder": {
-                          color: appTheme === "light" ? "#000" : "silver",
+                          color: appTheme === "light" ? "#000" : "#fefe",
                         },
                       }}
                       onChange={(e) =>
@@ -313,9 +306,10 @@ const Products = () => {
                         ".MuiInputBase-input": {
                           height: "20px",
                           width: { xs: "50px", sm: "55px" },
+                          color: appTheme === "light" ? "#000" : "#fff",
                         },
                         "& .MuiInputBase-input::placeholder": {
-                          color: appTheme === "light" ? "#000" : "silver",
+                          color: appTheme === "light" ? "#000" : "#fefe",
                         },
                       }}
                       onChange={(e) =>

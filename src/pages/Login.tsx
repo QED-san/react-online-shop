@@ -19,7 +19,7 @@ import {
 import Cookies from "cookies-js";
 import { Buffer } from "buffer";
 import { useDispatch } from "react-redux";
-import { GetTokensCunstructor } from "../hooks/Cunstructor";
+import { GetTokensCunstructor } from "../hooks/Cunstructors/Cunstructor";
 import Theme from "../theme/Theme";
 
 export const Login = () => {

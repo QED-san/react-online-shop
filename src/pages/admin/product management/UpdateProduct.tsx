@@ -13,21 +13,17 @@ import React from "react";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  CreateProductResT,
   UpdateProductFormData,
   UpdateProductInputsT,
 } from "../../../utils/types/ProductManagement";
 import { useUploadFile } from "../../../hooks/useAuth";
-import { fileUploadResT } from "../../../utils/types/Auth";
 import { useUpdateProduct } from "../../../hooks/useProductManagement";
 
 const UpdateProduct = () => {
   const appTheme = Theme();
-  const uploadFile = useUploadFile(handleImageUploaded);
+  const uploadFile = useUploadFile();
   const [productImage, setProductImage] = React.useState<Blob>();
-  const [formData, setFormData] = React.useState<UpdateProductFormData>();
-  const updateProduct = useUpdateProduct(handleUpdateProductSuccess);
-  const [isSubmited, setIsSubmited] = React.useState(false);
+  const updateProduct = useUpdateProduct();
   const {
     register,
     handleSubmit,
@@ -35,36 +31,28 @@ const UpdateProduct = () => {
   } = useForm<UpdateProductInputsT>();
 
   const onSubmit: SubmitHandler<UpdateProductInputsT> = (data) => {
-    setIsSubmited(true);
     if (productImage) {
-      uploadFile.mutateAsync(productImage);
-    } else console.log("image is not provided");
-    setFormData({
-      ...data,
-      images: [],
-    });
+      uploadFile.mutateAsync(productImage).then((res) => {
+        requestToUpdateProduct({
+          ...data,
+          images: [res.location],
+        });
+      });
+    } else {
+      requestToUpdateProduct({
+        ...data,
+        images: [],
+      });
+    }
   };
 
-  React.useEffect(() => {
-    if (isSubmited)
-      if (formData) {
-        const req = {
-          updatedProduct: { ...formData },
-          id: formData.id,
-        };
-        updateProduct.mutateAsync(req);
-        setIsSubmited(false);
-      }
-  }, [isSubmited, isSubmited, formData]);
-
-  function handleImageUploaded(res: fileUploadResT) {
-    if (formData) {
-      setFormData({ ...formData, images: [res.location] });
-    }
-  }
-  function handleUpdateProductSuccess(res: CreateProductResT) {
-    console.log(res);
-  }
+  const requestToUpdateProduct = (reqPayload: UpdateProductFormData) => {
+    const req = {
+      updatedProduct: { ...reqPayload },
+      id: reqPayload.id,
+    };
+    updateProduct.mutateAsync(req).then((res) => console.log(res));
+  };
 
   return (
     <Box
@@ -335,11 +323,12 @@ const UpdateProduct = () => {
                             sx={{
                               width: "100%",
                               p: "10px",
-                              borderRadius: "10px 10px 0 0",
+                              borderRadius: "10px 0 0 0",
                               borderInline: "1px solid",
                               borderTop: "1px solid",
                               borderColor:
                                 appTheme === "dark" ? "#262626" : "#d1d5db",
+                              borderInlineEndColor: "transparent",
                               backgroundColor:
                                 appTheme === "dark" ? "#141414" : "#f3f3f3",
                               "& .MuiInputBase-input": {
@@ -348,6 +337,28 @@ const UpdateProduct = () => {
                             }}
                           />
                         </Box>
+                        {/* <Box flex=".1">
+                          <Box height="100%">
+                            <Button
+                              onClick={() => setUploadButtonPressed(true)}
+                              sx={{
+                                "&.MuiButtonBase-root": {
+                                  minWidth: "10px",
+                                  height: "100%",
+                                  borderRadius: "0 10px 0 0",
+                                  border: "1px solid",
+                                  borderColor:
+                                    appTheme === "dark" ? "#262626" : "#d1d5db",
+                                  borderInlineStartColor: "transparent",
+                                  borderBlockEndColor: "black",
+                                },
+                                textTransform: "none",
+                              }}
+                            >
+                              Upload
+                            </Button>
+                          </Box>
+                        </Box> */}
                       </Box>
                     </Box>
                   </Box>

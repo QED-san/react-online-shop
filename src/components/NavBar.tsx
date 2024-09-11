@@ -13,6 +13,7 @@ import {
   Stack,
   Avatar,
   Divider,
+  useMediaQuery,
 } from "@mui/material";
 import {
   GitHub,
@@ -29,7 +30,6 @@ import {
   logoTheme,
   navPagesLinksTheme,
   authTheme,
-  drawerTheme,
   drawerPagesLinksTheme,
 } from "../theme/Navbar/all/allThemes";
 import { RootState } from "../state management/store";
@@ -50,6 +50,10 @@ const NavBar = () => {
   const cartProducts = useCartProducts();
   const isAuthenticated = Cookies.get("user_access_token");
   const user = useSelector((state: RootState) => state.User);
+  const matches = useMediaQuery("(min-width: 1200px)");
+  React.useEffect(() => {
+    if (matches) setDrawer(false);
+  }, [matches]);
 
   return (
     <Box
@@ -522,250 +526,254 @@ const NavBar = () => {
           </AppBar>
         </ThemeProvider>
         {/* left drawer */}
-        {/* <ThemeProvider theme={drawerTheme}> */}
-          <Drawer
-            anchor="left"
-            open={isDrawerOpen}
-            onClose={() => setDrawer(!isDrawerOpen)}
-            color={appTheme === "dark" ? "#fcfcfc" : "#2F3645"}
+        <Drawer
+          anchor="left"
+          open={isDrawerOpen}
+          onClose={() => setDrawer(!isDrawerOpen)}
+          color={appTheme === "dark" ? "#fcfcfc" : "#2F3645"}
+          sx={{
+            display: matches ? "none" : "block",
+            ".MuiPaper-root": {
+              backgroundColor: "transparent",
+              backdropFilter: "blur(10px)",
+              minWidth: "150px",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              height: "100px",
+              pt: "20px",
+            }}
           >
-            <Box sx={{ width: "100%", height: "100px", pt: "20px" }}>
-              {/* cart and profile pic OR auth buttons */}
-              {isAuthenticated ? (
-                <Box>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    gap={1}
-                    sx={{ height: "50px", px: "10px", pt: "10px", mb: "30px" }}
-                  >
-                    <ThemeProvider theme={authTheme}>
-                      <CssBaseline />
-                      <Grid
-                        container
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        <Link
-                          to="dashboard/cart"
-                          onClick={() => setDrawer(false)}
-                        >
-                          <Grid container alignItems="center">
-                            <ShoppingBag
-                              sx={{ fontSize: "18px", mr: "10px" }}
-                            />
-                          </Grid>
-                        </Link>
-                        <Box>
-                          <Link to="dashboard" onClick={() => setDrawer(false)}>
-                            <Avatar
-                              sx={{
-                                bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
-                              }}
-                              alt="profile"
-                              src={user.avatar}
-                            />
-                          </Link>
-                        </Box>
-                      </Grid>
-                    </ThemeProvider>
-                  </Grid>
-                </Box>
-              ) : (
-                <Box>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    gap={1}
-                    sx={{ height: "50px", px: "10px", pt: "10px", mb: "30px" }}
-                  >
-                    <ThemeProvider theme={authTheme}>
-                      <CssBaseline />
-                      <Grid
-                        container
-                        justifyContent="center"
-                        alignItems="center"
-                        border={1}
-                        borderRadius={1.4}
-                        sx={{
-                          py: "1px",
-                          borderColor:
-                            appTheme === "dark" ? "#262626" : "#999999",
-                          backgroundColor:
-                            appTheme === "dark" ? "#1a1a1a" : "silver",
-                        }}
-                      >
-                        <Link to="/login">
-                          <Grid container alignItems="center">
-                            <Login sx={{ fontSize: "18px", mr: "10px" }} />
-                            <Typography variant="subtitle1" fontWeight="bold">
-                              Login
-                            </Typography>
-                          </Grid>
-                        </Link>
-                      </Grid>
-                      <Grid
-                        container
-                        justifyContent="center"
-                        alignItems="center"
-                        border={1}
-                        borderRadius={1.4}
-                        sx={{
-                          py: "1px",
-                          borderColor:
-                            appTheme === "dark" ? "#262626" : "#999999",
-                          backgroundColor:
-                            appTheme === "dark" ? "#1a1a1a" : "silver",
-                        }}
-                      >
-                        <Link to="signup">
-                          <Grid container alignItems="center">
-                            <PersonAddAlt
-                              sx={{ fontSize: "20px", mr: "6px" }}
-                            />
-                            <Typography variant="subtitle1" fontWeight="bold">
-                              Sign Up
-                            </Typography>
-                          </Grid>
-                        </Link>
-                      </Grid>
-                    </ThemeProvider>
-                  </Grid>
-                </Box>
-              )}
-              {/* github and theme info */}
+            {/* cart and profile pic OR auth buttons */}
+            {isAuthenticated ? (
               <Box>
                 <Grid
                   container
                   justifyContent="center"
                   alignItems="center"
-                  sx={{
-                    width: "80%",
-                    pl: "20px",
-                    mb: "15px",
-                  }}
+                  gap={1}
+                  sx={{ height: "50px", px: "10px", pt: "10px", mb: "30px" }}
                 >
-                  {/* github section */}
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{
-                      width: "30%",
-                      height: "100%",
-                      border: 1,
-                      borderRadius: 1.3,
-                      p: "2px",
-                      borderColor: appTheme === "dark" ? "#262626" : "#999999",
-                      backgroundColor:
-                        appTheme === "dark" ? "#1a1a1a" : "silver",
-                    }}
-                  >
-                    <Link to="https://github.com/Seraaga022">
-                      <GitHub
-                        sx={{
-                          color: appTheme === "dark" ? "white" : "black",
-                        }}
-                      />
-                    </Link>
-                  </Grid>
-                  {/* theme section */}
-                  <Box
-                    position="relative"
-                    sx={{
-                      width: "33px",
-                      height: "33px",
-                    }}
-                  >
-                    <ThemeProvider theme={menuButtonTheme}>
-                      <CssBaseline />
-                      <Button
-                        sx={{
-                          "&.MuiButtonBase-root": {
-                            minWidth: "10px",
-                            width: "29px",
-                            height: "30px",
-                          },
-                          mt: "2px",
-                          ml: "10px",
-                          borderRadius: 1.3,
-                        }}
-                        variant="text"
-                        color="info"
-                        onClick={() =>
-                          setSelectThemeDropDownState(
-                            selectThemeDropDownState ? false : true
-                          )
-                        }
+                  <ThemeProvider theme={authTheme}>
+                    <CssBaseline />
+                    <Grid container justifyContent="center" alignItems="center">
+                      <Link
+                        to="dashboard/cart"
+                        onClick={() => setDrawer(false)}
                       >
-                        <Box
-                          sx={{
-                            border: 1,
-                            borderRadius: 1.3,
-                            borderColor:
-                              appTheme === "dark" ? "#262626" : "#999999",
-                            backgroundColor:
-                              appTheme === "dark" ? "#1a1a1a" : "#f0f2ff",
-                            color: appTheme === "dark" ? "#fcfcfc" : "#2F3645",
-                            p: "2px",
-                          }}
-                        >
-                          {themeMode === "system" ? (
-                            <SettingsSuggest />
-                          ) : themeMode === "dark" ? (
-                            <Brightness2 />
-                          ) : (
-                            <LightMode />
-                          )}
-                        </Box>
-                      </Button>
-                    </ThemeProvider>
-                  </Box>
-                  <ThemeDropDown
-                    top="140px"
-                    display={selectThemeDropDownState ? "block" : "none"}
-                    mode={appTheme!}
-                  />
+                        <Grid container alignItems="center">
+                          <ShoppingBag sx={{ fontSize: "18px", mr: "10px" }} />
+                        </Grid>
+                      </Link>
+                      <Box>
+                        <Link to="dashboard" onClick={() => setDrawer(false)}>
+                          <Avatar
+                            sx={{
+                              bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
+                            }}
+                            alt="profile"
+                            src={user.avatar}
+                          />
+                        </Link>
+                      </Box>
+                    </Grid>
+                  </ThemeProvider>
                 </Grid>
               </Box>
-              {/* basic pages */}
+            ) : (
               <Box>
-                <Stack sx={{ px: "10px" }}>
-                  <ThemeProvider theme={drawerPagesLinksTheme}>
-                    <Box sx={{ pl: "20px", mb: "15px" }}>
-                      <Typography
-                        variant="subtitle1"
-                        fontWeight={"bold"}
-                        fontSize="25px"
-                      >
-                        Pages
-                      </Typography>
-                    </Box>
+                <Grid
+                  container
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                  sx={{ height: "50px", px: "10px", pt: "10px", mb: "30px" }}
+                  color={appTheme === "dark" ? "#fff" : "#000"}
+                >
+                  <ThemeProvider theme={authTheme}>
                     <CssBaseline />
-                    <Stack>
-                      <Box mb="7px">
-                        <Link to="/" onClick={() => setDrawer(false)}>
-                          <Typography variant="subtitle2" fontSize="20px">
-                            🏡 home
+                    <Grid
+                      container
+                      justifyContent="center"
+                      alignItems="center"
+                      border={1}
+                      borderRadius={1.4}
+                      sx={{
+                        py: "1px",
+                        borderColor:
+                          appTheme === "dark" ? "#262626" : "#999999",
+                        backgroundColor:
+                          appTheme === "dark" ? "#1a1a1a" : "silver",
+                      }}
+                    >
+                      <Link to="/login">
+                        <Grid container alignItems="center">
+                          <Login sx={{ fontSize: "18px", mr: "10px" }} />
+                          <Typography variant="subtitle1" fontWeight="bold">
+                            Login
                           </Typography>
-                        </Link>
-                      </Box>
-                      <Box>
-                        <Link to="/products" onClick={() => setDrawer(false)}>
-                          <Typography variant="subtitle2" fontSize="20px">
-                            📦 products
+                        </Grid>
+                      </Link>
+                    </Grid>
+                    <Grid
+                      container
+                      justifyContent="center"
+                      alignItems="center"
+                      border={1}
+                      borderRadius={1.4}
+                      sx={{
+                        py: "1px",
+                        borderColor:
+                          appTheme === "dark" ? "#262626" : "#999999",
+                        backgroundColor:
+                          appTheme === "dark" ? "#1a1a1a" : "silver",
+                      }}
+                    >
+                      <Link to="signup">
+                        <Grid container alignItems="center">
+                          <PersonAddAlt sx={{ fontSize: "20px", mr: "6px" }} />
+                          <Typography variant="subtitle1" fontWeight="bold">
+                            Sign Up
                           </Typography>
-                        </Link>
-                      </Box>
-                    </Stack>
+                        </Grid>
+                      </Link>
+                    </Grid>
                   </ThemeProvider>
-                </Stack>
+                </Grid>
               </Box>
+            )}
+            {/* github and theme info */}
+            <Box>
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                  width: "80%",
+                  pl: "20px",
+                  mb: "15px",
+                }}
+              >
+                {/* github section */}
+                <Grid
+                  container
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: "30%",
+                    height: "100%",
+                    border: 1,
+                    borderRadius: 1.3,
+                    p: "2px",
+                    borderColor: appTheme === "dark" ? "#262626" : "#999999",
+                    backgroundColor: appTheme === "dark" ? "#1a1a1a" : "silver",
+                  }}
+                >
+                  <Link to="https://github.com/Seraaga022">
+                    <GitHub
+                      sx={{
+                        color: appTheme === "dark" ? "white" : "black",
+                      }}
+                    />
+                  </Link>
+                </Grid>
+                {/* theme section */}
+                <Box
+                  position="relative"
+                  sx={{
+                    width: "33px",
+                    height: "33px",
+                  }}
+                >
+                  <ThemeProvider theme={menuButtonTheme}>
+                    <CssBaseline />
+                    <Button
+                      sx={{
+                        "&.MuiButtonBase-root": {
+                          minWidth: "10px",
+                          width: "29px",
+                          height: "30px",
+                        },
+                        mt: "2px",
+                        ml: "10px",
+                        borderRadius: 1.3,
+                      }}
+                      variant="text"
+                      color="info"
+                      onClick={() =>
+                        setSelectThemeDropDownState(
+                          selectThemeDropDownState ? false : true
+                        )
+                      }
+                    >
+                      <Box
+                        sx={{
+                          border: 1,
+                          borderRadius: 1.3,
+                          borderColor:
+                            appTheme === "dark" ? "#262626" : "#999999",
+                          backgroundColor:
+                            appTheme === "dark" ? "#1a1a1a" : "#f0f2ff",
+                          color: appTheme === "dark" ? "#fcfcfc" : "#2F3645",
+                          p: "2px",
+                        }}
+                      >
+                        {themeMode === "system" ? (
+                          <SettingsSuggest />
+                        ) : themeMode === "dark" ? (
+                          <Brightness2 />
+                        ) : (
+                          <LightMode />
+                        )}
+                      </Box>
+                    </Button>
+                  </ThemeProvider>
+                </Box>
+                <ThemeDropDown
+                  top="140px"
+                  display={selectThemeDropDownState ? "block" : "none"}
+                  mode={appTheme!}
+                />
+              </Grid>
             </Box>
-          </Drawer>
-        {/* </ThemeProvider> */}
+            {/* basic pages */}
+            <Box color={appTheme === "dark" ? "#fefe" : "#000"}>
+              <Stack sx={{ px: "10px" }}>
+                <ThemeProvider theme={drawerPagesLinksTheme}>
+                  <Box sx={{ pl: "20px", mb: "15px" }}>
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight={"bold"}
+                      fontSize="25px"
+                    >
+                      Pages
+                    </Typography>
+                  </Box>
+                  <CssBaseline />
+                  <Stack>
+                    <Box mb="7px">
+                      <Link to="/" onClick={() => setDrawer(false)}>
+                        <Typography variant="subtitle2" fontSize="20px">
+                          🏡 home
+                        </Typography>
+                      </Link>
+                    </Box>
+                    <Box>
+                      <Link to="/products" onClick={() => setDrawer(false)}>
+                        <Typography variant="subtitle2" fontSize="20px">
+                          📦 products
+                        </Typography>
+                      </Link>
+                    </Box>
+                  </Stack>
+                </ThemeProvider>
+              </Stack>
+            </Box>
+          </Box>
+        </Drawer>
       </Container>
     </Box>
   );

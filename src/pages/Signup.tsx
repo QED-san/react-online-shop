@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   Container,
+  Input,
   Stack,
+  TextField,
   ThemeProvider,
   Typography,
 } from "@mui/material";
@@ -11,85 +13,51 @@ import {
   useRegisterUser,
   useUploadFile,
 } from "../hooks/useAuth";
-import { checkEmailResT, fileUploadResT } from "../utils/types/Auth";
 import React from "react";
-import CustomInput from "../components/Products/ui/CustomInput";
 import ProductsButton from "../theme/Products/ProductsButton";
 import Loader from "../components/Loaders/MainLoader";
 import { Link } from "react-router-dom";
 import { UserT } from "../state management/User/UserSlice";
-import { UserRegisterCunstructor } from "../hooks/Cunstructor";
+import { UserRegisterCunstructor } from "../hooks/Cunstructors/Cunstructor";
 import Theme from "../theme/Theme";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { RegisterUserInputsT } from "../utils/types/Singup";
 
 export const Signup = () => {
   const appTheme = Theme();
-  const checkEmail = useCheckEmail(setTheEmailVerificationRes);
-  const uploadImage = useUploadFile(setImageUploadRes);
+  const checkEmail = useCheckEmail();
+  const uploadImage = useUploadFile();
   const registerUser = useRegisterUser(RegisterUser);
-
-  const [authReqRes, setAuthReqRes] = React.useState<{
-    emailCheckRes: boolean;
-    imgUploadRes: string;
-    registerRes: UserT | null;
-  }>({
-    emailCheckRes: false,
-    imgUploadRes: "",
-    registerRes: null,
-  });
-
-  const nameInputRef = React.useRef<HTMLInputElement>(null);
-  const passwordInputRef = React.useRef<HTMLInputElement>(null);
-  const emailInputRef = React.useRef<HTMLInputElement>(null);
-  const avatarInputRef = React.useRef<HTMLInputElement>(null);
-
-  const handleEmailVefication = () => {
-    if (emailInputRef?.current && emailInputRef.current.value) {
-      checkEmail.mutateAsync(emailInputRef.current.value);
-    }
-  };
-  const handleImgUploadRes = () => {
-    if (
-      avatarInputRef?.current &&
-      avatarInputRef.current.files &&
-      avatarInputRef.current.files?.length > 0
-    ) {
-      uploadImage.mutateAsync(avatarInputRef.current.files[0]);
-    } else console.log("there is a problem with your image");
-  };
-  const handleSubmit = () => {
-    if (
-      nameInputRef?.current &&
-      passwordInputRef?.current &&
-      emailInputRef?.current &&
-      avatarInputRef?.current
-    )
-      if (nameInputRef.current.value.length !== 0)
-        if (passwordInputRef.current.value.length >= 4) {
-          handleEmailVefication();
-          handleImgUploadRes();
-          if (
-            !authReqRes.emailCheckRes && // the api did not accept the emails anyway
-            authReqRes.imgUploadRes?.length !== 0
-          )
-            registerUser.mutateAsync(
-              UserRegisterCunstructor(
-                nameInputRef.current.value,
-                emailInputRef.current.value,
-                passwordInputRef.current.value,
-                authReqRes.imgUploadRes,
-                "admin"
-              )
-            );
-        } else console.log("password shoud be more than 4 character");
-      else console.log("name shoud not be ampty");
+  const [userImage, setUserImage] = React.useState<Blob>();
+  const [userImageError, setUserImageError] = React.useState<string | null>(
+    null
+  );
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterUserInputsT>();
+  const onSubmit: SubmitHandler<RegisterUserInputsT> = (data) => {
+    if (userImage)
+      if (data.password.length >= 4)
+        checkEmail.mutateAsync(data.email).then((res) => {
+          if (!res.isAvailable)
+            uploadImage.mutateAsync(userImage).then((res) => {
+              registerUser.mutateAsync(
+                UserRegisterCunstructor(
+                  data.name,
+                  data.email,
+                  data.password,
+                  res.location,
+                  "admin"
+                )
+              );
+            });
+        });
+      else console.log("password must be more than 4 characters");
+    else setUserImageError("this field is required");
   };
 
-  function setImageUploadRes(res: fileUploadResT) {
-    setAuthReqRes({ ...authReqRes, imgUploadRes: res.location });
-  }
-  function setTheEmailVerificationRes(res: checkEmailResT) {
-    setAuthReqRes({ ...authReqRes, emailCheckRes: res.isAvailable });
-  }
   function RegisterUser(res: UserT) {
     console.log(res);
   }
@@ -114,276 +82,393 @@ export const Signup = () => {
           bgcolor={appTheme === "dark" ? "#1a1a1a" : "#fcfcfc"}
         >
           <Container maxWidth="lg">
-            <Stack spacing={2} p="10px" display="flex" justifyContent="center">
-              <Box
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack
+                spacing={2}
+                p="10px"
                 display="flex"
                 justifyContent="center"
-                alignItems="center"
-                pt="20px"
               >
-                <Typography variant="h4" fontWeight="bold" color="#703bf7">
-                  Sign Up
-                </Typography>
-              </Box>
-              <Box>
+                {/* title */}
                 <Box
                   display="flex"
-                  flexDirection={{ xs: "column", sm: "row" }}
-                  justifyContent="end"
-                  gap={{
-                    xs: "40px",
-                    sm: "20px",
-                    md: "40px",
-                    lg: "60px",
-                    xl: "100px",
-                  }}
-                  p="10px"
+                  justifyContent="center"
+                  alignItems="center"
+                  pt="20px"
                 >
-                  <Box flex={1} mr={{ xs: "0", sm: "auto" }}>
-                    <Box>
-                      <Typography
-                        fontSize="17px"
-                        color={appTheme === "dark" ? "#fff" : "#000"}
-                      >
-                        Full Name
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <CustomInput
-                        ref={nameInputRef}
-                        required
-                        sx={{
-                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                  <Box flex={1}>
-                    <Box>
-                      <Typography
-                        fontSize="17px"
-                        color={appTheme === "dark" ? "#fff" : "#000"}
-                      >
-                        Password
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <CustomInput
-                        ref={passwordInputRef}
-                        type="password"
-                        required
-                        sx={{
-                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
-                        }}
-                      />
-                    </Box>
-                  </Box>
+                  <Typography variant="h4" fontWeight="bold" color="#703bf7">
+                    Sign Up
+                  </Typography>
                 </Box>
-              </Box>
-              <Box>
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: "column", sm: "row" }}
-                  justifyContent="end"
-                  gap={{
-                    xs: "40px",
-                    sm: "20px",
-                    md: "40px",
-                    lg: "60px",
-                    xl: "100px",
-                  }}
-                  p="10px"
-                >
-                  <Box flex={1} mr={{ xs: "0", sm: "auto" }}>
-                    <Box>
-                      <Typography
-                        fontSize="17px"
-                        color={appTheme === "dark" ? "#fff" : "#000"}
-                      >
-                        Email Address
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Box
-                        display="flex"
-                        sx={{
-                          border: "1px solid",
-                          borderRadius: "10px",
-                          borderColor:
-                            appTheme === "dark" ? "#262626" : "#d1d5db",
-                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
-                          "&.MuiBox-root:hover": {
-                            borderColor: "#703bf7",
-                          },
-                        }}
-                      >
-                        <Box flex="1">
-                          <CustomInput
-                            ref={emailInputRef}
-                            type="email"
-                            required
-                            sx={{
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "none",
-                              },
-                              "&:hover:not(.Mui-focused)": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  border: "none",
-                                },
-                              },
-                              "& .Mui-focused": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  border: "none",
-                                },
-                              },
-                            }}
-                          />
-                        </Box>
-                        <Box
-                          flex=".1"
-                          p="8px"
-                          display={
-                            checkEmail.isPending ||
-                            checkEmail.isError ||
-                            checkEmail.isSuccess
-                              ? "block"
-                              : "none"
-                          }
+                {/* name and password */}
+                <Box>
+                  <Box
+                    display="flex"
+                    flexDirection={{ xs: "column", sm: "row" }}
+                    justifyContent="end"
+                    gap={{
+                      xs: "40px",
+                      sm: "20px",
+                      md: "40px",
+                      lg: "60px",
+                      xl: "100px",
+                    }}
+                    p="10px"
+                  >
+                    <Box flex={1} mr={{ xs: "0", sm: "auto" }}>
+                      <Box display="flex" gap="10px">
+                        <Typography
+                          fontSize="17px"
+                          color={appTheme === "dark" ? "#fff" : "#000"}
                         >
-                          <Box
-                            minWidth="100%"
-                            minHeight="100%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                          >
-                            {checkEmail.isPending && <Loader upload={true} />}
-                            {checkEmail.isSuccess && <Box>✅</Box>}
-                            {checkEmail.isError && <Box>❌</Box>}
-                          </Box>
+                          Full Name
+                        </Typography>
+                        <Box>
+                          {errors.name && (
+                            <Box
+                              component="span"
+                              color="orange"
+                              sx={{ opacity: "80%" }}
+                            >
+                              {errors.name.message}
+                            </Box>
+                          )}
                         </Box>
                       </Box>
-                    </Box>
-                  </Box>
-                  <Box flex={1}>
-                    <Box>
-                      <Typography
-                        fontSize="17px"
-                        color={appTheme === "dark" ? "#fff" : "#000"}
-                      >
-                        Avatar
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Box
-                        display="flex"
-                        sx={{
-                          border: "1px solid",
-                          borderRadius: "10px",
-                          borderColor:
-                            appTheme === "dark" ? "#262626" : "#d1d5db",
-                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
-                          "&.MuiBox-root:hover": {
-                            borderColor: "#703bf7",
-                          },
-                        }}
-                      >
-                        <Box flex="1">
-                          <CustomInput
-                            ref={avatarInputRef}
-                            type="file"
-                            required
-                            sx={{
+                      <Box>
+                        <TextField
+                          {...register("name", { required: true })}
+                          sx={{
+                            width: "100%",
+                            borderRadius: "10px",
+                            bgcolor:
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
+                            "& .MuiInputBase-input": {
+                              color: appTheme === "dark" ? "white" : "#000",
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              border: "1px solid",
+                              borderRadius: "10px",
+                              borderColor:
+                                appTheme === "dark" ? "#262626" : "#d1d5db",
+                              mb: "1px",
+                            },
+                            "&:hover:not(.Mui-focused)": {
                               "& .MuiOutlinedInput-notchedOutline": {
-                                border: "none",
+                                border: "1px solid #703bf7",
+                                borderRadius: "10px",
                               },
-                              "&:hover:not(.Mui-focused)": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  border: "none",
-                                },
+                            },
+                            "& .Mui-focused": {
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid #703bf7",
+                                borderRadius: "10px",
                               },
-                              "& .Mui-focused": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  border: "none",
-                                },
-                              },
-                            }}
-                          />
+                            },
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                    <Box flex={1}>
+                      <Box display="flex" gap="10px">
+                        <Typography
+                          fontSize="17px"
+                          color={appTheme === "dark" ? "#fff" : "#000"}
+                        >
+                          Password
+                        </Typography>
+                        <Box>
+                          {errors.password && (
+                            <Box
+                              component="span"
+                              color="orange"
+                              sx={{ opacity: "80%" }}
+                            >
+                              {errors.password.message}
+                            </Box>
+                          )}
                         </Box>
-                        <Box flex=".1">
-                          <Box
-                            minWidth="100%"
-                            minHeight="100%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                          >
-                            {uploadImage.isPending && <Loader upload={true} />}
-                            {uploadImage.isSuccess && <Box>✅</Box>}
-                            {uploadImage.isError && <Box>❌</Box>}
-                          </Box>
-                        </Box>
+                      </Box>
+                      <Box>
+                        <TextField
+                          {...register("password", { required: true, min: 4 })}
+                          type="password"
+                          sx={{
+                            width: "100%",
+                            borderRadius: "10px",
+                            bgcolor:
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
+                            "& .MuiInputBase-input": {
+                              color: appTheme === "dark" ? "white" : "#000",
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              border: "1px solid",
+                              borderRadius: "10px",
+                              borderColor:
+                                appTheme === "dark" ? "#262626" : "#d1d5db",
+                              mb: "1px",
+                            },
+                            "&:hover:not(.Mui-focused)": {
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid #703bf7",
+                                borderRadius: "10px",
+                              },
+                            },
+                            "& .Mui-focused": {
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid #703bf7",
+                                borderRadius: "10px",
+                              },
+                            },
+                          }}
+                        />
                       </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-              {/* buttons */}
-              <Box py="40px">
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <Box>
-                    <ThemeProvider theme={ProductsButton}>
-                      <Button
-                        onClick={handleSubmit}
-                        variant="contained"
-                        color="primary"
-                        fullWidth={false}
-                        sx={{
-                          "&.MuiButtonBase-root": {
-                            minWidth: "10px",
-                            width: { xs: "200px", sm: "300px" },
-                            height: "50px",
-                            borderRadius: "8px",
-                          },
-                          textTransform: "none",
-                        }}
-                      >
+                {/* email and avatar */}
+                <Box>
+                  <Box
+                    display="flex"
+                    flexDirection={{ xs: "column", sm: "row" }}
+                    justifyContent="end"
+                    gap={{
+                      xs: "40px",
+                      sm: "20px",
+                      md: "40px",
+                      lg: "60px",
+                      xl: "100px",
+                    }}
+                    p="10px"
+                  >
+                    {/* email section */}
+                    <Box flex={1} mr={{ xs: "0", sm: "auto" }}>
+                      <Box display="flex" gap="10px">
+                        <Typography
+                          fontSize="17px"
+                          color={appTheme === "dark" ? "#fff" : "#000"}
+                        >
+                          Email Address
+                        </Typography>
+                        <Box>
+                          {errors.email && (
+                            <Box
+                              component="span"
+                              color="orange"
+                              sx={{ opacity: "80%" }}
+                            >
+                              {errors.email.message}
+                            </Box>
+                          )}
+                        </Box>
+                      </Box>
+                      <Box>
                         <Box
                           display="flex"
-                          justifyContent="center"
-                          alignItems="center"
+                          sx={{
+                            border: "1px solid",
+                            borderRadius: "10px",
+                            borderColor:
+                              appTheme === "dark" ? "#262626" : "#d1d5db",
+                            bgcolor:
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
+                            "&.MuiBox-root:hover": {
+                              borderColor: "#703bf7",
+                            },
+                          }}
                         >
-                          Sign Up
+                          <Box flex="1">
+                            <TextField
+                              {...register("email", { required: true })}
+                              type="email"
+                              sx={{
+                                width: "100%",
+                                "& .MuiInputBase-input": {
+                                  color: appTheme === "dark" ? "white" : "#000",
+                                },
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "none",
+                                },
+                                "&:hover:not(.Mui-focused)": {
+                                  "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                  },
+                                },
+                                "& .Mui-focused": {
+                                  "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                  },
+                                },
+                              }}
+                            />
+                          </Box>
+                          <Box
+                            flex=".1"
+                            p="8px"
+                            display={
+                              checkEmail.isPending ||
+                              checkEmail.isError ||
+                              checkEmail.isSuccess
+                                ? "block"
+                                : "none"
+                            }
+                          >
+                            <Box
+                              minWidth="100%"
+                              minHeight="100%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                            >
+                              {checkEmail.isPending && <Loader upload={true} />}
+                              {checkEmail.isSuccess && <Box>✅</Box>}
+                              {checkEmail.isError && <Box>❌</Box>}
+                            </Box>
+                          </Box>
                         </Box>
-                      </Button>
-                    </ThemeProvider>
-                  </Box>
-                  <Box mt="20px">
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      textAlign="center"
-                      width={{ xs: "200px", sm: "300px" }}
-                      height="50px"
-                      borderRadius="8px"
-                      bgcolor="#333333"
-                      color="#fff"
-                      py="10px"
-                    >
-                      <Link
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                        }}
-                        to="/login"
-                      >
-                        Login
-                      </Link>
+                      </Box>
+                    </Box>
+                    {/* avatar section */}
+                    <Box flex={1}>
+                      <Box display="flex" gap="10px">
+                        <Typography
+                          fontSize="17px"
+                          color={appTheme === "dark" ? "#fff" : "#000"}
+                        >
+                          Avatar
+                        </Typography>
+                        <Box>
+                          {userImageError && (
+                            <Box
+                              component="span"
+                              color="orange"
+                              sx={{ opacity: "80%" }}
+                            >
+                              {userImageError}
+                            </Box>
+                          )}
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Box
+                          display="flex"
+                          sx={{
+                            border: "1px solid",
+                            borderRadius: "10px 10px 10px 0",
+                            borderColor:
+                              appTheme === "dark" ? "#262626" : "#d1d5db",
+                            bgcolor:
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
+                            "&.MuiBox-root:hover": {
+                              borderColor: "#703bf7",
+                            },
+                          }}
+                        >
+                          <Box flex="1">
+                            <Input
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                              ) => {
+                                setUserImageError(null);
+                                setUserImage(e.target.files?.[0]);
+                              }}
+                              type="file"
+                              required
+                              sx={{
+                                width: "100%",
+                                p: "10px",
+                                borderRadius: "10px 10px 0 0",
+                                borderColor:
+                                  appTheme === "dark" ? "#262626" : "#d1d5db",
+                                backgroundColor:
+                                  appTheme === "dark" ? "#141414" : "#f3f3f3",
+                                "& .MuiInputBase-input": {
+                                  color: appTheme === "dark" ? "white" : "#000",
+                                },
+                              }}
+                            />
+                          </Box>
+                          <Box flex=".1">
+                            <Box
+                              minWidth="100%"
+                              minHeight="100%"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                            >
+                              {uploadImage.isPending && (
+                                <Loader upload={true} />
+                              )}
+                              {uploadImage.isSuccess && <Box>✅</Box>}
+                              {uploadImage.isError && <Box>❌</Box>}
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            </Stack>
+                {/* buttons */}
+                <Box py="40px">
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                  >
+                    <Box>
+                      <ThemeProvider theme={ProductsButton}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          fullWidth={false}
+                          sx={{
+                            "&.MuiButtonBase-root": {
+                              minWidth: "10px",
+                              width: { xs: "200px", sm: "300px" },
+                              height: "50px",
+                              borderRadius: "8px",
+                            },
+                            textTransform: "none",
+                          }}
+                        >
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            Sign Up
+                          </Box>
+                        </Button>
+                      </ThemeProvider>
+                    </Box>
+                    <Box mt="20px">
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        textAlign="center"
+                        width={{ xs: "200px", sm: "300px" }}
+                        height="50px"
+                        borderRadius="8px"
+                        bgcolor="#333333"
+                        color="#fff"
+                        py="10px"
+                      >
+                        <Link
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                          to="/login"
+                        >
+                          Login
+                        </Link>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Stack>
+            </form>
           </Container>
         </Box>
       </Container>

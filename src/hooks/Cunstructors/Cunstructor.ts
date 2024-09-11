@@ -1,6 +1,7 @@
-import { getTokenReqT, updateUserReqT, userReqT } from "../utils/types/Auth";
-import { UserT } from "../state management/User/UserSlice";
-import { UpdateProductReqT } from "../utils/types/ProductManagement";
+import { getTokenReqT, updateUserReqT, userReqT } from "../../utils/types/Auth";
+import { UserT } from "../../state management/User/UserSlice";
+import { UpdateProductReqT } from "../../utils/types/ProductManagement";
+import { UpdateCategoryReqT } from "../../utils/types/CategoryManagement";
 
 export const UserRegisterCunstructor = (
   name: UserT["name"],
@@ -45,12 +46,20 @@ export const UserUpdateCunstructor = (props: UpdateUserReqT) => {
 export const ProductUpdateCunstructor = (
   product: UpdateProductReqT["updatedProduct"]
 ) => {
-  const output: UpdateProductReqT["updatedProduct"] = {};
+  const output: Partial<UpdateProductReqT["updatedProduct"]> = {};
   if (product.title) output.title = product.title;
   if (product.price) output.price = product.price;
   if (product.description) output.description = product.description;
-  if (product.categoryId) output.categoryId = product.categoryId;
   if (product.images && product.images.length > 0)
     output.images = product.images;
+  return output;
+};
+
+export const CategoryUpdateCunstructor = (
+  category: UpdateCategoryReqT["updatedCategory"]
+) => {
+  const output: Partial<UpdateCategoryReqT["updatedCategory"]> = {};
+  if (category.name) output.name = category.name;
+  if (category.image) output.image = category.image;
   return output;
 };

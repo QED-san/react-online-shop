@@ -12,16 +12,40 @@ import Theme from "../../../theme/Theme";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CreateCategoryInputT } from "../../../utils/types/CategoryManagement";
+import React from "react";
+import { useUploadFile } from "../../../hooks/useAuth";
+import { fileUploadResT } from "../../../utils/types/Auth";
+import { useCreateCategory } from "../../../hooks/useCategoryManagement";
+import { productCategoryT } from "../../../utils/types/Product";
 
 const CreateCategory = () => {
   const appTheme = Theme();
+  const uploadFile = useUploadFile(uploadImageSucced);
+  const createCategory = useCreateCategory(categoryCreatedSuccessfully);
+  const [categoryImage, setCategoryImage] = React.useState<Blob>();
+  const [categoryImageError, setCategoryImageError] = React.useState<
+    string | null
+  >(null);
+  const [formData, setFormData] = React.useState<CreateCategoryInputT>();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateCategoryInputT>();
-  const onSubmit: SubmitHandler<CreateCategoryInputT> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<CreateCategoryInputT> = (data) => {
+    if (categoryImage) {
+      uploadFile.mutateAsync(categoryImage);
+      setFormData(data);
+    } else setCategoryImageError("this field is required");
+  };
+
+  function uploadImageSucced(res: fileUploadResT) {
+    if (formData)
+      createCategory.mutateAsync({ ...formData, image: res.location });
+  }
+  function categoryCreatedSuccessfully(res: productCategoryT) {
+    console.log(res);
+  }
 
   return (
     <Box
@@ -95,20 +119,37 @@ const CreateCategory = () => {
                     </Box>
                   </Box>
                   <Box>
-                    <Box>
+                    <Box display="flex" gap="10px">
                       <Typography
                         fontSize="17px"
                         color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Image
                       </Typography>
+                      <Box>
+                        {categoryImageError && (
+                          <Box
+                            component="span"
+                            color="orange"
+                            sx={{ opacity: "80%" }}
+                          >
+                            {categoryImageError}
+                          </Box>
+                        )}
+                      </Box>
                     </Box>
                     <Box>
                       <Box>
                         <Box>
                           <Input
-                            {...register("image", { required: true })}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              setCategoryImageError(null);
+                              setCategoryImage(e.target.files?.[0]);
+                            }}
                             type="file"
+                            required
                             sx={{
                               width: "100%",
                               p: "10px",

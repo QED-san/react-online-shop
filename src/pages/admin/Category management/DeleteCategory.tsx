@@ -11,16 +11,18 @@ import Theme from "../../../theme/Theme";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DeleteCategoryInputT } from "../../../utils/types/CategoryManagement";
+import { useDeleteCategory } from "../../../hooks/useCategoryManagement";
 
 const DeleteCategory = () => {
   const appTheme = Theme();
+  const deleteCategory = useDeleteCategory();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<DeleteCategoryInputT>();
   const onSubmit: SubmitHandler<DeleteCategoryInputT> = (data) =>
-    console.log(data);
+    deleteCategory.mutateAsync(data.id).then((res) => console.log(res));
 
   return (
     <Box

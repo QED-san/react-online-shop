@@ -288,6 +288,7 @@ const CreateProduct = () => {
                               setProductImage(e.target.files?.[0]);
                             }}
                             type="file"
+                            required
                             sx={{
                               width: "100%",
                               p: "10px",

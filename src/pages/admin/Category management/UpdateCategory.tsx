@@ -11,17 +11,46 @@ import {
 import Theme from "../../../theme/Theme";
 import ProductsButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UpdateCategoryInputT } from "../../../utils/types/CategoryManagement";
+import {
+  UpdateCategoryFormData,
+  UpdateCategoryInputT,
+} from "../../../utils/types/CategoryManagement";
+import React from "react";
+import { useUploadFile } from "../../../hooks/useAuth";
+import { useUpdateCategory } from "../../../hooks/useCategoryManagement";
 
 const UpdateCategory = () => {
   const appTheme = Theme();
+  const [categoryImage, setCategoryImage] = React.useState<Blob>();
+  const uploadFile = useUploadFile();
+  const updateCategory = useUpdateCategory();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateCategoryInputT>();
-  const onSubmit: SubmitHandler<UpdateCategoryInputT> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<UpdateCategoryInputT> = (data) => {
+    if (categoryImage)
+      uploadFile.mutateAsync(categoryImage).then((res) =>
+        requestToUpdateCategory({
+          ...data,
+          images: [res.location],
+        })
+      );
+    else
+      requestToUpdateCategory({
+        ...data,
+        images: [],
+      });
+  };
+
+  function requestToUpdateCategory(reqPayload: UpdateCategoryFormData) {
+    const req = {
+      updatedCategory: { ...reqPayload },
+      id: reqPayload.id,
+    };
+    updateCategory.mutateAsync(req).then((res) => console.log(res));
+  }
 
   return (
     <Box
@@ -119,7 +148,7 @@ const UpdateCategory = () => {
                       <Box>
                         <Box>
                           <TextField
-                            {...register("name", { required: true })}
+                            {...register("name")}
                             sx={{
                               width: "100%",
                               borderRadius: "10px",
@@ -154,30 +183,23 @@ const UpdateCategory = () => {
                     </Box>
                   </Box>
                   <Box>
-                    <Box display="flex" gap="10px">
+                    <Box>
                       <Typography
                         fontSize="17px"
                         color={appTheme === "dark" ? "#fff" : "#000"}
                       >
                         Image
                       </Typography>
-                      <Box>
-                        {errors.image && (
-                          <Box
-                            component="span"
-                            color="orange"
-                            sx={{ opacity: "80%" }}
-                          >
-                            {errors.image.message}
-                          </Box>
-                        )}
-                      </Box>
                     </Box>
                     <Box>
                       <Box>
                         <Box>
                           <Input
-                            {...register("image", { required: true })}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              setCategoryImage(e.target.files?.[0]);
+                            }}
                             type="file"
                             sx={{
                               width: "100%",

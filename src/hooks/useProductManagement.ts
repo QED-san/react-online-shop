@@ -5,9 +5,10 @@ import {
   DeleteProductReqT,
   DeleteProductResT,
   UpdateProductReqT,
+  UpdateProductResT,
 } from "../utils/types/ProductManagement";
 import axios from "axios";
-import { ProductUpdateCunstructor } from "./Cunstructor";
+import { ProductUpdateCunstructor } from "./Cunstructors/Cunstructor";
 
 export const useCreateProduct = (setRes: (res: CreateProductResT) => void) => {
   return useMutation<CreateProductResT, Error, CreateProductReqT>({
@@ -24,7 +25,7 @@ export const useCreateProduct = (setRes: (res: CreateProductResT) => void) => {
   });
 };
 
-export const useDeleteProduct = (setRes: (res: DeleteProductResT) => void) => {
+export const useDeleteProduct = (setRes?: (res: DeleteProductResT) => void) => {
   return useMutation<DeleteProductResT, Error, DeleteProductReqT>({
     mutationFn: async (id: DeleteProductReqT) =>
       await axios
@@ -32,22 +33,22 @@ export const useDeleteProduct = (setRes: (res: DeleteProductResT) => void) => {
           `${import.meta.env.VITE_BASE_URL}/products/${id}`
         )
         .then((res) => res.data),
-    onSuccess: (res) => setRes(res),
+    onSuccess: (res) => setRes && setRes(res),
     onError: (err) =>
       console.error("while deleting product, this happend:", err),
   });
 };
 
-export const useUpdateProduct = (setRes: (res: CreateProductResT) => void) => {
-  return useMutation<CreateProductResT, Error, UpdateProductReqT>({
+export const useUpdateProduct = (setRes?: (res: UpdateProductResT) => void) => {
+  return useMutation<UpdateProductResT, Error, UpdateProductReqT>({
     mutationFn: async (req: UpdateProductReqT) =>
       await axios
-        .put<CreateProductResT>(
+        .put<UpdateProductResT>(
           `${import.meta.env.VITE_BASE_URL}/products/${req.id}`,
           ProductUpdateCunstructor(req.updatedProduct)
         )
         .then((res) => res.data),
-    onSuccess: (res) => setRes(res),
+    onSuccess: (res) => setRes && setRes(res),
     onError: (err) =>
       console.error("while updating product, this happend:", err),
   });

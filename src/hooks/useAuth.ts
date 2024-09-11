@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../state management/store";
 import { useNavigate } from "react-router-dom";
 
-export const useCheckEmail = (setTheRes: (res: checkEmailResT) => void) => {
+export const useCheckEmail = (setTheRes?: (res: checkEmailResT) => void) => {
   return useMutation<checkEmailResT, Error, string>({
     mutationFn: async (email: string) =>
       await axios
@@ -21,13 +21,13 @@ export const useCheckEmail = (setTheRes: (res: checkEmailResT) => void) => {
           { email }
         )
         .then((res) => res.data),
-    onSuccess: (res) => setTheRes(res),
+    onSuccess: (res) => setTheRes && setTheRes(res),
     onError: (err) =>
       console.error("while verifying email, this happend:", err),
   });
 };
 
-export const useUploadFile = (setUploadRes: (res: fileUploadResT) => void) => {
+export const useUploadFile = (setUploadRes?: (res: fileUploadResT) => void) => {
   return useMutation<fileUploadResT, Error, fileUploadReqT>({
     mutationFn: async (file: fileUploadReqT) =>
       await axios
@@ -36,10 +36,10 @@ export const useUploadFile = (setUploadRes: (res: fileUploadResT) => void) => {
           {
             file,
           },
-          { headers: { "Content-Type": "multipart/form-data" }}
+          { headers: { "Content-Type": "multipart/form-data" } }
         )
         .then((res) => res.data),
-    onSuccess: (res) => setUploadRes(res),
+    onSuccess: (res) => setUploadRes && setUploadRes(res),
     onError: (err) => console.error("while uploading file, this happend:", err),
   });
 };

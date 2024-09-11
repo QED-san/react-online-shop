@@ -25,7 +25,10 @@ import {
   logOutUser,
   updateUser,
 } from "../state management/User/UserSlice";
-import { UpdateUserReqT, UserUpdateCunstructor } from "../hooks/Cunstructor";
+import {
+  UpdateUserReqT,
+  UserUpdateCunstructor,
+} from "../hooks/Cunstructors/Cunstructor";
 import { ListAlt } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";

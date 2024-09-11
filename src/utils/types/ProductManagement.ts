@@ -14,21 +14,22 @@ export interface NewTypesIncludedProductCategory
     IncludedTypes {}
 
 export interface CreateProductResT
-  extends productsT,
-    NewTypesIncludedProductCategory {
+  extends Omit<productsT, "category">,
+    IncludedTypes {
   category: NewTypesIncludedProductCategory;
 }
 
 export type ProductTWithoutId = Omit<productsT, "id">;
+export type ProductWithoutCategoryAndId = Omit<ProductTWithoutId, "category">;
 
-export type CreateProductReqT = Omit<ProductTWithoutId, "category"> & {
-  categoryId: number;
-};
+export type CreateProductReqT = ProductWithoutCategoryAndId;
 
 export type UpdateProductReqT = {
   id: DeleteProductReqT;
-  updatedProduct: Partial<CreateProductReqT>;
+  updatedProduct: CreateProductReqT;
 };
+
+export type UpdateProductResT = CreateProductResT;
 
 export type DeleteProductInputT = Pick<UpdateProductReqT, "id">;
 
@@ -43,4 +44,6 @@ export interface UpdateProductInputsT
   extends CreateProductInputsT,
     DeleteProductInputT {}
 
-export type UpdateProductFormData = UpdateProductInputsT & { images: string[] };
+export type UpdateProductFormData = UpdateProductInputsT & {
+  images: productsT["images"];
+};
