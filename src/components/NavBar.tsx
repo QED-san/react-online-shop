@@ -362,7 +362,7 @@ const NavBar = () => {
                                 bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
                               }}
                               alt="profile"
-                              src={user.avatar}
+                              src={user.avatar.toString()}
                             />
                           </Link>
                         </Grid>
@@ -565,7 +565,13 @@ const NavBar = () => {
                         onClick={() => setDrawer(false)}
                       >
                         <Grid container alignItems="center">
-                          <ShoppingBag sx={{ fontSize: "18px", mr: "10px" }} />
+                          <ShoppingBag
+                            sx={{
+                              fontSize: "18px",
+                              mr: "10px",
+                              color: appTheme === "dark" ? "#feff" : "#000",
+                            }}
+                          />
                         </Grid>
                       </Link>
                       <Box>
@@ -575,7 +581,7 @@ const NavBar = () => {
                               bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
                             }}
                             alt="profile"
-                            src={user.avatar}
+                            src={user.avatar.toString()}
                           />
                         </Link>
                       </Box>
