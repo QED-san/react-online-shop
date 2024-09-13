@@ -54,7 +54,7 @@ export function ProductImage({ src, id }: productCardImageT) {
   return (
     <Box
       sx={{
-        maxWidth: { xs: "410px", sm: "320px", md: "280px" },
+        maxWidth: { xs: "490px", sm: "320px", md: "340px" },
         minHeight: {
           xs: "250px",
           sm: "230px",
