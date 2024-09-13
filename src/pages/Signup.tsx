@@ -354,7 +354,7 @@ export const Signup = () => {
                               justifyContent="center"
                               alignItems="center"
                             >
-                              {checkEmail.isPending && <Loader upload={true} />}
+                              {checkEmail.isPending && <Loader spinner={true} />}
                               {checkEmail.isSuccess && <Box>✅</Box>}
                               {checkEmail.isError && <Box>❌</Box>}
                             </Box>
@@ -431,7 +431,7 @@ export const Signup = () => {
                               alignItems="center"
                             >
                               {uploadImage.isPending && (
-                                <Loader upload={true} />
+                                <Loader spinner={true} />
                               )}
                               {uploadImage.isSuccess && <Box>✅</Box>}
                               {uploadImage.isError && <Box>❌</Box>}

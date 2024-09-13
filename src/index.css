@@ -10,6 +10,10 @@ body {
   }
 }
 
+.infinite-scroll-component::-webkit-scrollbar {
+  display: none;
+}
+
 @media (max-width: 600px) {
   body::-webkit-scrollbar {
     width: 0;

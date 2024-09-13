@@ -1,8 +1,14 @@
 import { Box, Grid, styled } from "@mui/material";
 
-const Loader = ({ big, upload }: { big?: string; upload?: boolean }) => {
+const Loader = ({
+  big,
+  spinner: spinner,
+}: {
+  big?: string;
+  spinner?: boolean;
+}) => {
   let LoaderBodyDiv;
-  if (upload) {
+  if (spinner) {
     LoaderBodyDiv = styled(Box)({
       width: "20px",
       aspectRatio: 1,

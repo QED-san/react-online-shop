@@ -28,17 +28,18 @@ import { productsT } from "../utils/types/Product";
 import Loader from "../components/Loaders/MainLoader";
 import Theme from "../theme/Theme";
 import * as Product from "../utils/types/Product";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Products = () => {
   const appTheme = Theme();
   const [allProducts, setAllProducts] = React.useState<Product.productsT[]>([]);
+  const [allProductsLength, setAllProductsLength] = React.useState<number>(0);
 
   const {
     data: products,
     error: productsError,
     isLoading: productsIsLoading,
     fetchNextPage,
-    isFetchingNextPage,
     hasNextPage,
   } = useProducts();
 
@@ -48,6 +49,12 @@ const Products = () => {
         ...prev,
         ...products.pages[products.pages.length - 1],
       ]);
+      setAllProductsLength(
+        products.pages.reduce(
+          (accumulator, page) => page.length + accumulator,
+          0
+        )
+      );
     }
   }, [products]);
 
@@ -364,106 +371,121 @@ const Products = () => {
             >
               {/* products section */}
               <Box sx={{ flex: 1, order: { xs: 2, md: 1 } }}>
-                <Box
-                  pt="11px"
-                  display="flex"
-                  flexWrap="wrap"
-                  flexDirection="row"
-                  alignItems={productsIsLoading ? "center" : "unset"}
-                  gap="30px"
-                  minHeight="500px"
+                <InfiniteScroll
+                  dataLength={allProductsLength}
+                  hasMore={hasNextPage}
+                  next={fetchNextPage}
+                  loader={<Loader spinner={true} />}
                 >
-                  {!productsError && !products && productsIsLoading && (
-                    <Loader big={"40%"} />
-                  )}
-                  {!productsIsLoading && !products && productsError && (
-                    <div className="text-red-700">
-                      products error: {productsError.message}
-                    </div>
-                  )}
-                  {!productsIsLoading && !productsError && !productsFilteredBy
-                    ? products?.pages.map((page) => (
-                        <React.Fragment key={Math.random() + Math.random()}>
-                          {page?.map((product) => (
-                            <ProductCard
-                              product={product}
-                              key={product.category.image.concat(
-                                product.id + Math.random().toString()
-                              )}
-                            >
-                              <ProductCard.ProductImage
-                                src={product.images}
-                                id={product.id}
-                              />
-                              <ProductCard.ProductTitle title={product.title} />
-                              <ProductCard.ProductDescription
-                                description={product.description}
-                                id={product.id}
-                              />
-                              <ProductCard.ProductCategory
-                                category={product.category}
-                              />
-                              <ProductCard.ProductPurchaseInfo
-                                price={product.price}
-                                id={product.id}
-                              />
-                            </ProductCard>
-                          ))}
-                        </React.Fragment>
-                      ))
-                    : productsFilteredBy &&
-                      filteredProducts?.map((fp) => (
-                        <ProductCard
-                          product={fp}
-                          key={fp.description.concat(
-                            fp.id + Math.random().toString()
-                          )}
-                        >
-                          <ProductCard.ProductImage
-                            src={fp.images}
-                            id={fp.id}
-                          />
-                          <ProductCard.ProductTitle title={fp.title} />
-                          <ProductCard.ProductDescription
-                            description={fp.description}
-                            id={fp.id}
-                          />
-                          <ProductCard.ProductCategory category={fp.category} />
-                          <ProductCard.ProductPurchaseInfo
-                            price={fp.price}
-                            id={fp.id}
-                          />
-                        </ProductCard>
-                      ))}
-                </Box>
-                {/* load more products button */}
-                {hasNextPage && (
-                  <Box pt="20px" display={!filteredProducts ? "block" : "none"}>
-                    <Box display="flex" justifyContent="center">
-                      <ThemeProvider theme={productsButton}>
-                        <Box bgcolor="#">
-                          <Button
-                            onClick={() => {
-                              fetchNextPage();
-                            }}
-                            variant="contained"
-                            color="primary"
-                            sx={{
-                              "&.MuiButtonBase-root": {
-                                minWidth: "10px",
-                                width: "150px",
-                                height: "40px",
-                                borderRadius: "10px",
-                              },
-                            }}
+                  <Box
+                    pt="11px"
+                    pb="50px"
+                    display="flex"
+                    flexWrap="wrap"
+                    flexDirection="row"
+                    alignItems={productsIsLoading ? "center" : "unset"}
+                    gap="30px"
+                    minHeight="500px"
+                  >
+                    {!productsError && !products && productsIsLoading && (
+                      <Loader big={"40%"} />
+                    )}
+                    {!productsIsLoading && !products && productsError && (
+                      <div className="text-red-700">
+                        products error: {productsError.message}
+                      </div>
+                    )}
+                    {!productsIsLoading && !productsError && !productsFilteredBy
+                      ? products?.pages.map((page) => (
+                          <React.Fragment key={Math.random() + Math.random()}>
+                            {page?.map((product) => (
+                              <ProductCard
+                                product={product}
+                                key={product.category.image.concat(
+                                  product.id + Math.random().toString()
+                                )}
+                              >
+                                <ProductCard.ProductImage
+                                  src={product.images}
+                                  id={product.id}
+                                />
+                                <ProductCard.ProductTitle
+                                  title={product.title}
+                                />
+                                <ProductCard.ProductDescription
+                                  description={product.description}
+                                  id={product.id}
+                                />
+                                <ProductCard.ProductCategory
+                                  category={product.category}
+                                />
+                                <ProductCard.ProductPurchaseInfo
+                                  price={product.price}
+                                  id={product.id}
+                                />
+                              </ProductCard>
+                            ))}
+                          </React.Fragment>
+                        ))
+                      : productsFilteredBy &&
+                        filteredProducts?.map((fp) => (
+                          <ProductCard
+                            product={fp}
+                            key={fp.description.concat(
+                              fp.id + Math.random().toString()
+                            )}
                           >
-                            {isFetchingNextPage ? "Loading..." : "Load more"}
-                          </Button>
-                        </Box>
-                      </ThemeProvider>
-                    </Box>
+                            <ProductCard.ProductImage
+                              src={fp.images}
+                              id={fp.id}
+                            />
+                            <ProductCard.ProductTitle title={fp.title} />
+                            <ProductCard.ProductDescription
+                              description={fp.description}
+                              id={fp.id}
+                            />
+                            <ProductCard.ProductCategory
+                              category={fp.category}
+                            />
+                            <ProductCard.ProductPurchaseInfo
+                              price={fp.price}
+                              id={fp.id}
+                            />
+                          </ProductCard>
+                        ))}
                   </Box>
-                )}
+                  {/* load more products button */}
+                  {/* {hasNextPage && (
+                    <Box
+                      pt="20px"
+                      display={!filteredProducts ? "block" : "none"}
+                    >
+                      <Box display="flex" justifyContent="center">
+                        <ThemeProvider theme={productsButton}>
+                          <Box bgcolor="#">
+                            <Button
+                              onClick={() => {
+                                fetchNextPage();
+                              }}
+                              variant="contained"
+                              color="primary"
+                              sx={{
+                                "&.MuiButtonBase-root": {
+                                  minWidth: "10px",
+                                  width: "150px",
+                                  height: "40px",
+                                  borderRadius: "10px",
+                                },
+                              }}
+                            >
+                              {isFetchingNextPage ? "Loading..." : "Load more"}
+                            </Button>
+                          </Box>
+                        </ThemeProvider>
+                      </Box>
+                    </Box>
+                  )} */}
+                </InfiniteScroll>
               </Box>
               {/* categories section */}
               <Grid
