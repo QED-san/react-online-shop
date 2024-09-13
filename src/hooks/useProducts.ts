@@ -15,7 +15,7 @@ const useProducts = () => {
         )
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length > 10 ? allPages.length + 10 : undefined;
+      return lastPage.length >= 10 ? allPages.length * 10 : undefined;
     },
     refetchOnWindowFocus: false,
   });

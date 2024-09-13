@@ -27,10 +27,12 @@ import SearchInput from "../components/Products/ui/SearchInput";
 import { productsT } from "../utils/types/Product";
 import Loader from "../components/Loaders/MainLoader";
 import Theme from "../theme/Theme";
+import * as Product from "../utils/types/Product";
 
 const Products = () => {
   const appTheme = Theme();
-  const [currentPage, setCurrentPage] = React.useState<number>(0);
+  const [allProducts, setAllProducts] = React.useState<Product.productsT[]>([]);
+
   const {
     data: products,
     error: productsError,
@@ -39,6 +41,15 @@ const Products = () => {
     isFetchingNextPage,
     hasNextPage,
   } = useProducts();
+
+  React.useEffect(() => {
+    if (products) {
+      setAllProducts((prev) => [
+        ...prev,
+        ...products.pages[products.pages.length - 1],
+      ]);
+    }
+  }, [products]);
 
   const {
     data: categories,
@@ -61,23 +72,23 @@ const Products = () => {
 
   React.useEffect(() => {
     if (products) {
-      const Page = products.pages[currentPage];
       if (productsFilteredBy)
         if (productsFilteredBy.type === "category")
           setFilteredProducts(
-            Page.filter((p) => p.category.name === productsFilteredBy.value)
+            allProducts.filter(
+              (p) => p.category.name === productsFilteredBy.value
+            )
           );
     }
-  }, [products, productsFilteredBy, currentPage]);
+  }, [products, productsFilteredBy, allProducts]);
 
   function handleSearch() {
     if (searchInputRef.current && searchInputRef.current.value !== "")
       setProductsFilteredBy({ type: "search", value: "" });
     if (products) {
-      const Page = products.pages[currentPage];
       if (!filteredProducts) {
         setFilteredProducts(
-          Page.filter(
+          allProducts.filter(
             (p) =>
               searchInputRef.current != null &&
               p.title.includes(searchInputRef.current.value)
@@ -99,9 +110,10 @@ const Products = () => {
     if (priceSearchValue) {
       setProductsFilteredBy({ type: "price", value: "" });
       if (products) {
-        const Page = products.pages[currentPage];
         if (!filteredProducts) {
-          setFilteredProducts(Page.filter((p) => p.price == priceSearchValue));
+          setFilteredProducts(
+            allProducts.filter((p) => p.price == priceSearchValue)
+          );
         } else {
           setFilteredProducts(
             filteredProducts.filter((p) => p.price == priceSearchValue)
@@ -116,9 +128,8 @@ const Products = () => {
       if (minPriceRangeValue >= 0) {
         setProductsFilteredBy({ type: "rangePrice", value: "" });
         if (products) {
-          const Page = products.pages[currentPage];
           setFilteredProducts(
-            Page.filter(
+            allProducts.filter(
               (p) =>
                 p.price >= minPriceRangeValue && p.price <= maxPriceRangeValue
             )
@@ -425,6 +436,7 @@ const Products = () => {
                         </ProductCard>
                       ))}
                 </Box>
+                {/* load more products button */}
                 {hasNextPage && (
                   <Box pt="20px" display={!filteredProducts ? "block" : "none"}>
                     <Box display="flex" justifyContent="center">
@@ -433,7 +445,6 @@ const Products = () => {
                           <Button
                             onClick={() => {
                               fetchNextPage();
-                              setCurrentPage((prev) => prev + 1);
                             }}
                             variant="contained"
                             color="primary"
