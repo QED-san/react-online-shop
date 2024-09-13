@@ -48,7 +48,7 @@ const NavBar = () => {
   const [selectThemeDropDownState, setSelectThemeDropDownState] =
     React.useState(false);
   const cartProducts = useCartProducts();
-  const isAuthenticated = Cookies.get("user_access_token");
+  const isAuthenticated = !!Cookies.get("user_access_token");
   const user = useSelector((state: RootState) => state.User);
   const matches = useMediaQuery("(min-width: 1200px)");
   React.useEffect(() => {

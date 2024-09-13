@@ -17,7 +17,7 @@ export const ProductDetail = () => {
   const [dynamicBigImage, setDynamicBigImage] = React.useState<string | null>(
     null
   );
-  const isAuthenticated = Cookies.get("user_access_token");
+  const isAuthenticated = !!Cookies.get("user_access_token");
 
   return (
     <Box

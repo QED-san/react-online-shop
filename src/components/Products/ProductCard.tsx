@@ -156,7 +156,7 @@ export function ProductCategory({ category }: productCardCategoryT) {
 
 export function ProductPurchaseInfo({ price, id }: productCardPurchaseInfoT) {
   const appTheme = Theme();
-  const isAuthenticated = Cookies.get("user_access_token");
+  const isAuthenticated = !!Cookies.get("user_access_token");
 
   return (
     <Box pt="20px">
