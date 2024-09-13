@@ -30,10 +30,14 @@ import Theme from "../theme/Theme";
 
 const Products = () => {
   const appTheme = Theme();
+  const [currentPage, setCurrentPage] = React.useState<number>(0);
   const {
     data: products,
     error: productsError,
     isLoading: productsIsLoading,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
   } = useProducts();
 
   const {
@@ -56,21 +60,24 @@ const Products = () => {
   const [maxPriceRangeValue, setMaxPriceRangeValue] = React.useState(0);
 
   React.useEffect(() => {
-    if (products)
+    if (products) {
+      const Page = products.pages[currentPage];
       if (productsFilteredBy)
         if (productsFilteredBy.type === "category")
           setFilteredProducts(
-            products.filter((p) => p.category.name === productsFilteredBy.value)
+            Page.filter((p) => p.category.name === productsFilteredBy.value)
           );
-  }, [products, productsFilteredBy]);
+    }
+  }, [products, productsFilteredBy, currentPage]);
 
   function handleSearch() {
     if (searchInputRef.current && searchInputRef.current.value !== "")
       setProductsFilteredBy({ type: "search", value: "" });
-    if (products)
+    if (products) {
+      const Page = products.pages[currentPage];
       if (!filteredProducts) {
         setFilteredProducts(
-          products.filter(
+          Page.filter(
             (p) =>
               searchInputRef.current != null &&
               p.title.includes(searchInputRef.current.value)
@@ -85,16 +92,16 @@ const Products = () => {
           )
         );
       }
+    }
   }
 
   function handlePriceFilter() {
     if (priceSearchValue) {
       setProductsFilteredBy({ type: "price", value: "" });
       if (products) {
+        const Page = products.pages[currentPage];
         if (!filteredProducts) {
-          setFilteredProducts(
-            products.filter((p) => p.price == priceSearchValue)
-          );
+          setFilteredProducts(Page.filter((p) => p.price == priceSearchValue));
         } else {
           setFilteredProducts(
             filteredProducts.filter((p) => p.price == priceSearchValue)
@@ -109,8 +116,9 @@ const Products = () => {
       if (minPriceRangeValue >= 0) {
         setProductsFilteredBy({ type: "rangePrice", value: "" });
         if (products) {
+          const Page = products.pages[currentPage];
           setFilteredProducts(
-            products.filter(
+            Page.filter(
               (p) =>
                 p.price >= minPriceRangeValue && p.price <= maxPriceRangeValue
             )
@@ -344,70 +352,107 @@ const Products = () => {
               }}
             >
               {/* products section */}
-              <Box
-                pt="11px"
-                display="flex"
-                flexWrap="wrap"
-                flexDirection="row"
-                gap="30px"
-                maxWidth={{ xs: "auto", md: "75%", lg: "83%" }}
-                sx={{ flex: 1, order: { xs: 2, md: 1 } }}
-              >
-                {!productsError && !products && productsIsLoading && (
-                  <Loader big={"40%"} />
+              <Box sx={{ flex: 1, order: { xs: 2, md: 1 } }}>
+                <Box
+                  pt="11px"
+                  display="flex"
+                  flexWrap="wrap"
+                  flexDirection="row"
+                  alignItems={productsIsLoading ? "center" : "unset"}
+                  gap="30px"
+                  minHeight="500px"
+                >
+                  {!productsError && !products && productsIsLoading && (
+                    <Loader big={"40%"} />
+                  )}
+                  {!productsIsLoading && !products && productsError && (
+                    <div className="text-red-700">
+                      products error: {productsError.message}
+                    </div>
+                  )}
+                  {!productsIsLoading && !productsError && !productsFilteredBy
+                    ? products?.pages.map((page) => (
+                        <React.Fragment key={Math.random() + Math.random()}>
+                          {page?.map((product) => (
+                            <ProductCard
+                              product={product}
+                              key={product.category.image.concat(
+                                product.id + Math.random().toString()
+                              )}
+                            >
+                              <ProductCard.ProductImage
+                                src={product.images}
+                                id={product.id}
+                              />
+                              <ProductCard.ProductTitle title={product.title} />
+                              <ProductCard.ProductDescription
+                                description={product.description}
+                                id={product.id}
+                              />
+                              <ProductCard.ProductCategory
+                                category={product.category}
+                              />
+                              <ProductCard.ProductPurchaseInfo
+                                price={product.price}
+                                id={product.id}
+                              />
+                            </ProductCard>
+                          ))}
+                        </React.Fragment>
+                      ))
+                    : productsFilteredBy &&
+                      filteredProducts?.map((fp) => (
+                        <ProductCard
+                          product={fp}
+                          key={fp.description.concat(
+                            fp.id + Math.random().toString()
+                          )}
+                        >
+                          <ProductCard.ProductImage
+                            src={fp.images}
+                            id={fp.id}
+                          />
+                          <ProductCard.ProductTitle title={fp.title} />
+                          <ProductCard.ProductDescription
+                            description={fp.description}
+                            id={fp.id}
+                          />
+                          <ProductCard.ProductCategory category={fp.category} />
+                          <ProductCard.ProductPurchaseInfo
+                            price={fp.price}
+                            id={fp.id}
+                          />
+                        </ProductCard>
+                      ))}
+                </Box>
+                {hasNextPage && (
+                  <Box pt="20px" display={!filteredProducts ? "block" : "none"}>
+                    <Box display="flex" justifyContent="center">
+                      <ThemeProvider theme={productsButton}>
+                        <Box bgcolor="#">
+                          <Button
+                            onClick={() => {
+                              fetchNextPage();
+                              setCurrentPage((prev) => prev + 1);
+                            }}
+                            variant="contained"
+                            color="primary"
+                            sx={{
+                              "&.MuiButtonBase-root": {
+                                minWidth: "10px",
+                                width: "150px",
+                                height: "40px",
+                                borderRadius: "10px",
+                              },
+                            }}
+                          >
+                            {isFetchingNextPage ? "Loading..." : "Load more"}
+                          </Button>
+                        </Box>
+                      </ThemeProvider>
+                    </Box>
+                  </Box>
                 )}
-                {!productsIsLoading && !products && productsError && (
-                  <div className="text-red-700">
-                    products error: {productsError.message}
-                  </div>
-                )}
-                {!productsIsLoading && !productsError && !productsFilteredBy
-                  ? products?.map((product) => (
-                      <ProductCard
-                        product={product}
-                        key={product.category.image.concat(
-                          product.id + Math.random().toString()
-                        )}
-                      >
-                        <ProductCard.ProductImage
-                          src={product.images}
-                          id={product.id}
-                        />
-                        <ProductCard.ProductTitle title={product.title} />
-                        <ProductCard.ProductDescription
-                          description={product.description}
-                          id={product.id}
-                        />
-                        <ProductCard.ProductCategory
-                          category={product.category}
-                        />
-                        <ProductCard.ProductPurchaseInfo
-                          price={product.price}
-                          id={product.id}
-                        />
-                      </ProductCard>
-                    ))
-                  : productsFilteredBy &&
-                    filteredProducts?.map((fp) => (
-                      <ProductCard
-                        product={fp}
-                        key={fp.description.concat(
-                          fp.id + Math.random().toString()
-                        )}
-                      >
-                        <ProductCard.ProductImage src={fp.images} id={fp.id} />
-                        <ProductCard.ProductTitle title={fp.title} />
-                        <ProductCard.ProductDescription
-                          description={fp.description}
-                          id={fp.id}
-                        />
-                        <ProductCard.ProductCategory category={fp.category} />
-                        <ProductCard.ProductPurchaseInfo
-                          price={fp.price}
-                          id={fp.id}
-                        />
-                      </ProductCard>
-                    ))}
               </Box>
               {/* categories section */}
               <Grid
