@@ -22,6 +22,8 @@ import { UserRegisterCunstructor } from "../hooks/Cunstructors/Cunstructor";
 import Theme from "../theme/Theme";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RegisterUserInputsT } from "../utils/types/Singup";
+import { closeSnackbar, enqueueSnackbar, SnackbarKey } from "notistack";
+import { Clear } from "@mui/icons-material";
 
 export const Signup = () => {
   const appTheme = Theme();
@@ -32,6 +34,22 @@ export const Signup = () => {
   const [userImageError, setUserImageError] = React.useState<string | null>(
     null
   );
+  const passwordWarningSnackAction = (id: SnackbarKey) => {
+    return (
+      <>
+        <Button
+          onClick={() => closeSnackbar(id)}
+          sx={{
+            "&.MuiButtonBase-root": {
+              minWidth: "10px",
+            },
+          }}
+        >
+          <Clear />
+        </Button>
+      </>
+    );
+  };
   const {
     register,
     handleSubmit,
@@ -43,23 +61,39 @@ export const Signup = () => {
         checkEmail.mutateAsync(data.email).then((res) => {
           if (!res.isAvailable)
             uploadImage.mutateAsync(userImage).then((res) => {
-              registerUser.mutateAsync(
-                UserRegisterCunstructor(
-                  data.name,
-                  data.email,
-                  data.password,
-                  res.location,
-                  "admin"
+              registerUser
+                .mutateAsync(
+                  UserRegisterCunstructor(
+                    data.name,
+                    data.email,
+                    data.password,
+                    res.location,
+                    "admin"
+                  )
                 )
-              );
+                .catch(() =>
+                  enqueueSnackbar("Register faild", {
+                    autoHideDuration: 2000,
+                    variant: "error",
+                  })
+                );
             });
         });
-      else console.log("password must be more than 4 characters");
+      else
+        enqueueSnackbar("password must be more than 4 characters", {
+          action: passwordWarningSnackAction,
+          autoHideDuration: 3000,
+          variant: "warning",
+        });
     else setUserImageError("this field is required");
   };
 
   function RegisterUser(res: UserT) {
     console.log(res);
+    enqueueSnackbar("Redirecting to login page...", {
+      autoHideDuration: 1000,
+      variant: "success",
+    });
   }
 
   return (
@@ -191,7 +225,7 @@ export const Signup = () => {
                       </Box>
                       <Box>
                         <TextField
-                          {...register("password", { required: true, min: 4 })}
+                          {...register("password", { required: true })}
                           type="password"
                           sx={{
                             width: "100%",

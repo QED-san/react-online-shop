@@ -22,8 +22,6 @@ export const useCheckEmail = (setTheRes?: (res: checkEmailResT) => void) => {
         )
         .then((res) => res.data),
     onSuccess: (res) => setTheRes && setTheRes(res),
-    onError: (err) =>
-      console.error("while verifying email, this happend:", err),
   });
 };
 
@@ -40,7 +38,6 @@ export const useUploadFile = (setUploadRes?: (res: fileUploadResT) => void) => {
         )
         .then((res) => res.data),
     onSuccess: (res) => setUploadRes && setUploadRes(res),
-    onError: (err) => console.error("while uploading file, this happend:", err),
   });
 };
 
@@ -63,7 +60,6 @@ export const useGetTokens = (setAccessTokenCookie: (res: tokensT) => void) => {
         .post<tokensT>(`${import.meta.env.VITE_BASE_URL}/auth/login`, user)
         .then((res) => res.data),
     onSuccess: (res) => setAccessTokenCookie(res),
-    onError: (err) => console.error("while loging in, this happend:", err),
   });
 };
 
@@ -78,8 +74,6 @@ export const useRegisterUser = (submitRequest: (res: UserT) => void) => {
       submitRequest(res);
       setTimeout(() => navigate("/login"), 1000);
     },
-    onError: (err) =>
-      console.log(`this error happened while registering: ${err}`),
   });
 };
 
@@ -95,6 +89,5 @@ export const useUpdateUser = <T>(setUpdatedUser: (res: UserT) => void) => {
         )
         .then((res) => res.data),
     onSuccess: (res) => setUpdatedUser(res),
-    onError: (err) => console.error("while updating user, this happend:", err),
   });
 };

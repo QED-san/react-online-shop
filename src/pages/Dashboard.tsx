@@ -33,6 +33,9 @@ import { ListAlt } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Theme from "../theme/Theme";
+import { resetOrderState } from "../state management/Orders/OrderSlice";
+import { resetCart } from "../state management/Cart/CartSlice";
+import { enqueueSnackbar } from "notistack";
 
 const Dashboard = () => {
   const appTheme = Theme();
@@ -45,9 +48,10 @@ const Dashboard = () => {
   const nameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
-  const imageRef = React.useRef<HTMLInputElement>(null);
+  const imageInputRef = React.useRef<HTMLInputElement>(null);
   const checkEmail = useCheckEmail(setTheEmailVerificationRes);
-  const updateUserReq = useUpdateUser<Partial<updateUserReqT>>(updateUserState);
+  const updateUserRequest =
+    useUpdateUser<Partial<updateUserReqT>>(updateUserState);
   const uploadFile = useUploadFile(setTheAvatarUploadRes);
   const [tempEmail, setTempEmail] = React.useState<string>("");
   const [authReqsRes, setAuthReqsRes] = React.useState({
@@ -80,8 +84,9 @@ const Dashboard = () => {
         checkEmail.mutateAsync(emailRef.current.value);
       } else console.log("name or email or password should not be empty");
   };
+
   const handleEditAvatarClick = () => {
-    if (imageRef.current) imageRef.current.click();
+    if (imageInputRef.current) imageInputRef.current.click();
   };
 
   function setTheEmailVerificationRes(res: checkEmailResT) {
@@ -92,21 +97,29 @@ const Dashboard = () => {
       setAuthReqsRes({ ...authReqsRes, emailChecked: true });
     }
     if (avatarChanged) {
-      uploadFile.mutateAsync(inputFile);
+      uploadFile
+        .mutateAsync(inputFile)
+        .catch(() => enqueueSnackbar("Avatar update failed"));
       setAvatarChanged(false);
     }
   }
+
   function setTheAvatarUploadRes(res: fileUploadResT) {
-    console.log("image uploaded");
-    if (res.location) {
-      setBigImage(res.location);
-      setInputsVal({ ...inputsVal, avatar: res.location });
-      setAuthReqsRes({ ...authReqsRes, avatarChecked: true });
-    }
+    enqueueSnackbar("Avatar updated", {
+      variant: "success",
+      autoHideDuration: 1000,
+    });
+    setBigImage(res.location);
+    setInputsVal({ ...inputsVal, avatar: res.location });
+    setAuthReqsRes({ ...authReqsRes, avatarChecked: true });
   }
+
   function updateUserState(res: UserT) {
     dispatch(updateUser(res));
-    console.log("user updated");
+    enqueueSnackbar("User updated successfuly", {
+      variant: "success",
+      autoHideDuration: 3000,
+    });
   }
 
   React.useEffect(() => {
@@ -123,7 +136,12 @@ const Dashboard = () => {
       const userObj = UserUpdateCunstructor(initialUser);
       // console.log(userObj);
       if (Object.values(userObj).length > 0) {
-        updateUserReq.mutateAsync(userObj);
+        updateUserRequest.mutateAsync(userObj).catch(() =>
+          enqueueSnackbar("Failed to update user", {
+            variant: "error",
+            autoHideDuration: 2000,
+          })
+        );
       }
     }
 
@@ -170,6 +188,8 @@ const Dashboard = () => {
                           onClick={() => {
                             removeCookie("user_access_token");
                             dispatch(logOutUser());
+                            dispatch(resetCart());
+                            dispatch(resetOrderState());
                             navigate("/products");
                           }}
                           sx={{
@@ -227,7 +247,7 @@ const Dashboard = () => {
                         </Box>
                         <CustomInput
                           type="file"
-                          ref={imageRef}
+                          ref={imageInputRef}
                           onChange={(
                             e: React.ChangeEvent<HTMLInputElement>
                           ) => {

@@ -361,7 +361,7 @@ const NavBar = () => {
                               sx={{
                                 bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
                               }}
-                              alt="profile"
+                              alt={user.name}
                               src={user.avatar.toString()}
                             />
                           </Link>
@@ -580,7 +580,7 @@ const NavBar = () => {
                             sx={{
                               bgcolor: appTheme === "dark" ? "#1a1a1a" : "",
                             }}
-                            alt="profile"
+                            alt={user.name}
                             src={user.avatar.toString()}
                           />
                         </Link>
@@ -746,7 +746,7 @@ const NavBar = () => {
               </Grid>
             </Box>
             {/* basic pages */}
-            <Box color={appTheme === "dark" ? "#fefe" : "#000"}>
+            <Box color={appTheme === "dark" ? "#fefe" : "#2f3645"}>
               <Stack sx={{ px: "10px" }}>
                 <ThemeProvider theme={drawerPagesLinksTheme}>
                   <Box sx={{ pl: "20px", mb: "15px" }}>

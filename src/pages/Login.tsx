@@ -3,13 +3,12 @@ import {
   Button,
   Container,
   Stack,
+  TextField,
   ThemeProvider,
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import ProductsButton from "../theme/Products/ProductsButton";
-import CustomInput from "../components/Products/ui/CustomInput";
-import React from "react";
 import { useGetTokens, useLoginUser } from "../hooks/useAuth";
 import {
   authenticateUser,
@@ -21,29 +20,33 @@ import { Buffer } from "buffer";
 import { useDispatch } from "react-redux";
 import { GetTokensCunstructor } from "../hooks/Cunstructors/Cunstructor";
 import Theme from "../theme/Theme";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { LoginUserInputsT } from "../utils/types/Login";
+import { enqueueSnackbar } from "notistack";
 
 export const Login = () => {
   const appTheme = Theme();
-  const emailInputRef = React.useRef<HTMLInputElement>(null);
-  const passwordInputRef = React.useRef<HTMLInputElement>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginUserInputsT>();
   const getTokens = useGetTokens(setAccessToken);
   const loginUser = useLoginUser(setUserState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    if (emailInputRef.current && passwordInputRef.current)
-      if (
-        emailInputRef.current.value.length > 0 &&
-        passwordInputRef.current.value.length > 4
-      )
-        getTokens.mutateAsync(
-          GetTokensCunstructor(
-            emailInputRef.current.value,
-            passwordInputRef.current.value
-          )
+  const onSubmit: SubmitHandler<LoginUserInputsT> = (data) => {
+    if (data.password.length >= 4)
+      getTokens
+        .mutateAsync(GetTokensCunstructor(data.email, data.password))
+        .catch(() =>
+          enqueueSnackbar("Login failed", {
+            autoHideDuration: 2000,
+            variant: "error",
+          })
         );
-      else console.log("the email or password cant be empty");
+    else console.log("password must be more than 4 characters");
   };
 
   function decodeJwt(token: tokensT): {
@@ -70,6 +73,10 @@ export const Login = () => {
     if (Cookies.get("user_access_token")) {
       dispatch(authenticateUser(res));
       setTimeout(() => navigate("/products"), 1000);
+      enqueueSnackbar("Login successful", {
+        autoHideDuration: 1000,
+        variant: "success",
+      });
     }
   }
 
@@ -93,134 +100,217 @@ export const Login = () => {
           bgcolor={appTheme === "dark" ? "#1a1a1a" : "#fcfcfc"}
         >
           <Container maxWidth="sm">
-            <Stack spacing={2} p="10px" display="flex" justifyContent="center">
-              <Box
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack
+                spacing={2}
+                p="10px"
                 display="flex"
                 justifyContent="center"
-                alignItems="center"
-                pt="20px"
               >
-                <Typography variant="h4" fontWeight="bold" color="#703bf7">
-                  Login
-                </Typography>
-              </Box>
-              <Box>
                 <Box
                   display="flex"
-                  flexDirection="column"
                   justifyContent="center"
+                  alignItems="center"
+                  pt="20px"
+                  pb={{ xs: "30px", md: "10px" }}
                 >
-                  <Box>
+                  <Typography variant="h4" fontWeight="bold" color="#703bf7">
+                    Login
+                  </Typography>
+                </Box>
+                {/* email */}
+                <Box>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                  >
                     <Box>
-                      <Typography
-                        fontSize="17px"
-                        color={appTheme === "dark" ? "#fff" : "#000"}
-                      >
-                        Email Address
-                      </Typography>
-                    </Box>
-                    <Box>
+                      <Box display="flex" gap="10px">
+                        <Typography
+                          fontSize="17px"
+                          color={appTheme === "dark" ? "#fff" : "#000"}
+                        >
+                          Email Address
+                        </Typography>
+                        <Box>
+                          {errors.email && (
+                            <Box
+                              component="span"
+                              color="orange"
+                              sx={{ opacity: "80%" }}
+                            >
+                              {errors.email.message}
+                            </Box>
+                          )}
+                        </Box>
+                      </Box>
                       <Box>
                         <Box>
-                          <CustomInput
-                            ref={emailInputRef}
-                            type="email"
-                            required
-                            sx={{
-                              bgcolor:
-                                appTheme === "dark" ? "#141414" : "#f3f3f3",
-                            }}
-                          />
+                          <Box>
+                            <TextField
+                              {...register("email", { required: true })}
+                              type="email"
+                              sx={{
+                                width: "100%",
+                                borderRadius: "10px",
+                                bgcolor:
+                                  appTheme === "dark" ? "#141414" : "#f3f3f3",
+                                "& .MuiInputBase-input": {
+                                  color: appTheme === "dark" ? "white" : "#000",
+                                },
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "1px solid",
+                                  borderRadius: "10px",
+                                  borderColor:
+                                    appTheme === "dark" ? "#262626" : "#d1d5db",
+                                  mb: "1px",
+                                },
+                                "&:hover:not(.Mui-focused)": {
+                                  "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "1px solid #703bf7",
+                                    borderRadius: "10px",
+                                  },
+                                },
+                                "& .Mui-focused": {
+                                  "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "1px solid #703bf7",
+                                    borderRadius: "10px",
+                                  },
+                                },
+                              }}
+                            />
+                          </Box>
                         </Box>
                       </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-              <Box>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                >
-                  <Box>
+                {/* password */}
+                <Box>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                  >
                     <Box>
-                      <Typography
-                        fontSize="17px"
-                        color={appTheme === "dark" ? "#fff" : "#000"}
-                      >
-                        Password
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <CustomInput
-                        ref={passwordInputRef}
-                        type="password"
-                        required
-                        sx={{
-                          bgcolor: appTheme === "dark" ? "#141414" : "#f3f3f3",
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-              {/* buttons */}
-              <Box py="40px">
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <Box>
-                    <ThemeProvider theme={ProductsButton}>
-                      <Button
-                        onClick={handleSubmit}
-                        variant="contained"
-                        color="primary"
-                        fullWidth={false}
-                        sx={{
-                          "&.MuiButtonBase-root": {
-                            minWidth: "10px",
-                            width: { xs: "200px", sm: "300px" },
-                            height: "50px",
-                            borderRadius: "8px",
-                          },
-                          textTransform: "none",
-                        }}
-                      >
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
+                      <Box display="flex" gap="10px">
+                        <Typography
+                          fontSize="17px"
+                          color={appTheme === "dark" ? "#fff" : "#000"}
                         >
-                          Login
+                          Password
+                        </Typography>
+                        <Box>
+                          {errors.password && (
+                            <Box
+                              component="span"
+                              color="orange"
+                              sx={{ opacity: "80%" }}
+                            >
+                              {errors.password.message}
+                            </Box>
+                          )}
                         </Box>
-                      </Button>
-                    </ThemeProvider>
-                  </Box>
-                  <Box mt="20px">
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      textAlign="center"
-                      width={{ xs: "200px", sm: "300px" }}
-                      height="50px"
-                      borderRadius="8px"
-                      bgcolor="#333333"
-                      color="#fff"
-                      py="10px"
-                    >
-                      <Link
-                        to="/signup"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                        }}
-                      >
-                        Sign Up
-                      </Link>
+                      </Box>
+                      <Box>
+                        <TextField
+                          {...register("password", { required: true, min: 4 })}
+                          type="password"
+                          sx={{
+                            width: "100%",
+                            borderRadius: "10px",
+                            bgcolor:
+                              appTheme === "dark" ? "#141414" : "#f3f3f3",
+                            "& .MuiInputBase-input": {
+                              color: appTheme === "dark" ? "white" : "#000",
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              border: "1px solid",
+                              borderRadius: "10px",
+                              borderColor:
+                                appTheme === "dark" ? "#262626" : "#d1d5db",
+                              mb: "1px",
+                            },
+                            "&:hover:not(.Mui-focused)": {
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid #703bf7",
+                                borderRadius: "10px",
+                              },
+                            },
+                            "& .Mui-focused": {
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "1px solid #703bf7",
+                                borderRadius: "10px",
+                              },
+                            },
+                          }}
+                        />
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            </Stack>
+                {/* buttons */}
+                <Box py="40px">
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                  >
+                    <Box>
+                      <ThemeProvider theme={ProductsButton}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          fullWidth={false}
+                          sx={{
+                            "&.MuiButtonBase-root": {
+                              minWidth: "10px",
+                              width: { xs: "200px", sm: "300px" },
+                              height: "50px",
+                              borderRadius: "8px",
+                            },
+                            textTransform: "none",
+                          }}
+                        >
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            Login
+                          </Box>
+                        </Button>
+                      </ThemeProvider>
+                    </Box>
+                    <Box mt="20px">
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        textAlign="center"
+                        width={{ xs: "200px", sm: "300px" }}
+                        height="50px"
+                        borderRadius="8px"
+                        bgcolor="#333333"
+                        color="#fff"
+                        py="10px"
+                      >
+                        <Link
+                          to="/signup"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                        >
+                          Sign Up
+                        </Link>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Stack>
+            </form>
           </Container>
         </Box>
       </Container>
