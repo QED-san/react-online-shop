@@ -22,7 +22,7 @@ const ThemeDropDown = ({
   top?: string;
 }) => {
   const dispatch = useDispatch();
-  
+
   return (
     <Box
       position="absolute"
@@ -44,7 +44,7 @@ const ThemeDropDown = ({
               "&.MuiButtonBase-root": {
                 minWidth: "10px",
                 width: "80px",
-                paddingInline: "0",
+                px: "1px",
               },
             }}
             onClick={() =>
@@ -70,7 +70,7 @@ const ThemeDropDown = ({
               "&.MuiButtonBase-root": {
                 minWidth: "10px",
                 width: "80px",
-                paddingInline: "0",
+                px: "1px",
               },
             }}
             onClick={() =>
@@ -96,7 +96,7 @@ const ThemeDropDown = ({
               "&.MuiButtonBase-root": {
                 minWidth: "10px",
                 width: "80px",
-                paddingInline: "0",
+                px: "1px",
               },
             }}
             onClick={() =>
