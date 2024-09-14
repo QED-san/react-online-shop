@@ -72,7 +72,7 @@ export function ProductImage({ src, id }: productCardImageT) {
             borderRadius: "10px",
           }}
           src={src[0] || "img/productPlaceholder.png"}
-          alt=""
+          alt="failed to load"
         />
       </Link>
     </Box>

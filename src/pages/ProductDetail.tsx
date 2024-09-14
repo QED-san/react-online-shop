@@ -101,7 +101,7 @@ export const ProductDetail = () => {
                               product?.images[0] ||
                               "/img/productPlaceholder.png"
                             }
-                            alt=""
+                            alt="failed to load"
                           />
                         </Box>
                         <Box
@@ -136,7 +136,7 @@ export const ProductDetail = () => {
                                       borderRadius: "10px",
                                     }}
                                     src={img}
-                                    alt=""
+                                    alt="failed to load"
                                   />
                                 </Box>
                               );
