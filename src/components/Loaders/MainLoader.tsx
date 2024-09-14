@@ -2,10 +2,12 @@ import { Box, Grid, styled } from "@mui/material";
 
 const Loader = ({
   big,
-  spinner: spinner,
+  spinner,
+  display,
 }: {
   big?: string;
   spinner?: boolean;
+  display?: string;
 }) => {
   let LoaderBodyDiv;
   if (spinner) {
@@ -63,7 +65,10 @@ const Loader = ({
 
   return (
     <Grid container justifyContent="center" alignItems="center" height="100%">
-      <LoaderBodyDiv width={big ? { xs: big, sm: "15%" } : "15%"} />
+      <LoaderBodyDiv
+        display={display ? display : undefined}
+        width={big ? { xs: big, sm: "15%" } : "15%"}
+      />
     </Grid>
   );
 };

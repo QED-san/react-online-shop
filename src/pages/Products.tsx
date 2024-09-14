@@ -40,6 +40,7 @@ const Products = () => {
     error: productsError,
     isLoading: productsIsLoading,
     fetchNextPage,
+    isFetchingNextPage,
     hasNextPage,
   } = useProducts();
 
@@ -375,7 +376,13 @@ const Products = () => {
                   dataLength={allProductsLength}
                   hasMore={hasNextPage}
                   next={fetchNextPage}
-                  loader={<Loader spinner={true} />}
+                  loader={
+                    <Loader
+                      spinner={true}
+                      // because of scale of loader, it was making a lil extra height
+                      display={isFetchingNextPage ? "block" : "none"}
+                    />
+                  }
                 >
                   <Box
                     pt="11px"
