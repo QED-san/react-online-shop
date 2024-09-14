@@ -464,7 +464,7 @@ const Products = () => {
                 </InfiniteScroll>
               </Box>
               {/* categories section */}
-              <Grid
+              <Box
                 pt="10px"
                 sx={{
                   flex: { sm: 0.25, md: 0.33, lg: 0.2 },
@@ -553,7 +553,7 @@ const Products = () => {
                       ))}
                   </Box>
                 </Box>
-              </Grid>
+              </Box>
             </Box>
           </Box>
         </Container>
