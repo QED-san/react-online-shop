@@ -6,7 +6,7 @@ import * as AdminPages from "../pages/admin/allPages/Pages";
 
 const routes = createBrowserRouter([
   {
-    path: "/react-online-shop/",
+    path: "/",
     element: <Pages.Layout />,
     children: [
       { index: true, element: <Pages.Home /> },
