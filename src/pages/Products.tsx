@@ -375,9 +375,7 @@ const Products = () => {
                 <InfiniteScroll
                   dataLength={allProductsLength}
                   hasMore={hasNextPage}
-                  next={() => {
-                    if (filteredProducts === null) fetchNextPage();
-                  }}
+                  next={fetchNextPage}
                   loader={
                     <Loader
                       spinner={true}
@@ -463,37 +461,6 @@ const Products = () => {
                           </ProductCard>
                         ))}
                   </Box>
-                  {/* load more products button */}
-                  {/* {hasNextPage && (
-                    <Box
-                      pt="20px"
-                      display={!filteredProducts ? "block" : "none"}
-                    >
-                      <Box display="flex" justifyContent="center">
-                        <ThemeProvider theme={productsButton}>
-                          <Box bgcolor="#">
-                            <Button
-                              onClick={() => {
-                                fetchNextPage();
-                              }}
-                              variant="contained"
-                              color="primary"
-                              sx={{
-                                "&.MuiButtonBase-root": {
-                                  minWidth: "10px",
-                                  width: "150px",
-                                  height: "40px",
-                                  borderRadius: "10px",
-                                },
-                              }}
-                            >
-                              {isFetchingNextPage ? "Loading..." : "Load more"}
-                            </Button>
-                          </Box>
-                        </ThemeProvider>
-                      </Box>
-                    </Box>
-                  )} */}
                 </InfiniteScroll>
               </Box>
               {/* categories section */}
