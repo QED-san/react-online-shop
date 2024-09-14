@@ -375,7 +375,9 @@ const Products = () => {
                 <InfiniteScroll
                   dataLength={allProductsLength}
                   hasMore={hasNextPage}
-                  next={fetchNextPage}
+                  next={() => {
+                    if (filteredProducts === null) fetchNextPage();
+                  }}
                   loader={
                     <Loader
                       spinner={true}
