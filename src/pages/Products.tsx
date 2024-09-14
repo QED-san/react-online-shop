@@ -118,15 +118,9 @@ const Products = () => {
     if (priceSearchValue) {
       setProductsFilteredBy({ type: "price", value: "" });
       if (products) {
-        if (!filteredProducts) {
-          setFilteredProducts(
-            allProducts.filter((p) => p.price == priceSearchValue)
-          );
-        } else {
-          setFilteredProducts(
-            filteredProducts.filter((p) => p.price == priceSearchValue)
-          );
-        }
+        setFilteredProducts(
+          allProducts.filter((p) => p.price == priceSearchValue)
+        );
       }
     }
   }
