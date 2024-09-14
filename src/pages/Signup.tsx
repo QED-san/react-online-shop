@@ -23,6 +23,7 @@ import Theme from "../theme/Theme";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RegisterUserInputsT } from "../utils/types/Singup";
 import { closeSnackbar, enqueueSnackbar, SnackbarKey } from "notistack";
+import toast, { Toaster } from "react-hot-toast";
 import { Clear } from "@mui/icons-material";
 
 export const Signup = () => {
@@ -72,9 +73,9 @@ export const Signup = () => {
                   )
                 )
                 .catch(() =>
-                  enqueueSnackbar("Register failed", {
-                    autoHideDuration: 2000,
-                    variant: "error",
+                  toast.error("Register failed", {
+                    position: "bottom-left",
+                    duration: 2000,
                   })
                 );
             });
@@ -90,9 +91,9 @@ export const Signup = () => {
 
   function RegisterUser(res: UserT) {
     console.log(res);
-    enqueueSnackbar("Redirecting to login page...", {
-      autoHideDuration: 1000,
-      variant: "success",
+    toast.loading("Redirecting to login page...", {
+      duration: 1000,
+      position: "bottom-left",
     });
   }
 
@@ -354,7 +355,9 @@ export const Signup = () => {
                               justifyContent="center"
                               alignItems="center"
                             >
-                              {checkEmail.isPending && <Loader spinner={true} />}
+                              {checkEmail.isPending && (
+                                <Loader spinner={true} />
+                              )}
                               {checkEmail.isSuccess && <Box>✅</Box>}
                               {checkEmail.isError && <Box>❌</Box>}
                             </Box>
@@ -506,6 +509,7 @@ export const Signup = () => {
           </Container>
         </Box>
       </Container>
+      <Toaster />
     </Box>
   );
 };

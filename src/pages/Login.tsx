@@ -22,7 +22,7 @@ import { GetTokensCunstructor } from "../hooks/Cunstructors/Cunstructor";
 import Theme from "../theme/Theme";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginUserInputsT } from "../utils/types/Login";
-import { enqueueSnackbar } from "notistack";
+import toast, { Toaster } from "react-hot-toast";
 
 export const Login = () => {
   const appTheme = Theme();
@@ -41,9 +41,9 @@ export const Login = () => {
       getTokens
         .mutateAsync(GetTokensCunstructor(data.email, data.password))
         .catch(() =>
-          enqueueSnackbar("Login failed", {
-            autoHideDuration: 2000,
-            variant: "error",
+          toast.error("Login failed", {
+            duration: 2000,
+            position: "bottom-left",
           })
         );
     else console.log("password must be more than 4 characters");
@@ -73,9 +73,9 @@ export const Login = () => {
     if (Cookies.get("user_access_token")) {
       dispatch(authenticateUser(res));
       setTimeout(() => navigate("/products"), 1000);
-      enqueueSnackbar("Login successful", {
-        autoHideDuration: 1000,
-        variant: "success",
+      toast.success("Login successful", {
+        duration: 1000,
+        position: "bottom-left",
       });
     }
   }
@@ -314,6 +314,7 @@ export const Login = () => {
           </Container>
         </Box>
       </Container>
+      <Toaster />
     </Box>
   );
 };

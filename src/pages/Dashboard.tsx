@@ -35,7 +35,7 @@ import { useCookies } from "react-cookie";
 import Theme from "../theme/Theme";
 import { resetOrderState } from "../state management/Orders/OrderSlice";
 import { resetCart } from "../state management/Cart/CartSlice";
-import { enqueueSnackbar } from "notistack";
+import toast, { Toaster } from "react-hot-toast";
 
 const Dashboard = () => {
   const appTheme = Theme();
@@ -99,15 +99,16 @@ const Dashboard = () => {
     if (avatarChanged) {
       uploadFile
         .mutateAsync(inputFile)
-        .catch(() => enqueueSnackbar("Avatar update failed"));
+        .catch(() =>
+          toast.error("Failed to update avatar", { duration: 2000 })
+        );
       setAvatarChanged(false);
     }
   }
 
   function setTheAvatarUploadRes(res: fileUploadResT) {
-    enqueueSnackbar("Avatar updated", {
-      variant: "success",
-      autoHideDuration: 1000,
+    toast.success("Avatar updated", {
+      duration: 1000,
     });
     setBigImage(res.location);
     setInputsVal({ ...inputsVal, avatar: res.location });
@@ -116,9 +117,8 @@ const Dashboard = () => {
 
   function updateUserState(res: UserT) {
     dispatch(updateUser(res));
-    enqueueSnackbar("User updated successfuly", {
-      variant: "success",
-      autoHideDuration: 3000,
+    toast.success("User updated successfuly", {
+      duration: 3000,
     });
   }
 
@@ -134,12 +134,10 @@ const Dashboard = () => {
       if (authReqsRes.avatarChecked) initialUser.avatar = inputsVal.avatar;
       if (authReqsRes.emailChecked) initialUser.email = inputsVal.email;
       const userObj = UserUpdateCunstructor(initialUser);
-      // console.log(userObj);
       if (Object.values(userObj).length > 0) {
         updateUserRequest.mutateAsync(userObj).catch(() =>
-          enqueueSnackbar("Failed to update user", {
-            variant: "error",
-            autoHideDuration: 2000,
+          toast.error("Failed to update user", {
+            duration: 2000,
           })
         );
       }
@@ -378,6 +376,7 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Container>
+      <Toaster position="bottom-left" />
     </Box>
   );
 };
