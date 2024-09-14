@@ -6,7 +6,7 @@
   "homepage": "https://seraaga022.github.io/react-online-shop",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build --base=./",
     "lint": "eslint .",
     "preview": "vite preview"
   },
