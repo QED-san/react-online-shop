@@ -94,10 +94,10 @@ const Orders = () => {
                           alignItems="center"
                         >
                           <Box component="span" fontSize="20px">
-                            {orders.length}
+                            {order.items.length}
                           </Box>
                           &nbsp;
-                          {orders.length === 1 ? "Product" : "Products"}
+                          {order.items.length === 1 ? "Product" : "Products"}
                         </Box>
                       </Box>
                       <Box>
