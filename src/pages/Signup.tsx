@@ -72,7 +72,7 @@ export const Signup = () => {
                   )
                 )
                 .catch(() =>
-                  enqueueSnackbar("Register faild", {
+                  enqueueSnackbar("Register failed", {
                     autoHideDuration: 2000,
                     variant: "error",
                   })
