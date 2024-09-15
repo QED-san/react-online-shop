@@ -1,5 +1,5 @@
 import { ThemeProvider, Button, Box } from "@mui/material";
-import ProductsButton from "../../../theme/Products/ProductsButton";
+import CustomButton from "../../../theme/Products/ProductsButton";
 import { ButtonT } from "../../../utils/types/AddToCartButton";
 import { Add, Remove } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +27,7 @@ const AddToCartButton = (props: ButtonT) => {
   const appTheme = Theme();
 
   return (
-    <ThemeProvider theme={ProductsButton}>
+    <ThemeProvider theme={CustomButton}>
       {props.id ? (
         isProductInCart ? (
           <Box display="flex" gap="20px">

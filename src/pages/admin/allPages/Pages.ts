@@ -4,3 +4,6 @@ export { default as DeleteCategory } from "../Category management/DeleteCategory
 export { default as CreateProduct } from "../product management/CreateProduct";
 export { default as UpdateProduct } from "../product management/UpdateProduct";
 export { default as DeleteProduct } from "../product management/DeleteProduct";
+export { default as Panel } from "../Panel";
+export { default as CategoryManagement } from "../CategoriesTable";
+export { default as ProductManagement } from "../ProductsTable";

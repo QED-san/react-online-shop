@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material";
 
-const ProductsButton = () => {
+const CustomButton = () => {
   return createTheme({
     palette: {
       primary: {
@@ -15,4 +15,4 @@ const ProductsButton = () => {
   });
 };
 
-export default ProductsButton;
+export default CustomButton;

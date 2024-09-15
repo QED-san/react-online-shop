@@ -8,12 +8,14 @@ import {
   Typography,
 } from "@mui/material";
 import Theme from "../../../theme/Theme";
-import ProductsButton from "../../../theme/Products/ProductsButton";
+import CustomButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DeleteCategoryInputT } from "../../../utils/types/CategoryManagement";
 import { useDeleteCategory } from "../../../hooks/useCategoryManagement";
+import { useParams } from "react-router-dom";
 
 const DeleteCategory = () => {
+  const { id } = useParams();
   const appTheme = Theme();
   const deleteCategory = useDeleteCategory();
   const {
@@ -62,6 +64,7 @@ const DeleteCategory = () => {
                         <Box>
                           <TextField
                             {...register("id", { required: true, min: 0 })}
+                            defaultValue={id}
                             type="number"
                             sx={{
                               width: "100%",
@@ -100,7 +103,7 @@ const DeleteCategory = () => {
                   <Box py="40px">
                     <Box display="flex" alignItems="center">
                       <Box>
-                        <ThemeProvider theme={ProductsButton}>
+                        <ThemeProvider theme={CustomButton}>
                           <Button
                             type="submit"
                             variant="contained"

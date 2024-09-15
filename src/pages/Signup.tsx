@@ -14,7 +14,7 @@ import {
   useUploadFile,
 } from "../hooks/useAuth";
 import React from "react";
-import ProductsButton from "../theme/Products/ProductsButton";
+import CustomButton from "../theme/Products/ProductsButton";
 import Loader from "../components/Loaders/MainLoader";
 import { Link } from "react-router-dom";
 import { UserT } from "../state management/User/UserSlice";
@@ -453,7 +453,7 @@ export const Signup = () => {
                     alignItems="center"
                   >
                     <Box>
-                      <ThemeProvider theme={ProductsButton}>
+                      <ThemeProvider theme={CustomButton}>
                         <Button
                           type="submit"
                           variant="contained"

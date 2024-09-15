@@ -26,15 +26,29 @@ const routes = createBrowserRouter([
         element: <AdminRoutes />,
         children: [
           {
+            path: "admin",
+            element: <AdminPages.Panel />,
+            children: [
+              {
+                index: true,
+                element: <AdminPages.ProductManagement />,
+              },
+              {
+                path: "category_management",
+                element: <AdminPages.CategoryManagement />,
+              },
+            ],
+          },
+          {
             path: "admin/create_category",
             element: <AdminPages.CreateCategory />,
           },
           {
-            path: "admin/update_category",
+            path: "admin/update_category/:id",
             element: <AdminPages.UpdateCategory />,
           },
           {
-            path: "admin/delete_category",
+            path: "admin/delete_category/:id",
             element: <AdminPages.DeleteCategory />,
           },
           {
@@ -42,11 +56,11 @@ const routes = createBrowserRouter([
             element: <AdminPages.CreateProduct />,
           },
           {
-            path: "admin/update_product",
+            path: "admin/update_product/:id",
             element: <AdminPages.UpdateProduct />,
           },
           {
-            path: "admin/delete_product",
+            path: "admin/delete_product/:id",
             element: <AdminPages.DeleteProduct />,
           },
         ],

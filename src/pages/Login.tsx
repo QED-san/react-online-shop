@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import ProductsButton from "../theme/Products/ProductsButton";
+import CustomButton from "../theme/Products/ProductsButton";
 import { useGetTokens, useLoginUser } from "../hooks/useAuth";
 import {
   authenticateUser,
@@ -258,7 +258,7 @@ export const Login = () => {
                     alignItems="center"
                   >
                     <Box>
-                      <ThemeProvider theme={ProductsButton}>
+                      <ThemeProvider theme={CustomButton}>
                         <Button
                           type="submit"
                           variant="contained"

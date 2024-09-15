@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import Theme from "../../../theme/Theme";
 import React from "react";
-import ProductsButton from "../../../theme/Products/ProductsButton";
+import CustomButton from "../../../theme/Products/ProductsButton";
 import useCategories from "../../../hooks/useCategories";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -352,7 +352,7 @@ const CreateProduct = () => {
                   <Box py="40px">
                     <Box display="flex" alignItems="center">
                       <Box>
-                        <ThemeProvider theme={ProductsButton}>
+                        <ThemeProvider theme={CustomButton}>
                           <Button
                             type="submit"
                             variant="contained"

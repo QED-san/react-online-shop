@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Theme from "../../../theme/Theme";
-import ProductsButton from "../../../theme/Products/ProductsButton";
+import CustomButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CreateCategoryInputT } from "../../../utils/types/CategoryManagement";
 import React from "react";
@@ -173,7 +173,7 @@ const CreateCategory = () => {
                   <Box py="40px">
                     <Box display="flex" alignItems="center">
                       <Box>
-                        <ThemeProvider theme={ProductsButton}>
+                        <ThemeProvider theme={CustomButton}>
                           <Button
                             type="submit"
                             variant="contained"

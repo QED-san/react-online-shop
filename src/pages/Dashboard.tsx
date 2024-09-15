@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state management/store";
 import React from "react";
-import ProductsButton from "../theme/Products/ProductsButton";
+import CustomButton from "../theme/Products/ProductsButton";
 import { Edit, Logout } from "@mui/icons-material";
 import CustomInput from "../components/Products/ui/CustomInput";
 import { useCheckEmail, useUpdateUser, useUploadFile } from "../hooks/useAuth";
@@ -224,7 +224,7 @@ const Dashboard = () => {
                 {/* edit button */}
                 <Box position="absolute" bottom="0" right="0" color="red">
                   <Box bgcolor="#703bf7" borderRadius="10px">
-                    <ThemeProvider theme={ProductsButton}>
+                    <ThemeProvider theme={CustomButton}>
                       <Button
                         onClick={handleEditAvatarClick}
                         sx={{

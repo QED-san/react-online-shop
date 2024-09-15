@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Theme from "../../../theme/Theme";
-import ProductsButton from "../../../theme/Products/ProductsButton";
+import CustomButton from "../../../theme/Products/ProductsButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   UpdateCategoryFormData,
@@ -18,8 +18,10 @@ import {
 import React from "react";
 import { useUploadFile } from "../../../hooks/useAuth";
 import { useUpdateCategory } from "../../../hooks/useCategoryManagement";
+import { useParams } from "react-router-dom";
 
 const UpdateCategory = () => {
+  const { id } = useParams();
   const appTheme = Theme();
   const [categoryImage, setCategoryImage] = React.useState<Blob>();
   const uploadFile = useUploadFile();
@@ -90,6 +92,7 @@ const UpdateCategory = () => {
                         <Box>
                           <TextField
                             {...register("id", { required: true })}
+                            defaultValue={id}
                             type="number"
                             sx={{
                               width: "100%",
@@ -224,7 +227,7 @@ const UpdateCategory = () => {
                   <Box py="40px">
                     <Box display="flex" alignItems="center">
                       <Box>
-                        <ThemeProvider theme={ProductsButton}>
+                        <ThemeProvider theme={CustomButton}>
                           <Button
                             type="submit"
                             variant="contained"
