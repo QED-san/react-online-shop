@@ -68,8 +68,7 @@ export const Signup = () => {
                     data.name,
                     data.email,
                     data.password,
-                    res.location,
-                    "admin"
+                    res.location
                   )
                 )
                 .catch(() =>
