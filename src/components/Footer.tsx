@@ -163,7 +163,7 @@ const Footer = () => {
             <ThemeProvider theme={githubNameTheme}>
               <CssBaseline />
               <Typography variant="subtitle2" fontSize="20px">
-                Made by Seraaga022
+                Made by QED-san
               </Typography>
             </ThemeProvider>
           </Box>
