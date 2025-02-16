@@ -170,7 +170,7 @@ const Footer = () => {
           <Box sx={{ flex: 1, display: "flex", justifyContent: "end" }}>
             <Box>
               <Grid container justifyContent="center" alignItems="center">
-                <Link to="https://github.com/Seraaga022">
+                <Link to="https://github.com/QED-san">
                   <GitHubIcon />
                 </Link>
               </Grid>
